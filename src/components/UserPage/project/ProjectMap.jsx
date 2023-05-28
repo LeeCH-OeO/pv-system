@@ -14,7 +14,6 @@ const ProjectMap = ({ height, width, center }) => {
     const map = useMapEvent("click", (e) => {
       setPostitionList((positionList) => [...positionList, e.latlng]);
     });
-    console.log(positionList);
   };
   return (
     <MapContainer

@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 const UserMainPage = () => {
   const [userInfo, setUserInfo] = useState({
     firstName: "321",
@@ -28,6 +29,7 @@ const UserMainPage = () => {
         {": "}
         {userInfo.firstName} {userInfo.lastName}
       </h2>
+      <Link to="/user/projects"> my projects</Link>
     </div>
   );
 };
