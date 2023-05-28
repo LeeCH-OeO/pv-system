@@ -1,16 +1,25 @@
 import React from "react";
-import CreateProjectForm from "./style";
+import Form from "./style";
 import { Select } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { TextField } from "@mui/material";
 import { useState } from "react";
-const CreateProject = () => {
+const CreateProjectForm = () => {
   const [productList, setProductList] = useState([]);
-  const [productSelectValue, setProductSelectValue] = useState("");
+  const [productSelectValue, setProductSelectValue] = useState({
+    productType: "",
+    lat: "",
+    lon: "",
+  });
   const handleOnClick = () => {
     setProductList((productList) => [...productList, productSelectValue]);
+    setProductSelectValue({
+      productType: "",
+      lat: "",
+      lon: "",
+    });
   };
   const handleOnDelete = (index) => {
     const updatedArray = [...productList];
@@ -19,7 +28,7 @@ const CreateProject = () => {
   };
   return (
     <div>
-      <CreateProjectForm>
+      <Form>
         <h2>New Project</h2>
         <div>
           <TextField label="Project Name"></TextField>
@@ -28,7 +37,9 @@ const CreateProject = () => {
           productList.map((product, index) => {
             return (
               <div>
-                <p>{product}</p>
+                <p>
+                  {product.productType}, lat: {product.lat}, lon:{product.lon}
+                </p>
                 <button onClick={() => handleOnDelete(index)}>delete</button>
               </div>
             );
@@ -41,7 +52,10 @@ const CreateProject = () => {
           <Select
             labelId="product-list"
             onChange={(e) => {
-              setProductSelectValue(e.target.value);
+              setProductSelectValue({
+                ...productSelectValue,
+                productType: e.target.value,
+              });
             }}
             defaultValue=""
           >
@@ -49,11 +63,46 @@ const CreateProject = () => {
             <MenuItem value="product 2">Product 2</MenuItem>
             <MenuItem value="product 3">Product 3</MenuItem>
           </Select>{" "}
-          <button onClick={handleOnClick}>add</button>
+          <TextField
+            label="Latitude"
+            required
+            type="number"
+            value={productSelectValue.lat}
+            onChange={(e) =>
+              setProductSelectValue({
+                ...productSelectValue,
+                lat: e.target.value,
+              })
+            }
+          />
+          <TextField
+            label="Longitude"
+            required
+            type="number"
+            value={productSelectValue.lon}
+            onChange={(e) =>
+              setProductSelectValue({
+                ...productSelectValue,
+                lon: e.target.value,
+              })
+            }
+          />
+          <button
+            disabled={
+              productSelectValue.productType &&
+              productSelectValue.lat &&
+              productSelectValue.lon
+                ? false
+                : true
+            }
+            onClick={handleOnClick}
+          >
+            add
+          </button>
         </FormControl>
-      </CreateProjectForm>
+      </Form>
     </div>
   );
 };
 
-export default CreateProject;
+export default CreateProjectForm;
