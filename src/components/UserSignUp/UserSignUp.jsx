@@ -1,6 +1,8 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import SignUpForm from "./style";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,17 +14,20 @@ const UserSignUp = () => {
     lastName: "",
     email: "",
     password: "",
+    isUnlimitedUser: false,
   });
   const handleOnClick = () => {
     console.log(userInfo);
     localStorage.setItem("firstName", userInfo.firstName);
     localStorage.setItem("lastName", userInfo.lastName);
+    localStorage.setItem("isUnlimitedUser", userInfo.isUnlimitedUser);
     navigate("/user/main");
     setUserInfo({
       firstName: "",
       lastName: "",
       email: "",
       password: "",
+      isUnlimitedUser: false,
     });
   };
   return (
@@ -74,6 +79,19 @@ const UserSignUp = () => {
           onChange={(e) =>
             setUserInfo({ ...userInfo, password: e.target.value })
           }
+        />
+      </div>
+
+      <div>
+        <FormControlLabel
+          control={
+            <Checkbox
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, isUnlimitedUser: e.target.checked })
+              }
+            />
+          }
+          label="I want unlimited plan"
         />
       </div>
 

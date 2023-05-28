@@ -1,14 +1,21 @@
 import React from "react";
 import { useState, useEffect } from "react";
 const UserMainPage = () => {
-  const [userName, setUserName] = useState({
+  const [userInfo, setUserInfo] = useState({
     firstName: "321",
     lastName: "123",
+    isUnlimitedUser: false,
   });
   const fetchUserInfo = () => {
     const firstName = localStorage.getItem("firstName");
     const lastName = localStorage.getItem("lastName");
-    setUserName({ ...userName, firstName: firstName, lastName: lastName });
+    const isUnlimitedUser = localStorage.getItem("isUnlimitedUser");
+    setUserInfo({
+      ...userInfo,
+      firstName: firstName,
+      lastName: lastName,
+      isUnlimitedUser: isUnlimitedUser,
+    });
   };
   useEffect(() => {
     fetchUserInfo();
@@ -16,7 +23,10 @@ const UserMainPage = () => {
   return (
     <div>
       <h2>
-        hello! {userName.firstName} {userName.lastName}
+        hello!{" "}
+        {userInfo.isUnlimitedUser === "true" ? "Unlimited User" : "free user"}
+        {": "}
+        {userInfo.firstName} {userInfo.lastName}
       </h2>
     </div>
   );

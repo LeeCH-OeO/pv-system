@@ -8,7 +8,7 @@ import {
   useMapEvent,
 } from "react-leaflet";
 
-const Project = () => {
+const ProjectMap = ({ height, width, center }) => {
   const [positionList, setPostitionList] = useState([]);
   const ClickMarker = () => {
     const map = useMapEvent("click", (e) => {
@@ -18,16 +18,16 @@ const Project = () => {
   };
   return (
     <MapContainer
-      style={{ height: "80vh", width: "80vw" }}
-      center={[50.8284470415822, 12.920068886090974]}
-      zoom={13}
+      style={{ width: `${width}`, height: `${height}` }}
+      center={[center.lat, center.lng]}
+      zoom={2}
       scrollWheelZoom={false}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={[50.8284470415822, 12.920068886090974]}>
+      <Marker position={[center.lat, center.lng]}>
         <Popup>
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
@@ -46,4 +46,4 @@ const Project = () => {
   );
 };
 
-export default Project;
+export default ProjectMap;
