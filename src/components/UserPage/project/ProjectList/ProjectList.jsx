@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import ProjectMap from "../ProjectMap";
 import {
   ProjectListContainer,
@@ -6,18 +5,27 @@ import {
   ProjectInfoContainer,
 } from "./style";
 import CreateReport from "../CreateReport/CreateReport";
+import { useNavigate } from "react-router-dom";
 const ProjectList = () => {
-  const [openCreateReport, setCreateReport] = useState(false);
+  const navigate = useNavigate();
   return (
     <div>
       <h1>Project list</h1>
+      <button
+        onClick={() => {
+          navigate("/user/new-project");
+        }}
+      >
+        create new project
+      </button>
       <ProjectListContainer>
         <ProjectContainer>
           <h3>project name</h3>
+          <button>detail</button>
           <ProjectInfoContainer>
             <ProjectMap
-              height="50vh"
-              width="80vw"
+              height="80vh"
+              width="85vw"
               center={{ lat: "52.52354266184729", lng: "13.402872545835251" }}
               markers={[
                 { lat: "52.52354266184729", lng: "13.402872545835251" },

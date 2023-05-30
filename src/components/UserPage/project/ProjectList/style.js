@@ -11,7 +11,7 @@ const ProjectContainer = styled.div`
   border-style: solid;
   border-color: green;
   padding-bottom: 10px;
-
+  margin-bottom: 5vh;
   border-radius: 5px;
 `;
 const ProjectInfoContainer = styled.div`

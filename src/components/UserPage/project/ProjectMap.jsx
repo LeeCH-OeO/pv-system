@@ -28,9 +28,9 @@ const ProjectMap = ({ height, width, center, markers }) => {
       />
 
       <ClickMarker />
-      {positionList.map((pos) => {
+      {positionList.map((pos, index) => {
         return (
-          <Marker position={[pos.lat, pos.lng]}>
+          <Marker position={[pos.lat, pos.lng]} key={index}>
             <Popup>
               <p>{`lat: ${pos.lat}, lng: ${pos.lng}`}</p>
             </Popup>

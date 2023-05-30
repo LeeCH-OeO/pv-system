@@ -6,6 +6,9 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { TextField } from "@mui/material";
 import { useState } from "react";
+import IconButton from "@mui/material/IconButton";
+
+import CancelIcon from "@mui/icons-material/Cancel";
 const CreateProjectForm = () => {
   const [productList, setProductList] = useState([]);
   const [productSelectValue, setProductSelectValue] = useState({
@@ -36,11 +39,16 @@ const CreateProjectForm = () => {
         {productList.length !== 0 ? (
           productList.map((product, index) => {
             return (
-              <div>
+              <div key={index}>
                 <p>
                   {product.productType}, lat: {product.lat}, lon:{product.lon}
                 </p>
-                <button onClick={() => handleOnDelete(index)}>delete</button>
+                <IconButton
+                  color="primary"
+                  onClick={() => handleOnDelete(index)}
+                >
+                  <CancelIcon />
+                </IconButton>
               </div>
             );
           })
@@ -100,6 +108,13 @@ const CreateProjectForm = () => {
             add
           </button>
         </FormControl>
+        <button
+          onClick={() => {
+            console.log(productList);
+          }}
+        >
+          submit
+        </button>
       </Form>
     </div>
   );
