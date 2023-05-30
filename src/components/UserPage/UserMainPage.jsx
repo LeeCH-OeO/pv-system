@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import UserNavBar from "./NavBar/UserNavBar";
 const UserMainPage = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
@@ -29,14 +30,7 @@ const UserMainPage = () => {
   }, []);
   return (
     <div>
-      <h2>
-        hello!{" "}
-        {userInfo.isUnlimitedUser === "true" ? "Unlimited User" : "free user"}
-        {": "}
-        {userInfo.firstName} {userInfo.lastName}
-      </h2>
-      <Link to="/user/projects"> my projects</Link>{" "}
-      <Link to="/user/profile">Profile</Link>
+      <UserNavBar />
     </div>
   );
 };

@@ -15,7 +15,7 @@ const CompanySignUp = () => {
   const handleOnClick = () => {
     console.log(companyInfo);
     localStorage.setItem("companyName", companyInfo.companyName);
-    // navigate("/company/main");
+    navigate("/company/main");
     setCompanyInfo({
       companyName: "",
       email: "",

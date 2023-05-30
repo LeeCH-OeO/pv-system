@@ -6,11 +6,14 @@ import {
 } from "./style";
 import CreateReport from "../CreateReport/CreateReport";
 import { useNavigate } from "react-router-dom";
+import UserNavBar from "../../NavBar/UserNavBar";
 const ProjectList = () => {
   const navigate = useNavigate();
   return (
     <div>
+      <UserNavBar />
       <h1>Project list</h1>
+
       <button
         onClick={() => {
           navigate("/user/new-project");

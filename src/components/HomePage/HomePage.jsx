@@ -40,7 +40,9 @@ const HomePage = () => {
         <Button variant="contained" onClick={() => navigate("user/main")}>
           user
         </Button>
-        <Button variant="contained">company</Button>
+        <Button variant="contained" onClick={() => navigate("/company/signup")}>
+          company
+        </Button>
       </ButtonContainer>
     </div>
   );
