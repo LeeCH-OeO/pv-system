@@ -25,9 +25,9 @@ const CreateProjectForm = () => {
     });
   };
   const handleOnDelete = (index) => {
-    const updatedArray = [...productList];
-    updatedArray.splice(index, 1);
-    setProductList(updatedArray);
+    const updatedList = [...productList];
+    updatedList.splice(index, 1);
+    setProductList(updatedList);
   };
   return (
     <div>

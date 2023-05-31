@@ -8,7 +8,7 @@ const NavBar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: blue;
+  background-color: green;
   color: white;
   @media (max-width: 400px) {
     flex-direction: column;
