@@ -10,7 +10,7 @@ const ProductForm = () => {
     para2: "",
     para3: "",
   });
-
+  const [productList, setProductList] = useState([]);
   return (
     <div>
       <CompanyNavBar />
@@ -50,13 +50,25 @@ const ProductForm = () => {
         />
         <button
           onClick={() => {
-            console.log(productInfo);
+            setProductList((productList) => [...productList, productInfo]);
             setProductInfo({ productName: "", para1: 0, para2: "", para3: "" });
+            console.log(productList);
           }}
         >
           submit
         </button>
       </Form>
+      {productList.map((item, index) => {
+        return (
+          <div key={index}>
+            {" "}
+            <h3>
+              {item.productName} parameter1: {item.para1}, parameter2:{" "}
+              {item.para2}, parameter3: {item.para3}
+            </h3>
+          </div>
+        );
+      })}
     </div>
   );
 };

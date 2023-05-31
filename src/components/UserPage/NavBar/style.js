@@ -1,8 +1,9 @@
-import styled from "styled-components";
-const NavBarContainer = styled.div`
-  box-sizing: border-box;
+import styled, { createGlobalStyle } from "styled-components";
+const NavBarContainer = createGlobalStyle`
+body{
   margin: 0;
-  padding: 0;
+  padding: 0;}
+  
 `;
 const NavBar = styled.nav`
   display: flex;
@@ -10,6 +11,7 @@ const NavBar = styled.nav`
   align-items: center;
   background-color: blue;
   color: white;
+
   @media (max-width: 400px) {
     flex-direction: column;
     align-items: flex-start;

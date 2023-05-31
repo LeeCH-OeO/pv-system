@@ -1,7 +1,7 @@
 import styled from "styled-components";
 const ArticleImgContainer = styled.div`
   width: 30vw;
-  height: 30vw;
+  height: 30vh;
 `;
 const ParagraphContainer = styled.div`
   display: flex;

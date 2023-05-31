@@ -6,25 +6,36 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import SignUpForm from "./style";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Avatar } from "@mui/material";
 
 const UserSignUp = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
-    firstName: "",
-    lastName: "",
+    userName: "",
     email: "",
     password: "",
     isUnlimitedUser: false,
   });
+  const [base64String, setBase64String] = useState("");
+
+  const handleEncodeImage = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      const base64 = event.target.result.split(",")[1];
+      setBase64String(base64);
+    };
+
+    reader.readAsDataURL(file);
+  };
   const handleOnClick = () => {
     console.log(userInfo);
-    localStorage.setItem("firstName", userInfo.firstName);
-    localStorage.setItem("lastName", userInfo.lastName);
+    localStorage.setItem("userName", userInfo.userName);
     localStorage.setItem("isUnlimitedUser", userInfo.isUnlimitedUser);
     navigate("/user/main");
     setUserInfo({
-      firstName: "",
-      lastName: "",
+      userName: "",
       email: "",
       password: "",
       isUnlimitedUser: false,
@@ -36,28 +47,17 @@ const UserSignUp = () => {
 
       <div>
         <TextField
-          label="first name"
+          label="user name"
           margin="dense"
           autoComplete="off"
           fullWidth
-          value={userInfo.firstName}
+          value={userInfo.userName}
           onChange={(e) =>
-            setUserInfo({ ...userInfo, firstName: e.target.value })
+            setUserInfo({ ...userInfo, userName: e.target.value })
           }
         />
       </div>
-      <div>
-        <TextField
-          label="last name"
-          margin="dense"
-          autoComplete="off"
-          fullWidth
-          value={userInfo.lastName}
-          onChange={(e) =>
-            setUserInfo({ ...userInfo, lastName: e.target.value })
-          }
-        />
-      </div>
+
       <div>
         <TextField
           label="email"
@@ -81,7 +81,10 @@ const UserSignUp = () => {
           }
         />
       </div>
-
+      <div>
+        upload your profile photo
+        <input type="file" accept="image/*" onChange={handleEncodeImage} />
+      </div>
       <div>
         <FormControlLabel
           control={
@@ -100,10 +103,7 @@ const UserSignUp = () => {
           variant="outlined"
           onClick={handleOnClick}
           disabled={
-            userInfo.firstName &&
-            userInfo.lastName &&
-            userInfo.email &&
-            userInfo.password
+            userInfo.userName && userInfo.email && userInfo.password
               ? false
               : true
           }
@@ -111,6 +111,12 @@ const UserSignUp = () => {
           submit
         </Button>
       </div>
+      {base64String && (
+        <Avatar
+          src={`data:image/*;base64,${base64String}`}
+          sx={{ width: 56, height: 56 }}
+        />
+      )}
     </SignUpForm>
   );
 };

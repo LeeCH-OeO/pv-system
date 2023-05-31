@@ -6,22 +6,20 @@ import UserNavBar from "./NavBar/UserNavBar";
 const UserMainPage = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
-    firstName: "",
-    lastName: "",
+    userName: "",
     isUnlimitedUser: false,
   });
   const fetchUserInfo = () => {
-    const firstName = localStorage.getItem("firstName");
-    const lastName = localStorage.getItem("lastName");
+    const userName = localStorage.getItem("userName");
+
     const isUnlimitedUser = localStorage.getItem("isUnlimitedUser");
-    if (!(firstName && lastName)) {
+    if (!userName) {
       console.log("not sing in");
       navigate("/user/signup");
     }
     setUserInfo({
       ...userInfo,
-      firstName: firstName,
-      lastName: lastName,
+      userName: userName,
       isUnlimitedUser: isUnlimitedUser,
     });
   };
@@ -31,6 +29,7 @@ const UserMainPage = () => {
   return (
     <div>
       <UserNavBar />
+      <h3>hello {userInfo.userName}</h3>
     </div>
   );
 };

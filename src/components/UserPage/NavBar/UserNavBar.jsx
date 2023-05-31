@@ -14,7 +14,8 @@ const UserNavBar = () => {
   const navigate = useNavigate();
   const [isExpand, setIsExpand] = useState(false);
   return (
-    <NavBarContainer>
+    <div>
+      <NavBarContainer />
       <NavBar>
         <BrandTitle>PV System</BrandTitle>
         <ToggleButton
@@ -50,7 +51,7 @@ const UserNavBar = () => {
           </NavLink>
         </NavLinks>
       </NavBar>
-    </NavBarContainer>
+    </div>
   );
 };
 

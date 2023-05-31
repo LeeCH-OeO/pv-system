@@ -1,8 +1,9 @@
-import styled from "styled-components";
-const NavBarContainer = styled.div`
-  box-sizing: border-box;
+import styled, { createGlobalStyle } from "styled-components";
+const NavBarContainer = createGlobalStyle`
+body{
   margin: 0;
-  padding: 0;
+  padding: 0;}
+  
 `;
 const NavBar = styled.nav`
   display: flex;
