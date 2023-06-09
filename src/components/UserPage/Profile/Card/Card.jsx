@@ -18,10 +18,8 @@ const ProfileCard = ({ name, email, isUnlimited, avatar }) => {
         <h3>{name}</h3>
         <h4>{email}</h4>{" "}
         <h4> your current plan:{isUnlimited ? "Unlimited" : "free"}</h4>
+        <h4>{isUnlimited}</h4>
       </ProfileCardContainer>
-      <ButtonContainer>
-        <button>edit</button> <button>delete</button>{" "}
-      </ButtonContainer>
     </div>
   );
 };

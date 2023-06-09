@@ -7,6 +7,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <App />
   </React.StrictMode>
 );
-//todo: 設計企業頁面
-//todo: 設計profile
-//todo 設計地圖編緝
+//todo 設計地圖add

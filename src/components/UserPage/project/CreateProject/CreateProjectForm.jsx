@@ -1,5 +1,5 @@
 import React from "react";
-import Form from "./style";
+import { Form, ProductList, ProductListText, FormContainer } from "./style";
 import { Select } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
@@ -7,9 +7,11 @@ import FormControl from "@mui/material/FormControl";
 import { TextField } from "@mui/material";
 import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
-
+import FetchGeo from "./CityNameToLocation";
 import CancelIcon from "@mui/icons-material/Cancel";
 const CreateProjectForm = () => {
+  const [projectName, setProjectName] = useState("");
+  const [searchText, setSearchtext] = useState("");
   const [productList, setProductList] = useState([]);
   const [productSelectValue, setProductSelectValue] = useState({
     productType: "",
@@ -29,32 +31,36 @@ const CreateProjectForm = () => {
     updatedList.splice(index, 1);
     setProductList(updatedList);
   };
+  const handleSearch = async (input) => {
+    const result = await FetchGeo(input);
+    try {
+      console.log(result.data[0].lat, result.data[0].lon);
+      setProductSelectValue({
+        ...productSelectValue,
+        lat: result.data[0].lat,
+        lon: result.data[0].lon,
+      });
+      setSearchtext("");
+    } catch (error) {
+      console.log(error);
+      alert("location not found!");
+      setSearchtext("");
+    }
+  };
   return (
-    <div>
+    <FormContainer>
       <Form>
         <h2>New Project</h2>
         <div>
-          <TextField label="Project Name"></TextField>
+          <TextField
+            label="Project Name"
+            value={projectName}
+            onChange={(e) => {
+              setProjectName(e.target.value);
+            }}
+          ></TextField>
         </div>
-        {productList.length !== 0 ? (
-          productList.map((product, index) => {
-            return (
-              <div key={index}>
-                <p>
-                  {product.productType}, lat: {product.lat}, lon:{product.lon}
-                </p>
-                <IconButton
-                  color="primary"
-                  onClick={() => handleOnDelete(index)}
-                >
-                  <CancelIcon />
-                </IconButton>
-              </div>
-            );
-          })
-        ) : (
-          <p>no product</p>
-        )}
+
         <FormControl sx={{ m: 1, minWidth: 120 }} variant="filled">
           <InputLabel id="product-list">products</InputLabel>
           <Select
@@ -74,6 +80,7 @@ const CreateProjectForm = () => {
           <TextField
             label="Latitude"
             required
+            margin="dense"
             type="number"
             value={productSelectValue.lat}
             onChange={(e) =>
@@ -85,6 +92,7 @@ const CreateProjectForm = () => {
           />
           <TextField
             label="Longitude"
+            margin="dense"
             required
             type="number"
             value={productSelectValue.lon}
@@ -108,15 +116,49 @@ const CreateProjectForm = () => {
             add
           </button>
         </FormControl>
-        <button
-          onClick={() => {
-            console.log(productList);
-          }}
-        >
-          submit
-        </button>
+        <ProductList>
+          {productList.length !== 0 ? (
+            productList.map((product, index) => {
+              return (
+                <div key={index}>
+                  <ProductListText>
+                    {product.productType}, lat: {product.lat}, lon:{product.lon}
+                  </ProductListText>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleOnDelete(index)}
+                  >
+                    <CancelIcon />
+                  </IconButton>
+                </div>
+              );
+            })
+          ) : (
+            <p>no product</p>
+          )}
+        </ProductList>
+        <div>
+          <button
+            disabled={productList.length === 0 && !projectName}
+            onClick={() => {
+              console.log("project name: ", projectName, productList);
+            }}
+          >
+            submit
+          </button>
+        </div>
       </Form>
-    </div>
+      <TextField
+        value={searchText}
+        label="search city"
+        onChange={(e) => {
+          setSearchtext(e.target.value);
+        }}
+      />
+      <button onClick={() => handleSearch(searchText)} disabled={!searchText}>
+        search
+      </button>
+    </FormContainer>
   );
 };
 

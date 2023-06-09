@@ -27,20 +27,12 @@ const HomePage = () => {
           and support from our expert team. Join the clean energy revolution
           today!
         </h3>
-        <ArticleImgContainer>
-          <img
-            src="https://2.bp.blogspot.com/-YKil1-Ct5k4/VrN1Gs5S_PI/AAAAAAAA3xI/qmS23ghLyBE/s800/denkyuu_eco.png"
-            style={{ objectFit: "cover" }}
-            width="80%"
-            height="100%"
-          />
-        </ArticleImgContainer>
       </ParagraphContainer>
       <ButtonContainer>
         <Button variant="contained" onClick={() => navigate("user/main")}>
           user
         </Button>
-        <Button variant="contained" onClick={() => navigate("/company/signup")}>
+        <Button variant="contained" onClick={() => navigate("/company/main")}>
           company
         </Button>
       </ButtonContainer>

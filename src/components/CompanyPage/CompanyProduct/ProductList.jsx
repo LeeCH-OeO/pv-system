@@ -11,9 +11,9 @@ const ProductList = () => {
     { name: "product3", para1: 12, para2: 23, para3: 44 },
   ]);
   const handleOnDelete = (index) => {
-    const updatedList = [...mockList];
+    const updatedList = [...tempList];
     updatedList.splice(index, 1);
-    setMockList(updatedList);
+    setTempList(updatedList);
   };
   return (
     <div>

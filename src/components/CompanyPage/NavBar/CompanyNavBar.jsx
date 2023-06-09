@@ -17,7 +17,13 @@ const CompanyNavBar = () => {
     <div>
       <NavBarContainer />
       <NavBar>
-        <BrandTitle>PV System</BrandTitle>
+        <BrandTitle
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          PV System
+        </BrandTitle>
         <ToggleButton
           onClick={() => {
             setIsExpand(!isExpand);
@@ -29,9 +35,9 @@ const CompanyNavBar = () => {
         </ToggleButton>
         <NavLinks isExpand={isExpand}>
           <NavLink
-          // onClick={() => {
-          //   navigate("/user/profile/");
-          // }}
+            onClick={() => {
+              navigate("/company/profile/");
+            }}
           >
             Profile
           </NavLink>

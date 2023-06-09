@@ -33,6 +33,7 @@ const UserSignUp = () => {
     console.log(userInfo);
     localStorage.setItem("userName", userInfo.userName);
     localStorage.setItem("isUnlimitedUser", userInfo.isUnlimitedUser);
+    localStorage.setItem("email", userInfo.email);
     navigate("/user/main");
     setUserInfo({
       userName: "",

@@ -11,6 +11,7 @@ import CompanyMainPage from "./components/CompanyPage/CompanyMainPage";
 import ProductList from "./components/CompanyPage/CompanyProduct/ProductList";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductForm from "./components/CompanyPage/CompanyProduct/Form/ProductForm";
+import CompanyProfilePage from "./components/CompanyPage/Profile/ProfilePage";
 const App = () => {
   return (
     <>
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/company/main" element={<CompanyMainPage />} />
           <Route path="/company/products/" element={<ProductList />} />
           <Route path="/company/new-product/" element={<ProductForm />} />
+          <Route path="/company/profile/" element={<CompanyProfilePage />} />
         </Routes>
       </Router>
     </>

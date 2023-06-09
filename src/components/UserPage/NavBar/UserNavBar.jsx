@@ -17,7 +17,7 @@ const UserNavBar = () => {
     <div>
       <NavBarContainer />
       <NavBar>
-        <BrandTitle>PV System</BrandTitle>
+        <BrandTitle onClick={() => navigate("/")}>PV System</BrandTitle>
         <ToggleButton
           onClick={() => {
             setIsExpand(!isExpand);

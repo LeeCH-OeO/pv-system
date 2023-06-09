@@ -36,9 +36,16 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
 `;
+const EditCardContainer = styled.div`
+  text-align: center;
+  border: 1px solid gray;
+  padding: 1rem;
+  margin: 1rem;
+`;
 export {
   ProfileCardContainer,
   UnlimitedAvatarImage,
   AvatarImage,
   ButtonContainer,
+  EditCardContainer,
 };

@@ -19,6 +19,7 @@ const NavBar = styled.nav`
 const BrandTitle = styled.div`
   font-size: 1.5rem;
   margin: 0.5rem;
+  cursor: pointer;
 `;
 const NavLinks = styled.ul`
   margin: 0;
@@ -46,7 +47,7 @@ const NavLink = styled.li`
 `;
 const ToggleButton = styled.div`
   position: absolute;
-  top: 1.25rem;
+  top: 0.75rem;
   right: 1rem;
   display: none;
   flex-direction: column;
