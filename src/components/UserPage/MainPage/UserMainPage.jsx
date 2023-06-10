@@ -1,7 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import UserNavBar from "./NavBar/UserNavBar";
+import UserNavBar from "../NavBar/UserNavBar";
+import { InfoContainer, MainPageContainer } from "./style";
 const UserMainPage = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
@@ -26,10 +27,14 @@ const UserMainPage = () => {
     fetchUserInfo();
   }, []);
   return (
-    <div>
+    <>
       <UserNavBar />
-      <h3>hello {userInfo.userName}</h3>
-    </div>
+      <MainPageContainer>
+        <InfoContainer>
+          <h2>Hello {userInfo.userName}</h2>
+        </InfoContainer>
+      </MainPageContainer>
+    </>
   );
 };
 

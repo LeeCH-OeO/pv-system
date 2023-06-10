@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import React from "react";
-import { EditCardContainer } from "./style";
+import { EditCardContainer, EditFormContainer, Button } from "./style";
 import { useState } from "react";
 import UserNavBar from "../../NavBar/UserNavBar";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -20,38 +20,37 @@ const EditCard = () => {
     navigate("/user/profile/");
   };
   return (
-    <div>
+    <>
       <UserNavBar />
       <EditCardContainer>
-        <TextField
-          fullWidth
-          label="Name"
-          variant="filled"
-          value={userInfo.userName}
-          onChange={(e) => {
-            setUserInfo({ ...userInfo, userName: e.target.value });
+        <h2>Edit Profile</h2>
+        <EditFormContainer>
+          <TextField
+            label="Name"
+            variant="filled"
+            value={userInfo.userName}
+            onChange={(e) => {
+              setUserInfo({ ...userInfo, userName: e.target.value });
+            }}
+          />
+          <TextField
+            label="Email"
+            variant="filled"
+            value={userInfo.email}
+            onChange={(e) => {
+              setUserInfo({ ...userInfo, email: e.target.value });
+            }}
+          />
+        </EditFormContainer>
+        <Button
+          onClick={() => {
+            handleOnSubmit();
           }}
-        />
-        <TextField
-          fullWidth
-          label="Email"
-          variant="filled"
-          value={userInfo.email}
-          onChange={(e) => {
-            setUserInfo({ ...userInfo, email: e.target.value });
-          }}
-        />
-        <TextField fullWidth label="old password" variant="filled" required />
-        <TextField fullWidth label="new password" variant="filled" required />
+        >
+          submit
+        </Button>
       </EditCardContainer>
-      <button
-        onClick={() => {
-          handleOnSubmit();
-        }}
-      >
-        submit
-      </button>
-    </div>
+    </>
   );
 };
 

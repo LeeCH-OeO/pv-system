@@ -19,4 +19,15 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
 `;
-export { ProfileCardContainer, AvatarImage, ButtonContainer };
+const EditCardContainer = styled.div`
+  text-align: center;
+  border: 1px solid gray;
+  padding: 1rem;
+  margin: 1rem;
+`;
+export {
+  ProfileCardContainer,
+  AvatarImage,
+  ButtonContainer,
+  EditCardContainer,
+};

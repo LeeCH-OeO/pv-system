@@ -1,7 +1,7 @@
 import React from "react";
 import GlobalStyles from "./style";
 import UserSignUp from "./components/UserSignUp/UserSignUp";
-import UserMainPage from "./components/UserPage/UserMainPage";
+import UserMainPage from "./components/UserPage/MainPage/UserMainPage";
 import ProjectList from "./components/UserPage/project/ProjectList/ProjectList";
 import CompanySignUp from "./components/CompanySignUp/CompanySignUp";
 import HomePage from "./components/HomePage/HomePage";
@@ -13,6 +13,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductForm from "./components/CompanyPage/CompanyProduct/Form/ProductForm";
 import CompanyProfilePage from "./components/CompanyPage/Profile/ProfilePage";
 import EditCard from "./components/UserPage/Profile/Card/editCard";
+import EditProfile from "./components/CompanyPage/Profile/Card/EditProfile";
 const App = () => {
   return (
     <>
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/company/new-product/" element={<ProductForm />} />
           <Route path="/company/profile/" element={<CompanyProfilePage />} />
           <Route path="/user/edit-profile" element={<EditCard />} />
+          <Route path="/company/edit-profile" element={<EditProfile />} />
         </Routes>
       </Router>
     </>

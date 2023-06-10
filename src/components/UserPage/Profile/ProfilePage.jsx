@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserNavBar from "../NavBar/UserNavBar";
 import ProfileCard from "./Card/Card";
 import { useNavigate } from "react-router-dom";
-import { ButtonContainer } from "./Card/style";
+import { ButtonContainer, Button } from "./Card/style";
 import { DialogContainer, DialogOverlay } from "./Card/DeleteModal";
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const ProfilePage = () => {
     const userName = localStorage.getItem("userName");
     const email = localStorage.getItem("email");
     const isUnlimitedUser = localStorage.getItem("isUnlimitedUser");
-    if (!userName) {
+    if (!userName || !email || !isUnlimitedUser) {
       console.log("not sing in");
       navigate("/user/signup");
     }
@@ -59,7 +59,7 @@ const ProfilePage = () => {
             avatar="https://3.bp.blogspot.com/-KgUzGDeV8r8/VaMOD3z_X-I/AAAAAAAAvh8/YK5LucKKUmo/s800/boy_01.png"
           />
           <ButtonContainer>
-            <button
+            <Button
               onClick={() => {
                 navigate("/user/edit-profile/", {
                   state: { userName: userInfo.userName, email: userInfo.email },
@@ -67,15 +67,17 @@ const ProfilePage = () => {
               }}
             >
               edit
-            </button>
-            <button onClick={handleOpenDialog}>delete</button>
+            </Button>
+            <Button onClick={handleOpenDialog}>delete</Button>
             {isOpen && (
               <DialogOverlay>
                 <DialogContainer open onClose={handleCloseDialog}>
                   <h2>Confirmation</h2>
                   <p>Do you really want to delete your account?</p>
-                  <button onClick={handleCloseDialog}>Cancel</button>
-                  <button onClick={() => handleDelete()}>Delete</button>
+                  <ButtonContainer>
+                    <Button onClick={handleCloseDialog}>Cancel</Button>
+                    <Button onClick={() => handleDelete()}>Delete</Button>
+                  </ButtonContainer>
                 </DialogContainer>
               </DialogOverlay>
             )}

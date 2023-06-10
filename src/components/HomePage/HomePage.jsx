@@ -3,8 +3,8 @@ import {
   ArticleImgContainer,
   ParagraphContainer,
   ButtonContainer,
+  Button,
 } from "./style";
-import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {

@@ -7,7 +7,6 @@ import {
   Popup,
   useMapEvent,
 } from "react-leaflet";
-
 const ProjectMap = ({ height, width, center, markers }) => {
   const [positionList, setPostitionList] = useState(markers);
   positionList.map((item, index) => {
@@ -18,6 +17,7 @@ const ProjectMap = ({ height, width, center, markers }) => {
     updatedList.splice(index, 1);
     setPostitionList(updatedList);
   };
+
   const ClickMarker = () => {
     const map = useMapEvent("dblclick", (e) => {
       setPostitionList((positionList) => [...positionList, e.latlng]);
@@ -54,7 +54,13 @@ const ProjectMap = ({ height, width, center, markers }) => {
                 >
                   delete
                 </button>
-                <button>edit</button>
+                <button
+                  onClick={() => {
+                    handleEdit();
+                  }}
+                >
+                  edit
+                </button>
               </div>
             </Popup>
           </Marker>

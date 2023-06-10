@@ -1,4 +1,4 @@
-import ProjectMap from "../ProjectMap";
+import ProjectMap from "../ProjectMap/ProjectMap";
 import {
   ProjectListContainer,
   ProjectContainer,

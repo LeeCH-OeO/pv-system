@@ -25,7 +25,7 @@ const CompanyMainPage = () => {
   return (
     <div>
       <CompanyNavBar />
-      <p3>hello{companyInfo.companyName}</p3>
+      <h3>hello{companyInfo.companyName}</h3>
     </div>
   );
 };

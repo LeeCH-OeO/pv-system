@@ -1,5 +1,12 @@
 import React from "react";
-import { Form, ProductList, ProductListText, FormContainer } from "./style";
+import {
+  Form,
+  ProductList,
+  ProductListText,
+  FormContainer,
+  SearchContainer,
+  Button,
+} from "./style";
 import { Select } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
@@ -9,6 +16,7 @@ import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import FetchGeo from "./CityNameToLocation";
 import CancelIcon from "@mui/icons-material/Cancel";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 const CreateProjectForm = () => {
   const [projectName, setProjectName] = useState("");
   const [searchText, setSearchtext] = useState("");
@@ -103,7 +111,7 @@ const CreateProjectForm = () => {
               })
             }
           />
-          <button
+          <Button
             disabled={
               productSelectValue.productType &&
               productSelectValue.lat &&
@@ -114,7 +122,7 @@ const CreateProjectForm = () => {
             onClick={handleOnClick}
           >
             add
-          </button>
+          </Button>
         </FormControl>
         <ProductList>
           {productList.length !== 0 ? (
@@ -138,26 +146,33 @@ const CreateProjectForm = () => {
           )}
         </ProductList>
         <div>
-          <button
-            disabled={productList.length === 0 && !projectName}
+          <Button
+            disabled={productList.length === 0 || !projectName}
             onClick={() => {
               console.log("project name: ", projectName, productList);
             }}
           >
             submit
-          </button>
+          </Button>
         </div>
       </Form>
-      <TextField
-        value={searchText}
-        label="search city"
-        onChange={(e) => {
-          setSearchtext(e.target.value);
-        }}
-      />
-      <button onClick={() => handleSearch(searchText)} disabled={!searchText}>
-        search
-      </button>
+      <SearchContainer>
+        <TextField
+          value={searchText}
+          label="search city"
+          onChange={(e) => {
+            setSearchtext(e.target.value);
+          }}
+        />
+
+        <IconButton
+          disabled={!searchText}
+          color="primary"
+          onClick={() => handleSearch(searchText)}
+        >
+          <TravelExploreIcon />
+        </IconButton>
+      </SearchContainer>
     </FormContainer>
   );
 };
