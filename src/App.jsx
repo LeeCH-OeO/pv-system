@@ -12,6 +12,7 @@ import ProductList from "./components/CompanyPage/CompanyProduct/ProductList";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductForm from "./components/CompanyPage/CompanyProduct/Form/ProductForm";
 import CompanyProfilePage from "./components/CompanyPage/Profile/ProfilePage";
+import EditCard from "./components/UserPage/Profile/Card/editCard";
 const App = () => {
   return (
     <>
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/company/products/" element={<ProductList />} />
           <Route path="/company/new-product/" element={<ProductForm />} />
           <Route path="/company/profile/" element={<CompanyProfilePage />} />
+          <Route path="/user/edit-profile" element={<EditCard />} />
         </Routes>
       </Router>
     </>

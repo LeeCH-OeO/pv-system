@@ -3,10 +3,8 @@ import {
   ProfileCardContainer,
   AvatarImage,
   UnlimitedAvatarImage,
-  ButtonContainer,
 } from "./style";
 const ProfileCard = ({ name, email, isUnlimited, avatar }) => {
-  console.log(isUnlimited);
   return (
     <div>
       <ProfileCardContainer>
