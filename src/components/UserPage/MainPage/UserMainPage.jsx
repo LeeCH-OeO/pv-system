@@ -32,6 +32,7 @@ const UserMainPage = () => {
       <MainPageContainer>
         <InfoContainer>
           <h2>Hello {userInfo.userName}</h2>
+          
         </InfoContainer>
       </MainPageContainer>
     </>

@@ -26,6 +26,7 @@ const EditCard = () => {
         <h2>Edit Profile</h2>
         <EditFormContainer>
           <TextField
+            fullWidth
             label="Name"
             variant="filled"
             value={userInfo.userName}
@@ -34,6 +35,7 @@ const EditCard = () => {
             }}
           />
           <TextField
+            fullWidth
             label="Email"
             variant="filled"
             value={userInfo.email}

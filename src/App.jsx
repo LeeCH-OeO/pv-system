@@ -12,8 +12,9 @@ import ProductList from "./components/CompanyPage/CompanyProduct/ProductList";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductForm from "./components/CompanyPage/CompanyProduct/Form/ProductForm";
 import CompanyProfilePage from "./components/CompanyPage/Profile/ProfilePage";
-import EditCard from "./components/UserPage/Profile/Card/editCard";
+import EditCard from "./components/UserPage/Profile/Card/EditCard";
 import EditProfile from "./components/CompanyPage/Profile/Card/EditProfile";
+import ProjectDetail from "./components/UserPage/project/ProjectDetail/ProjectDetail";
 const App = () => {
   return (
     <>
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/company/signup" element={<CompanySignUp />} />
           <Route path="/user/main" element={<UserMainPage />} />
           <Route path="/user/projects" element={<ProjectList />} />
+          <Route path="/user/project-detail" element={<ProjectDetail />} />
           <Route path="/user/new-project" element={<CreateProjectPage />} />
           <Route path="/user/profile" element={<ProfilePage />} />
           <Route path="/company/main" element={<CompanyMainPage />} />
@@ -33,6 +35,7 @@ const App = () => {
           <Route path="/company/profile/" element={<CompanyProfilePage />} />
           <Route path="/user/edit-profile" element={<EditCard />} />
           <Route path="/company/edit-profile" element={<EditProfile />} />
+          <Route path="/*" element={<HomePage />} />
         </Routes>
       </Router>
     </>

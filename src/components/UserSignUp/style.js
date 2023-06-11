@@ -1,7 +1,22 @@
 import styled from "styled-components";
 const SignUpForm = styled.div`
-  text-align: center;
-  border: 1px solid gray;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border-style: solid;
+  border-color: green;
+  width: 30%;
+  @media (max-width: 800px) {
+    width: 80%;
+  }
   padding: 1rem;
 `;
-export default SignUpForm;
+const FormContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+`;
+export { SignUpForm, FormContainer };

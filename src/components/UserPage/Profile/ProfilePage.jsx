@@ -49,7 +49,6 @@ const ProfilePage = () => {
   return (
     <div>
       <UserNavBar />
-      <h1>My Profile</h1>
       {userInfo.userName ? (
         <>
           <ProfileCard

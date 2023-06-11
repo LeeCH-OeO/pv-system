@@ -9,8 +9,11 @@ const NavBar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: green;
+  background-color: #f48037;
   color: white;
+  position: fixed;
+  top: 0;
+  width: 100%;
 
   @media (max-width: 400px) {
     flex-direction: column;
@@ -20,7 +23,6 @@ const NavBar = styled.nav`
 const BrandTitle = styled.div`
   font-size: 1.5rem;
   margin: 0.5rem;
-  cursor: pointer;
 `;
 const NavLinks = styled.ul`
   margin: 0;
@@ -43,12 +45,12 @@ const NavLink = styled.li`
     padding: 0.5rem 1rem;
   }
   &:hover {
-    background-color: #999;
+    background-color: #fa5f55;
   }
 `;
 const ToggleButton = styled.div`
   position: absolute;
-  top: 0.75rem;
+  top: 1.25rem;
   right: 1rem;
   display: none;
   flex-direction: column;

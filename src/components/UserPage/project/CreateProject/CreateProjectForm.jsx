@@ -6,6 +6,7 @@ import {
   FormContainer,
   SearchContainer,
   Button,
+  LocationContainer,
 } from "./style";
 import { Select } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
@@ -84,33 +85,52 @@ const CreateProjectForm = () => {
             <MenuItem value="product 1">Product 1</MenuItem>
             <MenuItem value="product 2">Product 2</MenuItem>
             <MenuItem value="product 3">Product 3</MenuItem>
-          </Select>{" "}
-          <TextField
-            label="Latitude"
-            required
-            margin="dense"
-            type="number"
-            value={productSelectValue.lat}
-            onChange={(e) =>
-              setProductSelectValue({
-                ...productSelectValue,
-                lat: e.target.value,
-              })
-            }
-          />
-          <TextField
-            label="Longitude"
-            margin="dense"
-            required
-            type="number"
-            value={productSelectValue.lon}
-            onChange={(e) =>
-              setProductSelectValue({
-                ...productSelectValue,
-                lon: e.target.value,
-              })
-            }
-          />
+          </Select>
+          <LocationContainer>
+            <TextField
+              label="Latitude"
+              required
+              margin="dense"
+              type="number"
+              value={productSelectValue.lat}
+              onChange={(e) =>
+                setProductSelectValue({
+                  ...productSelectValue,
+                  lat: e.target.value,
+                })
+              }
+            />
+            <TextField
+              label="Longitude"
+              margin="dense"
+              required
+              type="number"
+              value={productSelectValue.lon}
+              onChange={(e) =>
+                setProductSelectValue({
+                  ...productSelectValue,
+                  lon: e.target.value,
+                })
+              }
+            />
+          </LocationContainer>
+          <SearchContainer>
+            <TextField
+              value={searchText}
+              label="search city"
+              onChange={(e) => {
+                setSearchtext(e.target.value);
+              }}
+            />
+
+            <IconButton
+              disabled={!searchText}
+              color="primary"
+              onClick={() => handleSearch(searchText)}
+            >
+              <TravelExploreIcon />
+            </IconButton>
+          </SearchContainer>
           <Button
             disabled={
               productSelectValue.productType &&
@@ -145,34 +165,16 @@ const CreateProjectForm = () => {
             <p>no product</p>
           )}
         </ProductList>
-        <div>
-          <Button
-            disabled={productList.length === 0 || !projectName}
-            onClick={() => {
-              console.log("project name: ", projectName, productList);
-            }}
-          >
-            submit
-          </Button>
-        </div>
+        <div></div>
       </Form>
-      <SearchContainer>
-        <TextField
-          value={searchText}
-          label="search city"
-          onChange={(e) => {
-            setSearchtext(e.target.value);
-          }}
-        />
-
-        <IconButton
-          disabled={!searchText}
-          color="primary"
-          onClick={() => handleSearch(searchText)}
-        >
-          <TravelExploreIcon />
-        </IconButton>
-      </SearchContainer>
+      <Button
+        disabled={productList.length === 0 || !projectName}
+        onClick={() => {
+          console.log("project name: ", projectName, productList);
+        }}
+      >
+        submit
+      </Button>
     </FormContainer>
   );
 };

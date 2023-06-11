@@ -14,10 +14,5 @@ const ProjectContainer = styled.div`
   margin-bottom: 5vh;
   border-radius: 5px;
 `;
-const ProjectInfoContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-`;
-export { ProjectContainer, ProjectListContainer, ProjectInfoContainer };
+
+export { ProjectContainer, ProjectListContainer };

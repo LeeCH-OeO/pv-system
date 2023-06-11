@@ -50,8 +50,13 @@ const EditFormContainer = styled.div`
   align-items: center;
   border-style: solid;
   border-color: green;
-  width: 30vw;
+  width: 30%;
+  @media (max-width: 800px) {
+    width: 80%;
+  }
   height: 20vh;
+  padding-left: 1rem;
+  padding-right: 1rem;
   margin-bottom: 1rem;
 `;
 

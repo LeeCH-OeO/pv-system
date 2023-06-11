@@ -41,7 +41,6 @@ const CompanyProfilePage = () => {
   return (
     <div>
       <CompanyNavBar />
-      <h1>Profile</h1>
       <ProfileCard
         name={companyInfo.companyName}
         email={companyInfo.companyEmail}
@@ -66,8 +65,11 @@ const CompanyProfilePage = () => {
             <DialogContainer open onClose={handleCloseDialog}>
               <h2>Confirmation</h2>
               <p>Do you really want to delete your account?</p>
-              <button onClick={handleCloseDialog}>Cancel</button>
-              <button onClick={() => handleDelete()}>Delete</button>
+              <ButtonContainer>
+                <button onClick={handleCloseDialog}>Cancel</button>
+
+                <button onClick={() => handleDelete()}>Delete</button>
+              </ButtonContainer>{" "}
             </DialogContainer>
           </DialogOverlay>
         )}

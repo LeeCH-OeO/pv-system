@@ -4,15 +4,28 @@ const FormContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
 `;
 const Form = styled.div`
-  border: 1px solid gray;
-  padding: 1rem;
+  display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border-style: solid;
+  border-color: green;
+  width: 30%;
+  @media (max-width: 800px) {
+    width: 80%;
+  }
+  padding: 1rem;
+  margin-bottom: 1rem;
+`;
+const LocationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
   align-items: center;
   text-align: center;
-  width: 60vw;
-  margin-bottom: 1rem;
 `;
 const ProductList = styled.div`
   display: flex;
@@ -30,6 +43,7 @@ const SearchContainer = styled.div`
   flex-direction: row;
   align-items: center;
   text-align: center;
+  margin-bottom: 1rem;
 `;
 const Button = styled.button`
   display: inline-block;
@@ -66,4 +80,5 @@ export {
   FormContainer,
   SearchContainer,
   Button,
+  LocationContainer,
 };

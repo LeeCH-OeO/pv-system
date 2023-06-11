@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import SignUpForm from "./style";
+import { SignUpForm, FormContainer } from "./style";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
@@ -30,7 +30,6 @@ const UserSignUp = () => {
     reader.readAsDataURL(file);
   };
   const handleOnClick = () => {
-    console.log(userInfo);
     localStorage.setItem("userName", userInfo.userName);
     localStorage.setItem("isUnlimitedUser", userInfo.isUnlimitedUser);
     localStorage.setItem("email", userInfo.email);
@@ -43,10 +42,9 @@ const UserSignUp = () => {
     });
   };
   return (
-    <SignUpForm>
-      <h2>User Sign up</h2>
-
-      <div>
+    <FormContainer>
+      <SignUpForm>
+        <h2>User Sign up</h2>
         <TextField
           label="user name"
           margin="dense"
@@ -57,9 +55,6 @@ const UserSignUp = () => {
             setUserInfo({ ...userInfo, userName: e.target.value })
           }
         />
-      </div>
-
-      <div>
         <TextField
           label="email"
           margin="dense"
@@ -68,8 +63,6 @@ const UserSignUp = () => {
           value={userInfo.email}
           onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
         />
-      </div>
-      <div>
         <TextField
           label="password"
           type="password"
@@ -81,25 +74,21 @@ const UserSignUp = () => {
             setUserInfo({ ...userInfo, password: e.target.value })
           }
         />
-      </div>
-      <div>
         upload your profile photo
         <input type="file" accept="image/*" onChange={handleEncodeImage} />
-      </div>
-      <div>
         <FormControlLabel
           control={
             <Checkbox
               onChange={(e) =>
-                setUserInfo({ ...userInfo, isUnlimitedUser: e.target.checked })
+                setUserInfo({
+                  ...userInfo,
+                  isUnlimitedUser: e.target.checked,
+                })
               }
             />
           }
           label="I want unlimited plan"
         />
-      </div>
-
-      <div>
         <Button
           variant="outlined"
           onClick={handleOnClick}
@@ -111,14 +100,14 @@ const UserSignUp = () => {
         >
           submit
         </Button>
-      </div>
-      {base64String && (
-        <Avatar
-          src={`data:image/*;base64,${base64String}`}
-          sx={{ width: 56, height: 56 }}
-        />
-      )}
-    </SignUpForm>
+        {base64String && (
+          <Avatar
+            src={`data:image/*;base64,${base64String}`}
+            sx={{ width: 56, height: 56 }}
+          />
+        )}
+      </SignUpForm>
+    </FormContainer>
   );
 };
 
