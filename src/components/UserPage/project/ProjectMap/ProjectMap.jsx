@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import {
@@ -9,19 +9,39 @@ import {
   useMapEvent,
 } from "react-leaflet";
 import UserNavBar from "../../NavBar/UserNavBar";
-import { DetailContainer, SideContainer } from "./style";
+import { DialogOverlay, DialogContainer } from "./NewProductModal";
+import { DetailContainer, FloatingActionButton } from "./style";
+import FetchGeo from "../CreateProject/CityNameToLocation";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 const ProjectMap = ({ products, projectName }) => {
   const [productList, setProductList] = useState(products);
-  const [addProductItem, setAddProductItem] = useState({ lat: "", lng: "" });
-  const [editProductItem, setEditProductItem] = useState({});
-  const [showAddForm, setShowAddForm] = useState(true);
+  const [addProductItem, setAddProductItem] = useState({ lat: "", lon: "" });
+  const [editProductItem, setEditProductItem] = useState({ lat: "", lon: "" });
+  const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
+  const [searchText, setSearchtext] = useState("");
+  const handleAddFormSearch = async (input) => {
+    const result = await FetchGeo(input);
+    try {
+      console.log(result.data[0].lat, result.data[0].lon);
+      setAddProductItem({
+        ...addProductItem,
+        lat: result.data[0].lat,
+        lon: result.data[0].lon,
+      });
+      setSearchtext("");
+    } catch (error) {
+      console.log(error);
+      alert("location not found!");
+      setSearchtext("");
+    }
+  };
   productList.map((item, index) => {
     item.id = index;
   });
-  const tempRef = useRef(null);
+  const mapRef = useRef(null);
   const closePopup = () => {
-    tempRef.current._popup._closeButton.click();
+    mapRef.current._popup._closeButton.click();
   };
   const handleOnDelete = (index) => {
     const updatedList = [...productList];
@@ -36,7 +56,7 @@ const ProjectMap = ({ products, projectName }) => {
     const map = useMapEvent("contextmenu", (e) => {
       setAddProductItem({
         lat: e.latlng.lat,
-        lng: e.latlng.lng,
+        lon: e.latlng.lng,
       });
       setShowEditForm(false);
       setShowAddForm(true);
@@ -48,19 +68,21 @@ const ProjectMap = ({ products, projectName }) => {
       {
         location: {
           lat: addProductItem.lat.toString(),
-          lng: addProductItem.lng.toString(),
+          lon: addProductItem.lon.toString(),
         },
       },
     ]);
     productList.map((item, index) => {
       item.id = index;
     });
-    setAddProductItem({ lat: "", lng: "" });
+    setAddProductItem({ lat: "", lon: "" });
+    setShowAddForm(false);
   };
-  const handleEdit = (lat, lng, index) => {
+  const handleEdit = (lat, lon, index) => {
     setShowEditForm(true);
     setShowAddForm(false);
-    setEditProductItem({ lat: lat, lng: lng, index: index });
+    setEditProductItem({ lat: lat, lon: lon, index: index });
+    console.log(mapRef.current._panes);
     closePopup();
   };
   const addEditProductItem = () => {
@@ -70,21 +92,21 @@ const ProjectMap = ({ products, projectName }) => {
       ...updatedList[editProductItem],
       location: {
         lat: editProductItem.lat.toString(),
-        lng: editProductItem.lng.toString(),
+        lon: editProductItem.lon.toString(),
       },
       id: editProductItem.index,
     };
     setProductList(updatedList);
     setShowEditForm(false);
-    setShowAddForm(true);
+    setShowAddForm(false);
   };
   return (
     <>
       <UserNavBar />
       <DetailContainer>
         <MapContainer
-          ref={tempRef}
-          style={{ width: "80vw", height: "100vh" }}
+          ref={mapRef}
+          style={{ width: "90vw", height: "90vh", overflowY: "hidden" }}
           center={[39.0, 34.0]}
           zoom={2}
           scrollWheelZoom={false}
@@ -98,12 +120,12 @@ const ProjectMap = ({ products, projectName }) => {
           {productList.map((product, index) => {
             return (
               <Marker
-                position={[product.location.lat, product.location.lng]}
+                position={[product.location.lat, product.location.lon]}
                 key={index}
               >
                 <Popup>
                   <div>
-                    <p>{`lat: ${product.location.lat}, lng: ${product.location.lng}, product type:${product.productType}`}</p>{" "}
+                    <p>{`lat: ${product.location.lat}, lon: ${product.location.lon}, product type:${product.productType}`}</p>{" "}
                     <button
                       onClick={() => {
                         handleOnDelete(index);
@@ -115,7 +137,7 @@ const ProjectMap = ({ products, projectName }) => {
                       onClick={() => {
                         handleEdit(
                           product.location.lat,
-                          product.location.lng,
+                          product.location.lon,
                           index
                         );
                       }}
@@ -128,35 +150,65 @@ const ProjectMap = ({ products, projectName }) => {
             );
           })}
         </MapContainer>
-        <SideContainer>
-          {showAddForm && (
-            <div>
+        {showAddForm && (
+          <DialogOverlay>
+            <DialogContainer open onClose={() => setShowAddForm(false)}>
               <p>add new product</p>
               <TextField
-                label="lan"
+                label="Latitude"
                 type="number"
+                margin="dense"
                 value={addProductItem.lat}
                 onChange={(e) => {
                   setAddProductItem({ ...addProductItem, lat: e.target.value });
                 }}
               />
               <TextField
-                label="lng"
+                label="Longitude"
                 type="number"
-                value={addProductItem.lng}
+                margin="dense"
+                value={addProductItem.lon}
                 onChange={(e) => {
-                  setAddProductItem({ ...addProductItem, lng: e.target.value });
+                  setAddProductItem({ ...addProductItem, lon: e.target.value });
                 }}
               />
-              <button onClick={() => addProduct()}>submit</button>
-            </div>
-          )}
-          {showEditForm && (
-            <div>
+              <TextField
+                value={searchText}
+                onChange={(e) => setSearchtext(e.target.value)}
+                label="search"
+              />
+              <IconButton
+                disabled={!searchText}
+                color="primary"
+                onClick={() => handleAddFormSearch(searchText)}
+              >
+                <TravelExploreIcon />
+              </IconButton>
+              <button
+                disabled={!addProductItem.lat || !addProductItem.lon}
+                onClick={() => addProduct()}
+              >
+                submit
+              </button>
+              <button
+                onClick={() => {
+                  setShowAddForm(false);
+                  setAddProductItem({ lat: "", lon: "" });
+                }}
+              >
+                cancel
+              </button>
+            </DialogContainer>
+          </DialogOverlay>
+        )}
+        {showEditForm && (
+          <DialogOverlay>
+            <DialogContainer open onClose={() => setShowEditForm(false)}>
               <p>edit product</p>
               <TextField
-                label="lan"
+                label="Latitude"
                 type="number"
+                margin="dense"
                 value={editProductItem.lat}
                 onChange={(e) => {
                   setEditProductItem({
@@ -166,20 +218,29 @@ const ProjectMap = ({ products, projectName }) => {
                 }}
               />
               <TextField
-                label="lng"
+                label="Longitude"
                 type="number"
-                value={editProductItem.lng}
+                margin="dense"
+                value={editProductItem.lon}
                 onChange={(e) => {
                   setEditProductItem({
                     ...editProductItem,
-                    lng: e.target.value,
+                    lon: e.target.value,
                   });
                 }}
               />
               <button onClick={() => addEditProductItem()}>submit</button>
-            </div>
-          )}
-        </SideContainer>
+              <button onClick={() => setShowEditForm(false)}> cancel</button>
+            </DialogContainer>
+          </DialogOverlay>
+        )}
+
+        <FloatingActionButton
+          disabled={showAddForm || showEditForm}
+          onClick={() => setShowAddForm(true)}
+        >
+          +
+        </FloatingActionButton>
       </DetailContainer>
     </>
   );
