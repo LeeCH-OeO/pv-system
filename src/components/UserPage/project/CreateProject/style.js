@@ -4,7 +4,7 @@ const FormContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;
 `;
 const Form = styled.div`
   display: flex;
@@ -45,8 +45,17 @@ const SearchContainer = styled.div`
   text-align: center;
   margin-bottom: 1rem;
 `;
+const CreateProjectCheckContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+`;
 const Button = styled.button`
   display: inline-block;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   padding: 12px 24px;
   font-size: 16px;
   text-align: center;
@@ -73,6 +82,23 @@ const Button = styled.button`
       pointer-events: none;
     `}
 `;
+const RoundButton = styled.button`
+  border-radius: 50%;
+  background-color: #00bcd4;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${(props) => (props.disabled ? "#ccc" : "#0097a7")};
+  }
+`;
 export {
   Form,
   ProductList,
@@ -81,4 +107,6 @@ export {
   SearchContainer,
   Button,
   LocationContainer,
+  RoundButton,
+  CreateProjectCheckContainer,
 };

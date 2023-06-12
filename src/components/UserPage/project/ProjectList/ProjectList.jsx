@@ -9,19 +9,19 @@ const ProjectList = () => {
       products: [
         {
           productType: "product1",
-          location: { lat: "52.52354266184729", lng: "13.402872545835251" },
+          location: { lat: "52.52354266184729", lon: "13.402872545835251" },
         },
         {
           productType: "product2",
-          location: { lat: "29.790997667390602", lng: "-95.42082544600602" },
+          location: { lat: "29.790997667390602", lon: "-95.42082544600602" },
         },
         {
           productType: "product3",
-          location: { lat: "10.354327612932527", lng: "8.9098909746236" },
+          location: { lat: "10.354327612932527", lon: "8.9098909746236" },
         },
         {
           productType: "product1",
-          location: { lat: "-40.05223471309356", lng: "175.7040239802963" },
+          location: { lat: "-40.05223471309356", lon: "175.7040239802963" },
         },
       ],
     },
@@ -30,19 +30,19 @@ const ProjectList = () => {
       products: [
         {
           productType: "product5",
-          location: { lat: "-30.838135690317998", lng: "25.831053571561217" },
+          location: { lat: "-30.838135690317998", lon: "25.831053571561217" },
         },
         {
           productType: "product6",
-          location: { lat: "45.399653535078905", lng: "-73.80632344399605" },
+          location: { lat: "45.399653535078905", lon: "-73.80632344399605" },
         },
         {
           productType: "product1",
-          location: { lat: "37.69617113244384", lng: "127.05813788317204" },
+          location: { lat: "37.69617113244384", lon: "127.05813788317204" },
         },
         {
           productType: "product9",
-          location: { lat: "33.670987810534456", lng: "73.00879833202784" },
+          location: { lat: "33.670987810534456", lon: "73.00879833202784" },
         },
       ],
     },
@@ -51,19 +51,19 @@ const ProjectList = () => {
       products: [
         {
           productType: "product55",
-          location: { lat: "-15.838135690317998", lng: "25.831053571561217" },
+          location: { lat: "-15.838135690317998", lon: "25.831053571561217" },
         },
         {
           productType: "product63",
-          location: { lat: "45.399653535078905", lng: "-63.80632344399605" },
+          location: { lat: "45.399653535078905", lon: "-63.80632344399605" },
         },
         {
           productType: "product12",
-          location: { lat: "27.69617113244384", lng: "127.05813788317204" },
+          location: { lat: "27.69617113244384", lon: "127.05813788317204" },
         },
         {
           productType: "product92",
-          location: { lat: "33.670987810534456", lng: "43.00879833202784" },
+          location: { lat: "33.670987810534456", lon: "43.00879833202784" },
         },
       ],
     },
@@ -91,8 +91,8 @@ const ProjectList = () => {
                   return (
                     <div key={index}>
                       <p>
-                        {product.productType}, location:{product.location.lat}{" "}
-                        {product.location.lng}
+                        {product.productType}, location:{product.location.lat},
+                        {product.location.lon}
                       </p>
                     </div>
                   );
@@ -109,39 +109,6 @@ const ProjectList = () => {
               </div>
             );
           })}
-          {/* <h3>project name</h3>
-          <button>detail</button>
-          <ProjectInfoContainer>
-            <ProjectMap
-              height="80vh"
-              width="85vw"
-              center={{ lat: "52.52354266184729", lng: "13.402872545835251" }}
-              markers={[
-                { lat: "52.52354266184729", lng: "13.402872545835251" },
-                { lat: "29.790997667390602", lng: "-95.42082544600602" },
-                { lat: "10.354327612932527", lng: "8.9098909746236" },
-                { lat: "-40.05223471309356", lng: "175.7040239802963" },
-              ]}
-            />
-          </ProjectInfoContainer>
-        </ProjectContainer>
-        <ProjectContainer>
-          <h3>project name 2</h3>
-          <ProjectInfoContainer>
-            <ProjectMap
-              height="40vh"
-              width="80vw"
-              center={{ lat: "52.52354266184729", lng: "13.402872545835251" }}
-              markers={[
-                { lat: "-30.838135690317998", lng: "25.831053571561217" },
-                { lat: "45.399653535078905", lng: "-73.80632344399605" },
-                { lat: "37.69617113244384", lng: "127.05813788317204" },
-                { lat: "33.670987810534456", lng: "73.00879833202784" },
-              ]}
-            />
-            <p>some project detail</p>
-          </ProjectInfoContainer>
-          <CreateReport /> */}
         </ProjectContainer>
       </ProjectListContainer>
     </div>
