@@ -71,7 +71,7 @@ const HomePage = () => {
           <Image src="https://2.bp.blogspot.com/-gXDzx2DKTfU/UYtwt-MWUbI/AAAAAAAARv8/e_XMW_x8pUE/s800/job_denkikouji.png" />
         </ImageContainer>
       </ParagraphContainer>
-      <ParagraphContainer>
+      <ParagraphContainer imageRight>
         <ArticleContent>
           <h4>
             Join our Solar System website today and embark on a new chapter of

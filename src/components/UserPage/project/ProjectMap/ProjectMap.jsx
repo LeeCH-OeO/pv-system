@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   MapContainer,
   Marker,
@@ -8,117 +8,179 @@ import {
   Popup,
   useMapEvent,
 } from "react-leaflet";
-const ProjectMap = ({ height, width, center, products }) => {
+import UserNavBar from "../../NavBar/UserNavBar";
+import { DetailContainer, SideContainer } from "./style";
+const ProjectMap = ({ products, projectName }) => {
   const [productList, setProductList] = useState(products);
-  const [addProductItem, setAddProductItem] = useState({});
-  const [showAddForm, setShowAddForm] = useState(false);
+  const [addProductItem, setAddProductItem] = useState({ lat: "", lng: "" });
+  const [editProductItem, setEditProductItem] = useState({});
+  const [showAddForm, setShowAddForm] = useState(true);
+  const [showEditForm, setShowEditForm] = useState(false);
   productList.map((item, index) => {
     item.id = index;
   });
+  const tempRef = useRef(null);
+  const closePopup = () => {
+    tempRef.current._popup._closeButton.click();
+  };
   const handleOnDelete = (index) => {
     const updatedList = [...productList];
     updatedList.splice(index, 1);
     setProductList(updatedList);
+    closePopup();
   };
   useEffect(() => {
     console.log("effect", productList);
   }, [productList]);
   const ClickMarker = () => {
-    const map = useMapEvent("click", (e) => {
-      setAddProductItem({ lat: e.latlng.lat, lng: e.latlng.lng });
+    const map = useMapEvent("contextmenu", (e) => {
+      setAddProductItem({
+        lat: e.latlng.lat,
+        lng: e.latlng.lng,
+      });
+      setShowEditForm(false);
       setShowAddForm(true);
     });
   };
   const addProduct = () => {
     setProductList([
       ...productList,
-      { location: { lat: addProductItem.lat, lng: addProductItem.lng } },
+      {
+        location: {
+          lat: addProductItem.lat.toString(),
+          lng: addProductItem.lng.toString(),
+        },
+      },
     ]);
     productList.map((item, index) => {
       item.id = index;
     });
-    setAddProductItem({});
-    setShowAddForm(false);
+    setAddProductItem({ lat: "", lng: "" });
   };
-  const editProduct = () => {};
-  // const handleEdit = (index) => {
-  //   const updatedList = [...productList];
-  //   setShowAddForm(true);
-  //   console.log(updatedList[index]);
-  //   setInputLocation({
-  //     lat: updatedList[index].location.lat,
-  //     lng: updatedList[index].location.lng,
-  //   });
-  //   updatedList[index] = {
-  //     ...updatedList[index],
-  //     location: { lat: inputLocation.lat, lng: inputLocation.lng },
-  //   };
-  // };
+  const handleEdit = (lat, lng, index) => {
+    setShowEditForm(true);
+    setShowAddForm(false);
+    setEditProductItem({ lat: lat, lng: lng, index: index });
+    closePopup();
+  };
+  const addEditProductItem = () => {
+    console.log(editProductItem);
+    const updatedList = [...productList];
+    updatedList[editProductItem.index] = {
+      ...updatedList[editProductItem],
+      location: {
+        lat: editProductItem.lat.toString(),
+        lng: editProductItem.lng.toString(),
+      },
+      id: editProductItem.index,
+    };
+    setProductList(updatedList);
+    setShowEditForm(false);
+    setShowAddForm(true);
+  };
   return (
     <>
-      <MapContainer
-        on
-        style={{ width: `${width}`, height: `${height}` }}
-        center={[center.lat, center.lng]}
-        zoom={2}
-        scrollWheelZoom={false}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      <UserNavBar />
+      <DetailContainer>
+        <MapContainer
+          ref={tempRef}
+          style={{ width: "80vw", height: "100vh" }}
+          center={[39.0, 34.0]}
+          zoom={2}
+          scrollWheelZoom={false}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
 
-        <ClickMarker />
-        {productList.map((product, index) => {
-          return (
-            <Marker
-              position={[product.location.lat, product.location.lng]}
-              key={index}
-            >
-              <Popup eventHandlers={{}}>
-                <div>
-                  <p>{`lat: ${product.location.lat}, lng: ${product.location.lng}, product type:${product.productType}`}</p>{" "}
-                  <button
-                    onClick={() => {
-                      handleOnDelete(index);
-                    }}
-                  >
-                    delete
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleEdit(index);
-                    }}
-                  >
-                    edit
-                  </button>
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
-      </MapContainer>
-      {showAddForm && (
-        <div>
-          <TextField
-            label="lan"
-            type="number"
-            value={addProductItem.lat}
-            onChange={(e) => {
-              setAddProductItem({ ...addProductItem, lat: e.target.value });
-            }}
-          />
-          <TextField
-            label="lng"
-            type="number"
-            value={addProductItem.lng}
-            onChange={(e) => {
-              setAddProductItem({ ...addProductItem, lng: e.target.value });
-            }}
-          />
-          <button onClick={() => addProduct()}>submit</button>
-        </div>
-      )}
+          <ClickMarker />
+          {productList.map((product, index) => {
+            return (
+              <Marker
+                position={[product.location.lat, product.location.lng]}
+                key={index}
+              >
+                <Popup>
+                  <div>
+                    <p>{`lat: ${product.location.lat}, lng: ${product.location.lng}, product type:${product.productType}`}</p>{" "}
+                    <button
+                      onClick={() => {
+                        handleOnDelete(index);
+                      }}
+                    >
+                      delete
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleEdit(
+                          product.location.lat,
+                          product.location.lng,
+                          index
+                        );
+                      }}
+                    >
+                      edit
+                    </button>
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
+        </MapContainer>
+        <SideContainer>
+          {showAddForm && (
+            <div>
+              <p>add new product</p>
+              <TextField
+                label="lan"
+                type="number"
+                value={addProductItem.lat}
+                onChange={(e) => {
+                  setAddProductItem({ ...addProductItem, lat: e.target.value });
+                }}
+              />
+              <TextField
+                label="lng"
+                type="number"
+                value={addProductItem.lng}
+                onChange={(e) => {
+                  setAddProductItem({ ...addProductItem, lng: e.target.value });
+                }}
+              />
+              <button onClick={() => addProduct()}>submit</button>
+            </div>
+          )}
+          {showEditForm && (
+            <div>
+              <p>edit product</p>
+              <TextField
+                label="lan"
+                type="number"
+                value={editProductItem.lat}
+                onChange={(e) => {
+                  setEditProductItem({
+                    ...editProductItem,
+                    lat: e.target.value,
+                  });
+                }}
+              />
+              <TextField
+                label="lng"
+                type="number"
+                value={editProductItem.lng}
+                onChange={(e) => {
+                  setEditProductItem({
+                    ...editProductItem,
+                    lng: e.target.value,
+                  });
+                }}
+              />
+              <button onClick={() => addEditProductItem()}>submit</button>
+            </div>
+          )}
+        </SideContainer>
+      </DetailContainer>
     </>
   );
 };

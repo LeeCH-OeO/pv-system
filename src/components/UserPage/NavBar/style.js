@@ -20,6 +20,7 @@ const NavBar = styled.nav`
 const BrandTitle = styled.div`
   font-size: 1.5rem;
   margin: 0.5rem;
+  cursor: pointer;
 `;
 const NavLinks = styled.ul`
   margin: 0;
