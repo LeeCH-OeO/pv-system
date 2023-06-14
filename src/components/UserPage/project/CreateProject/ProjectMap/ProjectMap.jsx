@@ -10,9 +10,10 @@ import {
 } from "react-leaflet";
 import { DialogOverlay, DialogContainer } from "./NewProductModal";
 import { DetailContainer } from "./style";
-import { Button, RoundButton } from "../style";
+import { Button } from "../style";
 import FetchGeo from "../CityNameToLocation";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import { useNavigate } from "react-router-dom";
 const ProjectMap = () => {
   const [productList, setProductList] = useState([]);
   const [addProductItem, setAddProductItem] = useState({ lat: "", lon: "" });
@@ -20,6 +21,7 @@ const ProjectMap = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [searchText, setSearchtext] = useState("");
+  const navigate = useNavigate();
   const handleAddFormSearch = async (input) => {
     const result = await FetchGeo(input);
     try {
@@ -70,9 +72,7 @@ const ProjectMap = () => {
         },
       },
     ]);
-    productList.map((item, index) => {
-      item.id = index;
-    });
+
     setAddProductItem({ lat: "", lon: "" });
     setShowAddForm(false);
   };
@@ -92,30 +92,26 @@ const ProjectMap = () => {
         lat: editProductItem.lat.toString(),
         lon: editProductItem.lon.toString(),
       },
-      id: editProductItem.index,
     };
     setProductList(updatedList);
     setShowEditForm(false);
     setShowAddForm(false);
   };
   const handleClick = () => {
-    const component = document.getElementById("CreateProjectCheck");
-    component.scrollIntoView({ behavior: "smooth" });
     const storedJsonStr = localStorage.getItem("newProject");
-
-    // Parse the JSON string into an object
     const storedObject = JSON.parse(storedJsonStr);
     storedObject.products = productList;
-    const updatedJsonStr = JSON.stringify(storedObject);
 
-    localStorage.setItem("newProject", updatedJsonStr);
+    console.log("send new project:", storedObject);
+    localStorage.removeItem("newProject");
+    navigate("/user/projects/");
   };
   return (
     <DetailContainer>
       <h2>2. set your product</h2>
       <MapContainer
         ref={mapRef}
-        style={{ width: "90vw", height: "90vh", overflowY: "hidden" }}
+        style={{ width: "90vw", height: "90vh" }}
         center={[39.0, 34.0]}
         zoom={2}
         scrollWheelZoom={false}
@@ -159,7 +155,9 @@ const ProjectMap = () => {
           );
         })}
       </MapContainer>
-      <Button onClick={() => handleClick()}>next step</Button>
+      <Button disabled={productList.length === 0} onClick={() => handleClick()}>
+        creat project
+      </Button>
       {showAddForm && (
         <DialogOverlay>
           <DialogContainer open onClose={() => setShowAddForm(false)}>

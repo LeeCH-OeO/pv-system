@@ -36,9 +36,7 @@ const ProjectMap = ({ products, projectName }) => {
       setSearchtext("");
     }
   };
-  productList.map((item, index) => {
-    item.id = index;
-  });
+
   const mapRef = useRef(null);
   const closePopup = () => {
     mapRef.current._popup._closeButton.click();
@@ -72,9 +70,7 @@ const ProjectMap = ({ products, projectName }) => {
         },
       },
     ]);
-    productList.map((item, index) => {
-      item.id = index;
-    });
+
     setAddProductItem({ lat: "", lon: "" });
     setShowAddForm(false);
   };
@@ -94,19 +90,23 @@ const ProjectMap = ({ products, projectName }) => {
         lat: editProductItem.lat.toString(),
         lon: editProductItem.lon.toString(),
       },
-      id: editProductItem.index,
     };
     setProductList(updatedList);
     setShowEditForm(false);
     setShowAddForm(false);
   };
+  const handleSubmit = () => {
+    const updatedProject = { projectName, products: productList };
+    console.log("updated project", updatedProject);
+  };
   return (
     <>
       <UserNavBar />
       <DetailContainer>
+        <h2>{projectName}</h2>
         <MapContainer
           ref={mapRef}
-          style={{ width: "90vw", height: "90vh", overflowY: "hidden" }}
+          style={{ width: "90vw", height: "80vh", overflowY: "hidden" }}
           center={[39.0, 34.0]}
           zoom={2}
           scrollWheelZoom={false}
@@ -235,12 +235,13 @@ const ProjectMap = ({ products, projectName }) => {
           </DialogOverlay>
         )}
 
-        <FloatingActionButton
-          disabled={showAddForm || showEditForm}
-          onClick={() => setShowAddForm(true)}
+        <button
+          onClick={() => {
+            handleSubmit();
+          }}
         >
-          +
-        </FloatingActionButton>
+          update
+        </button>
       </DetailContainer>
     </>
   );
