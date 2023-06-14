@@ -10,8 +10,9 @@ import {
 } from "react-leaflet";
 import UserNavBar from "../../NavBar/UserNavBar";
 import { DialogOverlay, DialogContainer } from "./NewProductModal";
-import { DetailContainer, FloatingActionButton } from "./style";
+import { DetailContainer } from "./style";
 import FetchGeo from "../CreateProject/CityNameToLocation";
+import { useNavigate } from "react-router-dom";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 const ProjectMap = ({ products, projectName }) => {
   const [productList, setProductList] = useState(products);
@@ -20,6 +21,7 @@ const ProjectMap = ({ products, projectName }) => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [searchText, setSearchtext] = useState("");
+  const navigate = useNavigate();
   const handleAddFormSearch = async (input) => {
     const result = await FetchGeo(input);
     try {
@@ -95,8 +97,9 @@ const ProjectMap = ({ products, projectName }) => {
     setShowEditForm(false);
     setShowAddForm(false);
   };
-  const handleSubmit = () => {
+  const handleUpdate = () => {
     const updatedProject = { projectName, products: productList };
+    navigate("/user/projects/");
     console.log("updated project", updatedProject);
   };
   return (
@@ -237,7 +240,7 @@ const ProjectMap = ({ products, projectName }) => {
 
         <button
           onClick={() => {
-            handleSubmit();
+            handleUpdate();
           }}
         >
           update

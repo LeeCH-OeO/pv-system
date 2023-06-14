@@ -5,7 +5,6 @@ import {
   ProductListText,
   FormContainer,
   SearchContainer,
-  Button,
   LocationContainer,
   RoundButton,
 } from "./style";
@@ -38,7 +37,7 @@ const CreateProjectForm = () => {
           ></TextField>
         </div>
       </Form>
-      <Button
+      <button
         disabled={!projectName}
         onClick={() => {
           console.log(projectName);
@@ -46,7 +45,7 @@ const CreateProjectForm = () => {
         }}
       >
         next step
-      </Button>
+      </button>
     </FormContainer>
   );
 };
