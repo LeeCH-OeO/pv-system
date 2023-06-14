@@ -85,18 +85,9 @@ const ProjectList = () => {
           {templist.map((item, index) => {
             return (
               <div key={index}>
-                <p>{item.projectName}</p>
-                <p>products:</p>
-                {item.products.map((product, index) => {
-                  return (
-                    <div key={index}>
-                      <p>
-                        {product.productType}, location:{product.location.lat},
-                        {product.location.lon}
-                      </p>
-                    </div>
-                  );
-                })}
+                <h3>{item.projectName}</h3>
+                <p> number of products: {item.products.length}</p>
+
                 <button
                   onClick={() => {
                     navigate("/user/project-detail", {
@@ -104,7 +95,7 @@ const ProjectList = () => {
                     });
                   }}
                 >
-                  detail
+                  open map
                 </button>
               </div>
             );
