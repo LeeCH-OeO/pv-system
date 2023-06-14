@@ -2,7 +2,6 @@ import React from "react";
 import CreateProjectForm from "./CreateProjectForm";
 import UserNavBar from "../../NavBar/UserNavBar";
 import ProjectMap from "./ProjectMap/ProjectMap";
-import CreateProjectCheck from "./CreateProjectCheck";
 import { useEffect, useState } from "react";
 const CreateProjectPage = () => {
   return (
