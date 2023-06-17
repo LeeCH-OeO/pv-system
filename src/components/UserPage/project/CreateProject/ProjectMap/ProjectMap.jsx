@@ -1,4 +1,11 @@
-import { IconButton, TextField } from "@mui/material";
+import {
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  TextField,
+  Select,
+} from "@mui/material";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import {
@@ -9,18 +16,37 @@ import {
   useMapEvent,
 } from "react-leaflet";
 import { DialogOverlay, DialogContainer } from "./NewProductModal";
-import { DetailContainer } from "./style";
-import { Button } from "../style";
+import {
+  DetailContainer,
+  SelectForm,
+  StyledSelect,
+  InputForm,
+  StyledInput,
+  StyledLabel,
+  StyledSearchButton,
+} from "./style";
 import FetchGeo from "../CityNameToLocation";
-import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { useNavigate } from "react-router-dom";
 const ProjectMap = () => {
   const [productList, setProductList] = useState([]);
   const [addProductItem, setAddProductItem] = useState({ lat: "", lon: "" });
-  const [editProductItem, setEditProductItem] = useState({ lat: "", lon: "" });
+  const [addProductItemOrientation, setAddProductItemOrientation] =
+    useState("");
+  const [addProductItemTilt, setAddProductItemTilt] = useState("");
+  const [addProductItemArea, setAddPorductItemArea] = useState("");
+  const [addProductItemType, setAddProductItemType] = useState("");
+  const [editProductItem, setEditProductItem] = useState({
+    lat: "",
+    lon: "",
+    area: "",
+    orientation: "",
+    type: "",
+    tilt: "",
+  });
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [searchText, setSearchtext] = useState("");
+  const tempPorductTypeList = [1, 2, 3, 4, 5];
   const navigate = useNavigate();
   const handleAddFormSearch = async (input) => {
     const result = await FetchGeo(input);
@@ -70,17 +96,36 @@ const ProjectMap = () => {
           lat: addProductItem.lat.toString(),
           lon: addProductItem.lon.toString(),
         },
+        orientation: addProductItemOrientation,
+        tilt: addProductItemTilt,
+        area: addProductItemArea,
+        type: addProductItemType,
       },
     ]);
 
     setAddProductItem({ lat: "", lon: "" });
+    setAddProductItemOrientation("");
+    setAddProductItemTilt("");
+    setAddPorductItemArea("");
+    setAddProductItemType("");
+    setSearchtext("");
     setShowAddForm(false);
   };
-  const handleEdit = (lat, lon, index) => {
+  const handleEdit = ({ data }) => {
     setShowEditForm(true);
     setShowAddForm(false);
-    setEditProductItem({ lat: lat, lon: lon, index: index });
-    console.log(mapRef.current._panes);
+    console.log(data);
+    setEditProductItem({
+      lat: data.lat,
+      lon: data.lon,
+      area: data.area,
+      orientation: data.orientation,
+      tilt: data.tilt,
+      type: data.type,
+      index: data.index,
+    });
+
+    console.log(editProductItem);
     closePopup();
   };
   const addEditProductItem = () => {
@@ -92,6 +137,10 @@ const ProjectMap = () => {
         lat: editProductItem.lat.toString(),
         lon: editProductItem.lon.toString(),
       },
+      area: editProductItem.area,
+      tilt: editProductItem.tilt,
+      type: editProductItem.type,
+      orientation: editProductItem.orientation,
     };
     setProductList(updatedList);
     setShowEditForm(false);
@@ -130,7 +179,7 @@ const ProjectMap = () => {
             >
               <Popup>
                 <div>
-                  <p>{`lat: ${product.location.lat}, lon: ${product.location.lon}, product type:${product.productType}`}</p>{" "}
+                  <p>{`lat: ${product.location.lat}, lon: ${product.location.lon}, orientation:${product.orientation}, Tilt: ${product.tilt}, Area: ${product.area}, type:${product.type}`}</p>{" "}
                   <button
                     onClick={() => {
                       handleOnDelete(index);
@@ -140,11 +189,17 @@ const ProjectMap = () => {
                   </button>
                   <button
                     onClick={() => {
-                      handleEdit(
-                        product.location.lat,
-                        product.location.lon,
-                        index
-                      );
+                      handleEdit({
+                        data: {
+                          lat: product.location.lat,
+                          lon: product.location.lon,
+                          index: index,
+                          area: product.area,
+                          orientation: product.orientation,
+                          tilt: product.tilt,
+                          type: product.type,
+                        },
+                      });
                     }}
                   >
                     edit
@@ -155,45 +210,110 @@ const ProjectMap = () => {
           );
         })}
       </MapContainer>
-      <Button disabled={productList.length === 0} onClick={() => handleClick()}>
+      <button disabled={productList.length === 0} onClick={() => handleClick()}>
         creat project
-      </Button>
+      </button>
+
       {showAddForm && (
         <DialogOverlay>
           <DialogContainer open onClose={() => setShowAddForm(false)}>
             <p>add new product</p>
-            <TextField
-              label="Latitude"
-              type="number"
-              margin="dense"
-              value={addProductItem.lat}
-              onChange={(e) => {
-                setAddProductItem({ ...addProductItem, lat: e.target.value });
-              }}
-            />
-            <TextField
-              label="Longitude"
-              type="number"
-              margin="dense"
-              value={addProductItem.lon}
-              onChange={(e) => {
-                setAddProductItem({ ...addProductItem, lon: e.target.value });
-              }}
-            />
-            <TextField
-              value={searchText}
-              onChange={(e) => setSearchtext(e.target.value)}
-              label="search"
-            />
-            <IconButton
-              disabled={!searchText}
-              color="primary"
-              onClick={() => handleAddFormSearch(searchText)}
-            >
-              <TravelExploreIcon />
-            </IconButton>
+
+            <InputForm>
+              <StyledLabel htmlFor="latitude">Lat</StyledLabel>
+              <StyledInput
+                type="number"
+                value={addProductItem.lat}
+                placeholder="Latitude"
+                id="latitude"
+                onChange={(e) => {
+                  setAddProductItem({ ...addProductItem, lat: e.target.value });
+                }}
+              />
+              <StyledLabel htmlFor="longitude">Lon</StyledLabel>
+              <StyledInput
+                type="number"
+                value={addProductItem.lon}
+                placeholder="Longitude"
+                id="longitude"
+                onChange={(e) => {
+                  setAddProductItem({ ...addProductItem, lon: e.target.value });
+                }}
+              />
+              <StyledLabel htmlFor="search">search city </StyledLabel>
+
+              <StyledInput
+                type="text"
+                id="search"
+                value={searchText}
+                onChange={(e) => setSearchtext(e.target.value)}
+              />
+              <StyledSearchButton
+                disabled={!searchText}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleAddFormSearch(searchText);
+                }}
+              >
+                🔍
+              </StyledSearchButton>
+            </InputForm>
+            <InputForm>
+              <StyledLabel htmlFor="tilt">Tilt</StyledLabel>
+              <StyledInput
+                type="number"
+                id="tilt"
+                value={addProductItemTilt}
+                onChange={(e) => {
+                  setAddProductItemTilt(e.target.value);
+                }}
+              />
+              <StyledLabel htmlFor="area">Area</StyledLabel>
+              <StyledInput
+                type="number"
+                id="area"
+                value={addProductItemArea}
+                onChange={(e) => {
+                  setAddPorductItemArea(e.target.value);
+                }}
+              />
+            </InputForm>
+            <SelectForm>
+              <StyledLabel>Orientation</StyledLabel>
+              <StyledSelect
+                value={addProductItemOrientation}
+                onChange={(e) => setAddProductItemOrientation(e.target.value)}
+              >
+                <option value={""}>--Select--</option>
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+              </StyledSelect>
+            </SelectForm>
+            <SelectForm>
+              <StyledLabel>product type</StyledLabel>
+              <StyledSelect
+                value={addProductItemType}
+                onChange={(e) => {
+                  setAddProductItemType(e.target.value);
+                }}
+              >
+                <option value={""}>--Select--</option>
+                {tempPorductTypeList.map((item, index) => {
+                  return <option id={index}>{item}</option>;
+                })}
+              </StyledSelect>
+            </SelectForm>
             <button
-              disabled={!addProductItem.lat || !addProductItem.lon}
+              disabled={
+                !addProductItem.lat ||
+                !addProductItem.lon ||
+                !addProductItemOrientation ||
+                !addProductItemArea ||
+                !addProductItemTilt ||
+                !addProductItemType
+              }
               onClick={() => addProduct()}
             >
               submit
@@ -202,6 +322,13 @@ const ProjectMap = () => {
               onClick={() => {
                 setShowAddForm(false);
                 setAddProductItem({ lat: "", lon: "" });
+                setAddProductItemOrientation("");
+                setAddProductItemTilt("");
+                setAddPorductItemArea("");
+                setAddProductItemType("");
+                setSearchtext("");
+
+                setShowAddForm(false);
               }}
             >
               cancel
@@ -213,32 +340,133 @@ const ProjectMap = () => {
         <DialogOverlay>
           <DialogContainer open onClose={() => setShowEditForm(false)}>
             <p>edit product</p>
-            <TextField
-              label="Latitude"
-              type="number"
-              margin="dense"
-              value={editProductItem.lat}
-              onChange={(e) => {
-                setEditProductItem({
-                  ...editProductItem,
-                  lat: e.target.value,
-                });
+
+            <InputForm>
+              <StyledLabel htmlFor="latitude">Lat</StyledLabel>
+              <StyledInput
+                type="number"
+                value={editProductItem.lat}
+                placeholder="Latitude"
+                id="latitude"
+                onChange={(e) => {
+                  setEditProductItem({
+                    ...editProductItem,
+                    lat: e.target.value,
+                  });
+                }}
+              />
+              <StyledLabel htmlFor="longitude">Lon</StyledLabel>
+              <StyledInput
+                type="number"
+                value={editProductItem.lon}
+                placeholder="Longitude"
+                id="longitude"
+                onChange={(e) => {
+                  setEditProductItem({
+                    ...editProductItem,
+                    lon: e.target.value,
+                  });
+                }}
+              />
+              <StyledLabel htmlFor="search">search city </StyledLabel>
+
+              <StyledInput
+                type="text"
+                id="search"
+                value={searchText}
+                onChange={(e) => setSearchtext(e.target.value)}
+              />
+              <StyledSearchButton
+                disabled={!searchText}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleAddFormSearch(searchText);
+                }}
+              >
+                🔍
+              </StyledSearchButton>
+            </InputForm>
+            <InputForm>
+              <StyledLabel htmlFor="tilt">Tilt</StyledLabel>
+              <StyledInput
+                type="number"
+                id="tilt"
+                value={editProductItem.tilt}
+                onChange={(e) => {
+                  setEditProductItem({
+                    ...editProductItem,
+                    tilt: e.target.value,
+                  });
+                }}
+              />
+              <StyledLabel htmlFor="area">Area</StyledLabel>
+              <StyledInput
+                type="number"
+                id="area"
+                value={editProductItem.area}
+                onChange={(e) => {
+                  setEditProductItem({
+                    ...editProductItem,
+                    area: e.target.value,
+                  });
+                }}
+              />
+            </InputForm>
+            <SelectForm>
+              <StyledLabel>Orientation</StyledLabel>
+              <StyledSelect
+                value={editProductItem.orientation}
+                onChange={(e) => {
+                  setEditProductItem({
+                    ...editProductItem,
+                    orientation: e.target.value,
+                  });
+                }}
+              >
+                <option value={""}>--Select--</option>
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+              </StyledSelect>
+            </SelectForm>
+            <SelectForm>
+              <StyledLabel>product type</StyledLabel>
+              <StyledSelect
+                value={editProductItem.type}
+                onChange={(e) => {
+                  setEditProductItem({
+                    ...editProductItem,
+                    type: e.target.value,
+                  });
+                }}
+              >
+                <option value={""}>--Select--</option>
+                {tempPorductTypeList.map((item, index) => {
+                  return <option id={index}>{item}</option>;
+                })}
+              </StyledSelect>
+            </SelectForm>
+            <button
+              disabled={
+                !editProductItem.lat ||
+                !editProductItem.lon ||
+                !editProductItem.orientation ||
+                !editProductItem.area ||
+                !editProductItem.tilt ||
+                !editProductItem.type
+              }
+              onClick={() => addEditProductItem()}
+            >
+              submit
+            </button>
+            <button
+              onClick={() => {
+                setShowEditForm(false);
               }}
-            />
-            <TextField
-              label="Longitude"
-              type="number"
-              margin="dense"
-              value={editProductItem.lon}
-              onChange={(e) => {
-                setEditProductItem({
-                  ...editProductItem,
-                  lon: e.target.value,
-                });
-              }}
-            />
-            <button onClick={() => addEditProductItem()}>submit</button>
-            <button onClick={() => setShowEditForm(false)}> cancel</button>
+            >
+              cancel
+            </button>
           </DialogContainer>
         </DialogOverlay>
       )}

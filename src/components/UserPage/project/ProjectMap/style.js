@@ -4,6 +4,7 @@ const DetailContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
 `;
 const SideContainer = styled.div`
   max-width: 20vh;
@@ -18,12 +19,7 @@ const ProductListContainer = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const FloatingActionButton = styled.button`
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 56px;
-  height: 56px;
+const RoundButton = styled.button`
   border-radius: 50%;
   background-color: #00bcd4;
   color: #ffffff;
@@ -41,4 +37,67 @@ const FloatingActionButton = styled.button`
     background-color: ${(props) => (props.disabled ? "#ccc" : "#0097a7")};
   }
 `;
-export { DetailContainer, FloatingActionButton };
+
+const SelectForm = styled.form`
+  /* Add your custom styles here */
+  /* Example styles */
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+`;
+
+const StyledSelect = styled.select`
+  /* Add your custom styles for the select element here */
+  /* Example styles */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+`;
+const InputForm = styled.form`
+  /* Add your custom styles here */
+  /* Example styles */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
+const StyledInput = styled.input`
+  /* Add your custom styles for the input element here */
+  /* Example styles */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 5rem;
+`;
+const StyledLabel = styled.label`
+  /* Add your custom styles for the label element here */
+  /* Example styles */
+  font-weight: bold;
+`;
+const StyledSearchButton = styled.button`
+  /* Add your custom styles for the button element here */
+  /* Example styles */
+
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: none;
+`;
+const StyledSearchInputContainer = styled.div`
+  /* Add your custom styles for the input container here */
+  /* Example styles */
+  position: relative;
+`;
+export {
+  DetailContainer,
+  RoundButton,
+  SelectForm,
+  StyledSelect,
+  InputForm,
+  StyledInput,
+  StyledLabel,
+  StyledSearchButton,
+  StyledSearchInputContainer,
+};
