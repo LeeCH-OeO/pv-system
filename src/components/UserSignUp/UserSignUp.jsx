@@ -7,6 +7,7 @@ import { SignUpForm, FormContainer } from "./style";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
+import axios from "axios";
 
 const UserSignUp = () => {
   const navigate = useNavigate();
@@ -15,8 +16,8 @@ const UserSignUp = () => {
     email: "",
     password: "",
     isUnlimitedUser: false,
+    image: "",
   });
-  const [base64String, setBase64String] = useState("");
 
   const handleEncodeImage = (event) => {
     const file = event.target.files[0];
@@ -24,21 +25,30 @@ const UserSignUp = () => {
 
     reader.onload = function (event) {
       const base64 = event.target.result.split(",")[1];
-      setBase64String(base64);
+      setUserInfo({ ...userInfo, image: base64 });
     };
 
     reader.readAsDataURL(file);
   };
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
     localStorage.setItem("userName", userInfo.userName);
     localStorage.setItem("isUnlimitedUser", userInfo.isUnlimitedUser);
     localStorage.setItem("email", userInfo.email);
-    navigate("/user/main");
+
+    try {
+      const res = await axios.post("http://localhost:3000/account", userInfo);
+      console.log(res);
+      navigate("/user/main");
+    } catch (error) {
+      console.log("error message", error);
+    }
+
     setUserInfo({
       userName: "",
       email: "",
       password: "",
       isUnlimitedUser: false,
+      image: "",
     });
   };
   return (
@@ -100,9 +110,9 @@ const UserSignUp = () => {
         >
           submit
         </Button>
-        {base64String && (
+        {userInfo.image && (
           <Avatar
-            src={`data:image/*;base64,${base64String}`}
+            src={`data:image/*;base64,${userInfo.image}`}
             sx={{ width: 56, height: 56 }}
           />
         )}

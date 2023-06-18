@@ -20,7 +20,7 @@ const ProjectList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/productList2");
+        const response = await axios.get("http://localhost:3000/productList");
         if (response) {
           setIsFetched(true);
         }

@@ -4,6 +4,7 @@ import { EditCardContainer, EditFormContainer, Button } from "./style";
 import { useState } from "react";
 import UserNavBar from "../../NavBar/UserNavBar";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 const EditCard = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -14,10 +15,19 @@ const EditCard = () => {
     email: originalEmail,
   });
 
-  const handleOnSubmit = () => {
-    localStorage.setItem("userName", userInfo.userName);
-    localStorage.setItem("email", userInfo.email);
-    navigate("/user/profile/");
+  const handleOnSubmit = async () => {
+    try {
+      const res = await axios.patch("http://localhost:3000/account", userInfo);
+      if (res) {
+        navigate("/user/profile/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setUserInfo({ userName: originalName, email: originalEmail });
+    // localStorage.setItem("userName", userInfo.userName);
+    // localStorage.setItem("email", userInfo.email);
+    // navigate("/user/profile/");
   };
   return (
     <>
