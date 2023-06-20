@@ -1,10 +1,10 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import SignUpForm from "./style";
+import { SignUpForm, FormContainer } from "./style";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 const CompanySignUp = () => {
   const navigate = useNavigate();
   const [companyInfo, setCompanyInfo] = useState({
@@ -24,61 +24,70 @@ const CompanySignUp = () => {
     });
   };
   return (
-    <SignUpForm>
-      <h2>Company Sign up</h2>
+    <FormContainer>
+      <SignUpForm>
+        <h2>Company Sign up</h2>
 
-      <div>
-        <TextField
-          label="Company name"
-          margin="dense"
-          autoComplete="off"
-          fullWidth
-          value={companyInfo.companyName}
-          onChange={(e) =>
-            setCompanyInfo({ ...companyInfo, companyName: e.target.value })
-          }
-        />
-      </div>
-      <div>
-        <TextField
-          label="email"
-          margin="dense"
-          autoComplete="off"
-          fullWidth
-          value={companyInfo.email}
-          onChange={(e) =>
-            setCompanyInfo({ ...companyInfo, email: e.target.value })
-          }
-        />
-      </div>
-      <div>
-        <TextField
-          label="password"
-          type="password"
-          margin="dense"
-          autoComplete="off"
-          fullWidth
-          value={companyInfo.password}
-          onChange={(e) =>
-            setCompanyInfo({ ...companyInfo, password: e.target.value })
-          }
-        />
-      </div>
+        <div>
+          <TextField
+            label="Company name"
+            margin="dense"
+            autoComplete="off"
+            fullWidth
+            value={companyInfo.companyName}
+            onChange={(e) =>
+              setCompanyInfo({ ...companyInfo, companyName: e.target.value })
+            }
+          />
+        </div>
+        <div>
+          <TextField
+            label="email"
+            margin="dense"
+            autoComplete="off"
+            fullWidth
+            value={companyInfo.email}
+            onChange={(e) =>
+              setCompanyInfo({ ...companyInfo, email: e.target.value })
+            }
+          />
+        </div>
+        <div>
+          <TextField
+            label="password"
+            type="password"
+            margin="dense"
+            autoComplete="off"
+            fullWidth
+            value={companyInfo.password}
+            onChange={(e) =>
+              setCompanyInfo({ ...companyInfo, password: e.target.value })
+            }
+          />
+        </div>
 
+        <div>
+          <Button
+            variant="outlined"
+            onClick={handleOnClick}
+            disabled={
+              companyInfo.companyName &&
+              companyInfo.email &&
+              companyInfo.password
+                ? false
+                : true
+            }
+          >
+            submit
+          </Button>
+        </div>
+      </SignUpForm>
       <div>
-        <Button
-          variant="outlined"
-          onClick={handleOnClick}
-          disabled={
-            companyInfo.companyName && companyInfo.email && companyInfo.password
-              ? false
-              : true
-          }
-        >
-          submit
-        </Button>
+        <p>
+          Already have an account? <Link to={"/company/signin"}>Sign in →</Link>
+        </p>
       </div>
-    </SignUpForm>
+    </FormContainer>
   );
 };
 

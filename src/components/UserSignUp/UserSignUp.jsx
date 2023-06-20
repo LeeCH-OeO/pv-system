@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 const UserSignUp = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
@@ -117,6 +117,11 @@ const UserSignUp = () => {
           />
         )}
       </SignUpForm>
+      <div>
+        <p>
+          Already have an account? <Link to={"/user/signin"}>Sign in →</Link>
+        </p>
+      </div>
     </FormContainer>
   );
 };

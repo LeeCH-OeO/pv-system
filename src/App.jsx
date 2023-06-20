@@ -14,6 +14,8 @@ import CompanyProfilePage from "./components/CompanyPage/Profile/ProfilePage";
 import EditCard from "./components/UserPage/Profile/Card/EditCard";
 import EditProfile from "./components/CompanyPage/Profile/Card/EditProfile";
 import ProjectDetail from "./components/UserPage/project/ProjectDetail/ProjectDetail";
+import UserSignIn from "./components/UserSignUp/UserSignIn";
+import CompanySignIn from "./components/CompanySignUp/CompanySignIn";
 const App = () => {
   return (
     <>
@@ -33,6 +35,8 @@ const App = () => {
           <Route path="/company/profile/" element={<CompanyProfilePage />} />
           <Route path="/user/edit-profile" element={<EditCard />} />
           <Route path="/company/edit-profile" element={<EditProfile />} />
+          <Route path="/user/signin/" element={<UserSignIn />} />
+          <Route path="/company/signin" element={<CompanySignIn />} />
           <Route path="/*" element={<HomePage />} />
         </Routes>
       </Router>
