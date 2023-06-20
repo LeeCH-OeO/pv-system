@@ -12,7 +12,7 @@ const NavBar = styled.nav`
   background-color: green;
   color: white;
 
-  @media (max-width: 400px) {
+  @media (max-width: 500px) {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -26,7 +26,7 @@ const NavLinks = styled.ul`
   margin: 0;
   padding: 0;
   display: flex;
-  @media (max-width: 400px) {
+  @media (max-width: 500px) {
     display: ${(props) => (props.isExpand ? "flex" : "none")};
     width: 100%;
     flex-direction: column;
@@ -36,9 +36,9 @@ const NavLink = styled.li`
   list-style: none;
   color: white;
   padding: 1rem;
-  display: block;
+  display: flex;
   cursor: pointer;
-  @media (max-width: 400px) {
+  @media (max-width: 500px) {
     text-align: center;
     padding: 0.5rem 1rem;
   }
@@ -57,7 +57,7 @@ const ToggleButton = styled.div`
   height: 21px;
   cursor: pointer;
 
-  @media (max-width: 400px) {
+  @media (max-width: 500px) {
     display: flex;
   }
 `;

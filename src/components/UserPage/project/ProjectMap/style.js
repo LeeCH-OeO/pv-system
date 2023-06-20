@@ -4,7 +4,7 @@ const DetailContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  height: 90vh;
 `;
 const SideContainer = styled.div`
   max-width: 20vh;
@@ -90,6 +90,76 @@ const StyledSearchInputContainer = styled.div`
   /* Example styles */
   position: relative;
 `;
+const ModalTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const ModalButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+const PopupContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const PopupButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+const IconButton = styled.button`
+  display: inline-block;
+  padding: 3px 6px;
+  margin-left: 1px;
+  margin-right: 1px;
+  text-align: center;
+  text-decoration: none;
+  background-color: ${(props) => (props.disabled ? "gray" : "lightblue")};
+  color: #fff;
+  border: none;
+  text-transform: uppercase;
+  border-radius: 5px; /* Adjust the value to change the roundness */
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${(props) => !props.disabled && "CornflowerBlue"};
+  }
+`;
+const TextButton = styled.button`
+  display: inline-block;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 12px 24px;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  text-transform: uppercase;
+  border-radius: 10px; /* Adjust the value to change the roundness */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #2980b9;
+  }
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  ${(props) =>
+    props.disabled &&
+    css`
+      pointer-events: not-allowed;
+    `}
+`;
 export {
   DetailContainer,
   RoundButton,
@@ -100,4 +170,10 @@ export {
   StyledLabel,
   StyledSearchButton,
   StyledSearchInputContainer,
+  ModalTitle,
+  ModalButtonContainer,
+  PopupContainer,
+  PopupButtonContainer,
+  TextButton,
+  IconButton,
 };

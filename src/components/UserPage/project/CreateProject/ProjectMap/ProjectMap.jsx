@@ -1,11 +1,3 @@
-import {
-  FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  TextField,
-  Select,
-} from "@mui/material";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import {
@@ -24,14 +16,18 @@ import {
   StyledInput,
   StyledLabel,
   StyledSearchButton,
+  PopupContainer,
+  PopupButtonContainer,
+  IconButton,
+  ModalTitle,
+  ModalButtonContainer,
+  TextButton,
 } from "./style";
 import FetchGeo from "../CityNameToLocation";
 import { useNavigate } from "react-router-dom";
 const ProjectMap = () => {
   const [productList, setProductList] = useState([]);
   const [addProductItem, setAddProductItem] = useState({ lat: "", lon: "" });
-  const [addProductItemOrientation, setAddProductItemOrientation] =
-    useState("");
 
   const [addProductItemName, setAddProductItemName] = useState("");
   const [editProductItem, setEditProductItem] = useState({
@@ -163,7 +159,7 @@ const ProjectMap = () => {
       <h2>2. set your product</h2>
       <MapContainer
         ref={mapRef}
-        style={{ width: "90vw", height: "90vh" }}
+        style={{ width: "90vw", height: "80vh" }}
         center={[39.0, 34.0]}
         zoom={2}
         scrollWheelZoom={false}
@@ -181,16 +177,23 @@ const ProjectMap = () => {
               key={index}
             >
               <Popup>
-                <div>
-                  <p>{`lat: ${product.location.lat}, lon: ${product.location.lon}, productName:${product.productName}`}</p>{" "}
-                  <button
+                <PopupContainer>
+                  <h3>
+                    Product Name: {product.productName} <br />
+                    Latitude: {product.location.lat} <br />
+                    longitude: {product.location.lon}{" "}
+                  </h3>
+                </PopupContainer>
+                <PopupButtonContainer>
+                  <IconButton
                     onClick={() => {
                       handleOnDelete(index);
                     }}
                   >
-                    delete
-                  </button>
-                  <button
+                    <span class="material-icons">delete</span>
+                  </IconButton>
+
+                  <IconButton
                     onClick={() => {
                       handleEdit({
                         data: {
@@ -203,22 +206,27 @@ const ProjectMap = () => {
                       });
                     }}
                   >
-                    edit
-                  </button>
-                </div>
+                    <span class="material-icons">edit</span>
+                  </IconButton>
+                </PopupButtonContainer>
               </Popup>
             </Marker>
           );
         })}
       </MapContainer>
-      <button disabled={productList.length === 0} onClick={() => handleClick()}>
+      <TextButton
+        disabled={productList.length === 0}
+        onClick={() => handleClick()}
+      >
         creat project
-      </button>
+      </TextButton>
 
       {showAddForm && (
         <DialogOverlay>
           <DialogContainer open onClose={() => setShowAddForm(false)}>
-            <p>add new product</p>
+            <ModalTitle>
+              <h2>Add New Product</h2>
+            </ModalTitle>
 
             <InputForm>
               <StyledLabel htmlFor="latitude">Lat</StyledLabel>
@@ -249,15 +257,15 @@ const ProjectMap = () => {
                 value={searchText}
                 onChange={(e) => setSearchtext(e.target.value)}
               />
-              <StyledSearchButton
+              <IconButton
                 disabled={!searchText}
                 onClick={(e) => {
                   e.preventDefault();
                   handleAddFormSearch(searchText);
                 }}
               >
-                🔍
-              </StyledSearchButton>
+                <span class="material-icons">travel_explore</span>
+              </IconButton>
             </InputForm>
 
             <SelectForm>
@@ -274,35 +282,40 @@ const ProjectMap = () => {
                 })}
               </StyledSelect>
             </SelectForm>
-            <button
-              disabled={
-                !addProductItem.lat ||
-                !addProductItem.lon ||
-                !addProductItemName
-              }
-              onClick={() => addProduct()}
-            >
-              submit
-            </button>
-            <button
-              onClick={() => {
-                setShowAddForm(false);
-                setAddProductItem({ lat: "", lon: "" });
-                setAddProductItemName("");
-                setSearchtext("");
+            <ModalButtonContainer>
+              <IconButton
+                title="cancel"
+                onClick={() => {
+                  setShowAddForm(false);
+                  setAddProductItem({ lat: "", lon: "" });
+                  setAddProductItemName("");
+                  setSearchtext("");
 
-                setShowAddForm(false);
-              }}
-            >
-              cancel
-            </button>
+                  setShowAddForm(false);
+                }}
+              >
+                <span class="material-icons">cancel</span>
+              </IconButton>
+              <IconButton
+                disabled={
+                  !addProductItem.lat ||
+                  !addProductItem.lon ||
+                  !addProductItemName
+                }
+                onClick={() => addProduct()}
+              >
+                <span class="material-icons">add_circle</span>
+              </IconButton>
+            </ModalButtonContainer>
           </DialogContainer>
         </DialogOverlay>
       )}
       {showEditForm && (
         <DialogOverlay>
           <DialogContainer open onClose={() => setShowEditForm(false)}>
-            <p>edit product</p>
+            <ModalTitle>
+              <h2>edit product</h2>
+            </ModalTitle>
 
             <InputForm>
               <StyledLabel htmlFor="latitude">Lat</StyledLabel>
@@ -339,15 +352,15 @@ const ProjectMap = () => {
                 value={searchText}
                 onChange={(e) => setSearchtext(e.target.value)}
               />
-              <StyledSearchButton
+              <IconButton
                 disabled={!searchText}
                 onClick={(e) => {
                   e.preventDefault();
                   handleEditFormSearch(searchText);
                 }}
               >
-                🔍
-              </StyledSearchButton>
+                <span class="material-icons">travel_explore</span>
+              </IconButton>
             </InputForm>
 
             <SelectForm>
@@ -367,24 +380,26 @@ const ProjectMap = () => {
                 })}
               </StyledSelect>
             </SelectForm>
-            <button
-              disabled={
-                !editProductItem.lat ||
-                !editProductItem.lon ||
-                !editProductItem.productName
-              }
-              onClick={() => addEditProductItem()}
-            >
-              submit
-            </button>
-            <button
-              onClick={() => {
-                setShowEditForm(false);
-                setSearchtext("");
-              }}
-            >
-              cancel
-            </button>
+            <ModalButtonContainer>
+              <IconButton
+                onClick={() => {
+                  setShowEditForm(false);
+                  setSearchtext("");
+                }}
+              >
+                <span class="material-icons">cancel</span>
+              </IconButton>
+              <IconButton
+                disabled={
+                  !editProductItem.lat ||
+                  !editProductItem.lon ||
+                  !editProductItem.productName
+                }
+                onClick={() => addEditProductItem()}
+              >
+                <span class="material-icons">save</span>
+              </IconButton>
+            </ModalButtonContainer>
           </DialogContainer>
         </DialogOverlay>
       )}

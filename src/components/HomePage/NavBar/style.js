@@ -38,7 +38,7 @@ const NavLink = styled.li`
   list-style: none;
   color: white;
   padding: 1rem;
-  display: block;
+  display: flex;
   cursor: pointer;
   @media (max-width: 400px) {
     text-align: center;

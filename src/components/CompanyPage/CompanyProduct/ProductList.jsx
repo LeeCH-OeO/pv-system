@@ -1,13 +1,18 @@
 import React from "react";
 import CompanyNavBar from "../NavBar/CompanyNavBar";
-import ProductItem from "./ProductItem";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   ProductListContainer,
   ProductListPageContainer,
   DialogContainer,
   DialogOverlay,
+  ProductItem,
+  ProductItemButtonContainer,
+  ProductItemContainer,
+  IconButton,
+  ModalButtonContainer,
+  FabButton,
+  TitleContainer,
 } from "./style";
 import { TextField } from "@mui/material";
 const ProductList = () => {
@@ -41,6 +46,13 @@ const ProductList = () => {
     setTempList(updatedList);
     console.log(updatedList[productInfo.index]);
     setShowEditModal(false);
+    setProductInfo({
+      productName: "",
+      area: "",
+      tilt: "",
+      orientation: "",
+      index: "",
+    });
   };
   const saveNewProduct = () => {
     setTempList([...tempList, productInfo]);
@@ -56,41 +68,49 @@ const ProductList = () => {
   return (
     <>
       <CompanyNavBar />
+      <FabButton
+        onClick={() => {
+          setShowCreateModal(true);
+        }}
+      >
+        <span class="material-icons">add</span>
+      </FabButton>
       <ProductListPageContainer>
-        <h2>Product list</h2>
-        <button
-          onClick={() => {
-            setShowCreateModal(true);
-          }}
-        >
-          create new product
-        </button>
+        <TitleContainer>
+          <h2>Product list</h2>
+        </TitleContainer>
+
         <ProductListContainer>
           {tempList.map((item, index) => {
             return (
-              <div key={index}>
-                <ProductItem
-                  key={index}
-                  name={item.productName}
-                  para1={item.area}
-                  para2={item.orientation}
-                  para3={item.tilt}
-                />
-                <button
-                  onClick={() => {
-                    handleOnDelete(index);
-                  }}
-                >
-                  delete
-                </button>
-                <button
-                  onClick={() => {
-                    handleUpdate(item, index);
-                  }}
-                >
-                  update
-                </button>
-              </div>
+              <ProductItemContainer>
+                <ProductItem key={index}>
+                  <h3>
+                    {item.productName} <br />
+                    Orientation: {item.orientation}
+                    <br />
+                    Area: {item.area}
+                    <br />
+                    Tilt:{item.tilt}
+                  </h3>
+                </ProductItem>
+                <ProductItemButtonContainer>
+                  <IconButton
+                    onClick={() => {
+                      handleOnDelete(index);
+                    }}
+                  >
+                    <span class="material-icons">delete</span>
+                  </IconButton>
+                  <IconButton
+                    onClick={() => {
+                      handleUpdate(item, index);
+                    }}
+                  >
+                    <span class="material-icons">edit</span>
+                  </IconButton>
+                </ProductItemButtonContainer>
+              </ProductItemContainer>
             );
           })}
         </ProductListContainer>
@@ -132,8 +152,8 @@ const ProductList = () => {
                 setProductInfo({ ...productInfo, orientation: e.target.value });
               }}
             />
-            <div>
-              <button
+            <ModalButtonContainer>
+              <IconButton
                 onClick={() => {
                   setShowEditModal(false);
                   setProductInfo({
@@ -144,9 +164,9 @@ const ProductList = () => {
                   });
                 }}
               >
-                cancel
-              </button>
-              <button
+                <span class="material-icons">cancel</span>
+              </IconButton>
+              <IconButton
                 disabled={
                   !productInfo.productName ||
                   !productInfo.area ||
@@ -155,9 +175,9 @@ const ProductList = () => {
                 }
                 onClick={() => saveUpdate()}
               >
-                save
-              </button>
-            </div>
+                <span class="material-icons">save</span>
+              </IconButton>
+            </ModalButtonContainer>
           </DialogContainer>
         </DialogOverlay>
       )}
@@ -199,8 +219,8 @@ const ProductList = () => {
                 setProductInfo({ ...productInfo, orientation: e.target.value });
               }}
             />
-            <div>
-              <button
+            <ModalButtonContainer>
+              <IconButton
                 onClick={() => {
                   setShowCreateModal(false);
                   setProductInfo({
@@ -211,9 +231,9 @@ const ProductList = () => {
                   });
                 }}
               >
-                cancel
-              </button>
-              <button
+                <span class="material-icons">cancel</span>
+              </IconButton>
+              <IconButton
                 disabled={
                   !productInfo.productName ||
                   !productInfo.area ||
@@ -222,9 +242,9 @@ const ProductList = () => {
                 }
                 onClick={() => saveNewProduct()}
               >
-                save
-              </button>
-            </div>
+                <span class="material-icons">save</span>
+              </IconButton>
+            </ModalButtonContainer>
           </DialogContainer>
         </DialogOverlay>
       )}

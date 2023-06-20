@@ -48,8 +48,7 @@ const EditFormContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  border-style: solid;
-  border-color: green;
+
   width: 30%;
   @media (max-width: 800px) {
     width: 80%;

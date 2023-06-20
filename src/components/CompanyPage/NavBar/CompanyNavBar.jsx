@@ -39,21 +39,21 @@ const CompanyNavBar = () => {
               navigate("/company/profile/");
             }}
           >
-            Profile
+            Profile<span class="material-icons">account_circle</span>
           </NavLink>
           <NavLink
             onClick={() => {
               navigate("/company/products/");
             }}
           >
-            Products
+            Products<span class="material-icons">solar_power</span>
           </NavLink>
           <NavLink
             onClick={() => {
               navigate("/company/main/");
             }}
           >
-            home
+            home<span class="material-icons">house</span>
           </NavLink>
         </NavLinks>
       </NavBar>

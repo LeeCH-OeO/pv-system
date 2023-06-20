@@ -34,20 +34,21 @@ const UserNavBar = () => {
             }}
           >
             Profile
+            <span class="material-icons">account_circle</span>
           </NavLink>
           <NavLink
             onClick={() => {
               navigate("/user/projects/");
             }}
           >
-            Projects
+            Projects <span class="material-icons">public</span>
           </NavLink>
           <NavLink
             onClick={() => {
               navigate("/user/main/");
             }}
           >
-            home
+            home<span class="material-icons">house</span>
           </NavLink>
         </NavLinks>
       </NavBar>

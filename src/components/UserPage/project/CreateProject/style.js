@@ -11,8 +11,7 @@ const Form = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  border-style: solid;
-  border-color: green;
+
   width: 30%;
   @media (max-width: 800px) {
     width: 80%;
@@ -52,7 +51,7 @@ const CreateProjectCheckContainer = styled.div`
   align-items: center;
   height: 100vh;
 `;
-const Button = styled.button`
+const TextButton = styled.button`
   display: inline-block;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -79,7 +78,7 @@ const Button = styled.button`
   ${(props) =>
     props.disabled &&
     css`
-      pointer-events: none;
+      pointer-events: not-allowed;
     `}
 `;
 const RoundButton = styled.button`
@@ -99,14 +98,15 @@ const RoundButton = styled.button`
     background-color: ${(props) => (props.disabled ? "#ccc" : "#0097a7")};
   }
 `;
+
 export {
   Form,
   ProductList,
   ProductListText,
   FormContainer,
   SearchContainer,
-  Button,
   LocationContainer,
   RoundButton,
   CreateProjectCheckContainer,
+  TextButton,
 };

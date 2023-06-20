@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 const DetailContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -6,38 +6,56 @@ const DetailContainer = styled.div`
   align-items: center;
   height: 100vh;
 `;
-const SideContainer = styled.div`
-  max-width: 20vh;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-`;
-const ProductListContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-`;
-const RoundButton = styled.button`
-  border-radius: 50%;
-  background-color: #00bcd4;
-  color: #ffffff;
+
+const IconButton = styled.button`
+  display: inline-block;
+  padding: 3px 6px;
+  margin-left: 1px;
+  margin-right: 1px;
+  text-align: center;
+  text-decoration: none;
+  background-color: ${(props) => (props.disabled ? "gray" : "lightblue")};
+  color: #fff;
   border: none;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-transform: uppercase;
+  border-radius: 5px; /* Adjust the value to change the roundness */
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  transition: background-color 0.3s;
-  z-index: 9999;
+  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => (props.disabled ? "#ccc" : "#0097a7")};
+    background-color: ${(props) => !props.disabled && "CornflowerBlue"};
   }
 `;
+const TextButton = styled.button`
+  display: inline-block;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 12px 24px;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  text-transform: uppercase;
+  border-radius: 10px; /* Adjust the value to change the roundness */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 
+  &:hover {
+    background-color: #2980b9;
+  }
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  ${(props) =>
+    props.disabled &&
+    css`
+      pointer-events: not-allowed;
+    `}
+`;
 const SelectForm = styled.form`
   /* Add your custom styles here */
   /* Example styles */
@@ -90,9 +108,31 @@ const StyledSearchInputContainer = styled.div`
   /* Example styles */
   position: relative;
 `;
+
+const ModalTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const ModalButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+const PopupContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const PopupButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  justify-content: space-between;
+`;
 export {
   DetailContainer,
-  RoundButton,
   SelectForm,
   StyledSelect,
   InputForm,
@@ -100,4 +140,10 @@ export {
   StyledLabel,
   StyledSearchButton,
   StyledSearchInputContainer,
+  PopupButtonContainer,
+  PopupContainer,
+  ModalButtonContainer,
+  ModalTitle,
+  IconButton,
+  TextButton,
 };

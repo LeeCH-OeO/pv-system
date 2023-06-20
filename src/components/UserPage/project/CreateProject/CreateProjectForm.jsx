@@ -7,6 +7,7 @@ import {
   SearchContainer,
   LocationContainer,
   RoundButton,
+  TextButton,
 } from "./style";
 
 import { TextField } from "@mui/material";
@@ -37,7 +38,7 @@ const CreateProjectForm = () => {
           ></TextField>
         </div>
       </Form>
-      <button
+      <TextButton
         disabled={!projectName}
         onClick={() => {
           console.log(projectName);
@@ -45,7 +46,7 @@ const CreateProjectForm = () => {
         }}
       >
         next step
-      </button>
+      </TextButton>
     </FormContainer>
   );
 };

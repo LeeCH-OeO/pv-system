@@ -9,12 +9,13 @@ Content-Type: application/json
 "email": "OeO@gmail.com",
 "password": "0000"}
 ###
-PATCH http://13.50.5.249:3000/weather/user/6490d604498f013b04795b4f HTTP/1.1
+PATCH http://13.50.5.249:3000/weather/user/6491b97966d0a7cef3fbbfd4 HTTP/1.1
 Content-Type: application/json
 
-{"username": "ch-lee",
+{"username": "OeOOOO",
 "email": "ch-lee@gmail.com",
-"password": "test123321"}
+"password":"0000"
+}
 
 ### delete account
 DELETE http://13.50.5.249:3000/weather/user/648f1ee2e395e458b3589a1b HTTP/1.1
@@ -38,9 +39,9 @@ Content-Type: application/json
 {
  "userid": "weather123"}
 
-###login
+###login ok
 POST http://13.50.5.249:3000/weather/user/login HTTP/1.1
 Content-Type: application/json
 
 {"username": "OeO",
-"password": "OeO"}
+"password": "0000"}

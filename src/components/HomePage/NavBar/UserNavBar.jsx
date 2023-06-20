@@ -34,13 +34,14 @@ const UserNavBar = () => {
             }}
           >
             user portal
+            <span class="material-icons">person</span>
           </NavLink>
           <NavLink
             onClick={() => {
               navigate("/company/main");
             }}
           >
-            company portal
+            company portal<span class="material-icons">business</span>
           </NavLink>
         </NavLinks>
       </NavBar>

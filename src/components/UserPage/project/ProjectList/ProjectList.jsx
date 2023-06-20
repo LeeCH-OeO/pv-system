@@ -1,10 +1,17 @@
 import {
   ProjectListContainer,
-  ActiveProjectContainer,
+  ProjectContainer,
   OldProjectContainer,
   ProjectItem,
   LoaderContainer,
   Loader,
+  TitleContainer,
+  TextButton,
+  ButtonContainer,
+  PorjectItemContainer,
+  FabButton,
+  IconButton,
+  ProjectButtonContainer,
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import UserNavBar from "../../NavBar/UserNavBar";
@@ -48,88 +55,106 @@ const ProjectList = () => {
   return (
     <div>
       <UserNavBar />
-      <h1>Project list</h1>
+
       {!isFetched && (
         <LoaderContainer>
           <Loader />
         </LoaderContainer>
       )}
-      {activeProjectList.length !== 0 && (
-        <>
-          <button
+
+      {isFetched &&
+      activeProjectList.length === 0 &&
+      oldProjectList.length === 0 ? (
+        <TitleContainer>
+          <h2>create your new project</h2>
+          <FabButton
             onClick={() => {
               navigate("/user/new-project");
             }}
           >
-            create new project
-          </button>
-          <button onClick={() => setShowOldProject(!showOldProject)}>
-            {showOldProject ? "hide old project" : "show old project"}
-          </button>
-        </>
-      )}
-      {isFetched && activeProjectList.length === 0 ? (
-        <div>
-          <h2>create your new project</h2>{" "}
-          <button
-            onClick={() => {
-              navigate("/user/new-project");
-            }}
-          >
-            create new project
-          </button>
-        </div>
+            <span class="material-icons">add</span>{" "}
+          </FabButton>
+        </TitleContainer>
       ) : (
         <ProjectListContainer>
+          <TitleContainer>
+            {showOldProject ? <h2>Old Project</h2> : <h2>Currect project</h2>}
+          </TitleContainer>
+          <>
+            <FabButton
+              onClick={() => {
+                navigate("/user/new-project");
+              }}
+            >
+              <span class="material-icons">add</span>
+            </FabButton>
+            <FabButton
+              secondary
+              onClick={() => setShowOldProject(!showOldProject)}
+            >
+              {showOldProject ? (
+                <span class="material-icons">toggle_off</span>
+              ) : (
+                <span class="material-icons">toggle_on</span>
+              )}
+            </FabButton>
+          </>
           {showOldProject && (
-            <OldProjectContainer>
+            <ProjectContainer>
               {oldProjectList.map((item, index) => {
                 return (
-                  <div key={index}>
-                    <h3>{item.projectName}</h3>
-                    <p> number of products: {item.products.length}</p>
+                  <PorjectItemContainer>
+                    <div key={index}>
+                      <h3>{item.projectName}</h3>
+                      <p> number of products: {item.products.length}</p>
 
-                    <button
-                      onClick={() => {
-                        navigate("/user/project-detail", {
-                          state: { projectInfo: item },
-                        });
-                      }}
-                    >
-                      show report
-                    </button>
-                  </div>
+                      <IconButton
+                        onClick={() => {
+                          navigate("/user/project-detail", {
+                            state: { projectInfo: item },
+                          });
+                        }}
+                      >
+                        <span class="material-icons">info</span>
+                      </IconButton>
+                    </div>
+                  </PorjectItemContainer>
                 );
               })}
-            </OldProjectContainer>
+            </ProjectContainer>
           )}
-          <ActiveProjectContainer>
-            {activeProjectList.map((item, index) => {
-              return (
-                <ProjectItem key={index}>
-                  <h3>{item.projectName}</h3>
-                  <p> number of products: {item.products.length}</p>
-
-                  <button
-                    onClick={() => {
-                      navigate("/user/project-detail", {
-                        state: { projectInfo: item },
-                      });
-                    }}
-                  >
-                    open map
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleGetReport(item, index);
-                    }}
-                  >
-                    get report
-                  </button>
-                </ProjectItem>
-              );
-            })}
-          </ActiveProjectContainer>
+          {!showOldProject && (
+            <ProjectContainer>
+              {activeProjectList.map((item, index) => {
+                return (
+                  <PorjectItemContainer>
+                    <ProjectItem key={index}>
+                      <h3>{item.projectName}</h3>
+                      <p> number of products: {item.products.length}</p>
+                    </ProjectItem>
+                    <ProjectButtonContainer>
+                      <IconButton
+                        onClick={() => {
+                          handleGetReport(item, index);
+                        }}
+                      >
+                        <span class="material-icons">check_circle_outline</span>
+                      </IconButton>
+                      <IconButton
+                        onClick={() => {
+                          navigate("/user/project-detail", {
+                            state: { projectInfo: item },
+                          });
+                        }}
+                      >
+                        <span class="material-icons">info</span>
+                      </IconButton>
+                    </ProjectButtonContainer>
+                  </PorjectItemContainer>
+                );
+              })}
+            </ProjectContainer>
+          )}
         </ProjectListContainer>
       )}
     </div>
