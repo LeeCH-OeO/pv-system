@@ -10,7 +10,6 @@ import ProfilePage from "./components/UserPage/Profile/ProfilePage";
 import CompanyMainPage from "./components/CompanyPage/CompanyMainPage";
 import ProductList from "./components/CompanyPage/CompanyProduct/ProductList";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ProductForm from "./components/CompanyPage/CompanyProduct/Form/ProductForm";
 import CompanyProfilePage from "./components/CompanyPage/Profile/ProfilePage";
 import EditCard from "./components/UserPage/Profile/Card/EditCard";
 import EditProfile from "./components/CompanyPage/Profile/Card/EditProfile";
@@ -31,7 +30,6 @@ const App = () => {
           <Route path="/user/profile" element={<ProfilePage />} />
           <Route path="/company/main" element={<CompanyMainPage />} />
           <Route path="/company/products/" element={<ProductList />} />
-          <Route path="/company/new-product/" element={<ProductForm />} />
           <Route path="/company/profile/" element={<CompanyProfilePage />} />
           <Route path="/user/edit-profile" element={<EditCard />} />
           <Route path="/company/edit-profile" element={<EditProfile />} />

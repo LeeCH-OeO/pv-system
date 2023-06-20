@@ -31,18 +31,12 @@ import UserNavBar from "../../NavBar/UserNavBar";
 const ProjectMap = ({ products, projectName }) => {
   const [productList, setProductList] = useState(products);
   const [addProductItem, setAddProductItem] = useState({ lat: "", lon: "" });
-  const [addProductItemOrientation, setAddProductItemOrientation] =
-    useState("");
-  const [addProductItemTilt, setAddProductItemTilt] = useState("");
-  const [addProductItemArea, setAddPorductItemArea] = useState("");
-  const [addProductItemType, setAddProductItemType] = useState("");
+
+  const [addProductItemName, setAddProductItemName] = useState("");
   const [editProductItem, setEditProductItem] = useState({
     lat: "",
     lon: "",
-    area: "",
-    orientation: "",
-    type: "",
-    tilt: "",
+    productName: "",
   });
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -65,7 +59,22 @@ const ProjectMap = ({ products, projectName }) => {
       setSearchtext("");
     }
   };
-
+  const handleEditFormSearch = async (input) => {
+    const result = await FetchGeo(input);
+    try {
+      console.log(result.data[0].lat, result.data[0].lon);
+      setEditProductItem({
+        ...editProductItem,
+        lat: result.data[0].lat,
+        lon: result.data[0].lon,
+      });
+      setSearchtext("");
+    } catch (error) {
+      console.log(error);
+      alert("location not found!");
+      setSearchtext("");
+    }
+  };
   const mapRef = useRef(null);
   const closePopup = () => {
     mapRef.current._popup._closeButton.click();
@@ -97,18 +106,14 @@ const ProjectMap = ({ products, projectName }) => {
           lat: addProductItem.lat.toString(),
           lon: addProductItem.lon.toString(),
         },
-        orientation: addProductItemOrientation,
-        tilt: addProductItemTilt,
-        area: addProductItemArea,
-        type: addProductItemType,
+
+        productname: addProductItemName,
       },
     ]);
 
     setAddProductItem({ lat: "", lon: "" });
-    setAddProductItemOrientation("");
-    setAddProductItemTilt("");
-    setAddPorductItemArea("");
-    setAddProductItemType("");
+
+    setAddProductItemName("");
     setSearchtext("");
     setShowAddForm(false);
   };
@@ -119,10 +124,8 @@ const ProjectMap = ({ products, projectName }) => {
     setEditProductItem({
       lat: data.lat,
       lon: data.lon,
-      area: data.area,
-      orientation: data.orientation,
-      tilt: data.tilt,
-      type: data.type,
+
+      productName: data.productName,
       index: data.index,
     });
 
@@ -138,14 +141,12 @@ const ProjectMap = ({ products, projectName }) => {
         lat: editProductItem.lat.toString(),
         lon: editProductItem.lon.toString(),
       },
-      area: editProductItem.area,
-      tilt: editProductItem.tilt,
-      type: editProductItem.type,
-      orientation: editProductItem.orientation,
+      productName: editProductItem.productName,
     };
     setProductList(updatedList);
     setShowEditForm(false);
     setShowAddForm(false);
+    setSearchtext("");
   };
   const handleClick = () => {
     const updatedProject = { projectName, products: productList };
@@ -178,7 +179,7 @@ const ProjectMap = ({ products, projectName }) => {
               >
                 <Popup>
                   <div>
-                    <p>{`lat: ${product.location.lat}, lon: ${product.location.lon}, orientation:${product.orientation}, Tilt: ${product.tilt}, Area: ${product.area}, type:${product.type}`}</p>{" "}
+                    <p>{`lat: ${product.location.lat}, lon: ${product.location.lon}, product name:${product.productName}`}</p>{" "}
                     <button
                       onClick={() => {
                         handleOnDelete(index);
@@ -266,45 +267,13 @@ const ProjectMap = ({ products, projectName }) => {
                   🔍
                 </StyledSearchButton>
               </InputForm>
-              <InputForm>
-                <StyledLabel htmlFor="tilt">Tilt</StyledLabel>
-                <StyledInput
-                  type="number"
-                  id="tilt"
-                  value={addProductItemTilt}
-                  onChange={(e) => {
-                    setAddProductItemTilt(e.target.value);
-                  }}
-                />
-                <StyledLabel htmlFor="area">Area</StyledLabel>
-                <StyledInput
-                  type="number"
-                  id="area"
-                  value={addProductItemArea}
-                  onChange={(e) => {
-                    setAddPorductItemArea(e.target.value);
-                  }}
-                />
-              </InputForm>
+
               <SelectForm>
-                <StyledLabel>Orientation</StyledLabel>
+                <StyledLabel>product name</StyledLabel>
                 <StyledSelect
-                  value={addProductItemOrientation}
-                  onChange={(e) => setAddProductItemOrientation(e.target.value)}
-                >
-                  <option value={""}>--Select--</option>
-                  <option value="North">North</option>
-                  <option value="South">South</option>
-                  <option value="East">East</option>
-                  <option value="West">West</option>
-                </StyledSelect>
-              </SelectForm>
-              <SelectForm>
-                <StyledLabel>product type</StyledLabel>
-                <StyledSelect
-                  value={addProductItemType}
+                  value={addProductItemName}
                   onChange={(e) => {
-                    setAddProductItemType(e.target.value);
+                    setAddProductItemName(e.target.value);
                   }}
                 >
                   <option value={""}>--Select--</option>
@@ -317,10 +286,7 @@ const ProjectMap = ({ products, projectName }) => {
                 disabled={
                   !addProductItem.lat ||
                   !addProductItem.lon ||
-                  !addProductItemOrientation ||
-                  !addProductItemArea ||
-                  !addProductItemTilt ||
-                  !addProductItemType
+                  !addProductItemName
                 }
                 onClick={() => addProduct()}
               >
@@ -330,10 +296,8 @@ const ProjectMap = ({ products, projectName }) => {
                 onClick={() => {
                   setShowAddForm(false);
                   setAddProductItem({ lat: "", lon: "" });
-                  setAddProductItemOrientation("");
-                  setAddProductItemTilt("");
-                  setAddPorductItemArea("");
-                  setAddProductItemType("");
+
+                  setAddProductItemName("");
                   setSearchtext("");
 
                   setShowAddForm(false);
@@ -388,64 +352,21 @@ const ProjectMap = ({ products, projectName }) => {
                   disabled={!searchText}
                   onClick={(e) => {
                     e.preventDefault();
-                    handleAddFormSearch(searchText);
+                    handleEditFormSearch(searchText);
                   }}
                 >
                   🔍
                 </StyledSearchButton>
               </InputForm>
-              <InputForm>
-                <StyledLabel htmlFor="tilt">Tilt</StyledLabel>
-                <StyledInput
-                  type="number"
-                  id="tilt"
-                  value={editProductItem.tilt}
-                  onChange={(e) => {
-                    setEditProductItem({
-                      ...editProductItem,
-                      tilt: e.target.value,
-                    });
-                  }}
-                />
-                <StyledLabel htmlFor="area">Area</StyledLabel>
-                <StyledInput
-                  type="number"
-                  id="area"
-                  value={editProductItem.area}
-                  onChange={(e) => {
-                    setEditProductItem({
-                      ...editProductItem,
-                      area: e.target.value,
-                    });
-                  }}
-                />
-              </InputForm>
+
               <SelectForm>
-                <StyledLabel>Orientation</StyledLabel>
+                <StyledLabel>product name</StyledLabel>
                 <StyledSelect
-                  value={editProductItem.orientation}
+                  value={editProductItem.productName}
                   onChange={(e) => {
                     setEditProductItem({
                       ...editProductItem,
-                      orientation: e.target.value,
-                    });
-                  }}
-                >
-                  <option value={""}>--Select--</option>
-                  <option value="North">North</option>
-                  <option value="South">South</option>
-                  <option value="East">East</option>
-                  <option value="West">West</option>
-                </StyledSelect>
-              </SelectForm>
-              <SelectForm>
-                <StyledLabel>product type</StyledLabel>
-                <StyledSelect
-                  value={editProductItem.type}
-                  onChange={(e) => {
-                    setEditProductItem({
-                      ...editProductItem,
-                      type: e.target.value,
+                      productName: e.target.value,
                     });
                   }}
                 >
@@ -459,10 +380,7 @@ const ProjectMap = ({ products, projectName }) => {
                 disabled={
                   !editProductItem.lat ||
                   !editProductItem.lon ||
-                  !editProductItem.orientation ||
-                  !editProductItem.area ||
-                  !editProductItem.tilt ||
-                  !editProductItem.type
+                  !editProductItem.productName
                 }
                 onClick={() => addEditProductItem()}
               >
@@ -471,6 +389,7 @@ const ProjectMap = ({ products, projectName }) => {
               <button
                 onClick={() => {
                   setShowEditForm(false);
+                  setSearchtext("");
                 }}
               >
                 cancel
