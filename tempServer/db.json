@@ -1,7 +1,7 @@
 {
   "productList": [
     {
-      "projectName": "cool project1",
+      "projectName": "cool project123",
       "isActive": true,
       "products": [
         {
@@ -12,7 +12,7 @@
           "area": "2",
           "orientation": "East",
           "tilt": "2",
-          "type": "3"
+          "productName": "3"
         },
         {
           "location": {
@@ -22,7 +22,7 @@
           "area": "2",
           "orientation": "East",
           "tilt": "2",
-          "type": "3"
+          "productName": "3"
         }
       ]
     },
@@ -38,7 +38,7 @@
           "area": "2",
           "orientation": "East",
           "tilt": "2",
-          "type": "3"
+          "productName": "3"
         },
         {
           "location": {
@@ -48,7 +48,7 @@
           "area": "2",
           "orientation": "East",
           "tilt": "2",
-          "type": "3"
+          "productName": "3"
         }
       ]
     },
@@ -64,7 +64,7 @@
           "area": "2",
           "orientation": "East",
           "tilt": "2",
-          "type": "3"
+          "productName": "3"
         },
         {
           "location": {
@@ -74,7 +74,7 @@
           "area": "2",
           "orientation": "East",
           "tilt": "2",
-          "type": "3"
+          "productName": "3"
         }
       ]
     },
@@ -90,7 +90,7 @@
           "area": "2",
           "orientation": "East",
           "tilt": "2",
-          "type": "3"
+          "productName": "3"
         },
         {
           "location": {
@@ -100,17 +100,17 @@
           "area": "2",
           "orientation": "East",
           "tilt": "2",
-          "type": "3"
+          "productName": "3"
         }
       ]
     }
   ],
   "productList2": {},
   "account": {
-    "userName": "chi-hsuan",
-    "email": "lee@oeo.com",
-    "password": "4444444",
-    "isUnlimitedUser": true,
+    "userName": "lee",
+    "email": "qwelknqwkne",
+    "password": "234234",
+    "isUnlimitedUser": false,
     "image": ""
   }
 }
