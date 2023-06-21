@@ -1,47 +1,44 @@
-### get user list
-GET  http://13.50.5.249:3000/weather/user  HTTP/1.1
-
-### create user account
-POST http://13.50.5.249:3000/weather/user HTTP/1.1
-Content-Type: application/json
-
-{"username": "OeO",
-"email": "OeO@gmail.com",
-"password": "0000"}
-###
-PATCH http://13.50.5.249:3000/weather/user/6491b97966d0a7cef3fbbfd4 HTTP/1.1
-Content-Type: application/json
-
-{"username": "OeOOOO",
-"email": "ch-lee@gmail.com",
-"password":"0000"
-}
-
-### delete account
-DELETE http://13.50.5.249:3000/weather/user/648f1ee2e395e458b3589a1b HTTP/1.1
-
-###update user account
-
-PATCH http://13.50.5.249:3000/weather/user/648f1ee2e395e458b3589a1b HTTP/1.1
-
-{"username": "test123321",
-"email": "test123321@gmail.com",
-"password": "$2b$10$2Y7DJCO3DEcfaJ7KDqgMlOHXDIhmOrOO.yRp0thIMMlLqjbpTwTQ2"}
-
-### project
-
-GET http://13.50.5.249:3000/weather/project/ HTTP/1.1
-
-###user's project
-GET http://13.50.5.249:3000/weather/project HTTP/1.1
+### user signup
+POST http://127.0.0.1:1212/api/user/signup HTTP/1.1
 Content-Type: application/json
 
 {
- "userid": "weather123"}
+"userName":"new1","password":"0000", "email":"new1@123", "isUnlimited": true,"image": "123","isActive": true
+}
+### update user info
+PUT  http://127.0.0.1:1212/api/user/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5ldyIsInVzZXJJRCI6IjY0OTMxY2Q5MTY4NWFiZDAyNmY2OGQ0MCIsImlhdCI6MTY4NzM2ODM2MX0._tlJ3VQ1j7GCdteeiD4XYceMS5T5cLadMivQUwr_Z8A
 
-###login ok
-POST http://13.50.5.249:3000/weather/user/login HTTP/1.1
+{
+    "data": {"userName":"update yee", "email":"123321"}
+}
+
+###soft delete user
+GET  http://127.0.0.1:1212/api/user/delete HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5ldyIsInVzZXJJRCI6IjY0OTMxY2Q5MTY4NWFiZDAyNmY2OGQ0MCIsImlhdCI6MTY4NzM2ODM2MX0._tlJ3VQ1j7GCdteeiD4XYceMS5T5cLadMivQUwr_Z8A
+
+
+### user login
+POST http://127.0.0.1:1212/api/user/login HTTP/1.1
 Content-Type: application/json
 
-{"username": "OeO",
-"password": "0000"}
+{"userName":"update yee","password":"0000"}
+### get profile
+GET  http://127.0.0.1:1212/api/user/profile HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InVwZGF0ZSB5ZWUiLCJ1c2VySUQiOiI2NDkzMWNkOTE2ODVhYmQwMjZmNjhkNDAiLCJpYXQiOjE2ODczNjk2OTZ9.ikjFYqsXSixksQ3WWOd3tHFMV2FhJbOHXEOJVBSKmhU
+
+
+### company signup
+POST http://127.0.0.1:1212/api/company/signup HTTP/1.1
+Content-Type: application/json
+
+{
+"companyName":"new1","password":"0000", "email":"new1@123", "image": "123"
+}
+
+### company login
+POST http://127.0.0.1:1212/api/company/login HTTP/1.1
+Content-Type: application/json
+
+{"userName":"new1","password":"0000"}

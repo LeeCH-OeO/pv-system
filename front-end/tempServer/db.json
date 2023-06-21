@@ -1,0 +1,116 @@
+{
+  "productList": [
+    {
+      "projectName": "cool project123",
+      "isActive": true,
+      "products": [
+        {
+          "location": {
+            "lat": "52.52354266184729",
+            "lon": "13.402872545835251"
+          },
+          "area": "2",
+          "orientation": "East",
+          "tilt": "2",
+          "productName": "3"
+        },
+        {
+          "location": {
+            "lat": "2.52354266184729",
+            "lon": "13.402872545835251"
+          },
+          "area": "2",
+          "orientation": "East",
+          "tilt": "2",
+          "productName": "3"
+        }
+      ]
+    },
+    {
+      "projectName": "cool project2",
+      "isActive": true,
+      "products": [
+        {
+          "location": {
+            "lat": "52.52354266184729",
+            "lon": "3.402872545835251"
+          },
+          "area": "2",
+          "orientation": "East",
+          "tilt": "2",
+          "productName": "3"
+        },
+        {
+          "location": {
+            "lat": "-52.52354266184729",
+            "lon": "0.402872545835251"
+          },
+          "area": "2",
+          "orientation": "East",
+          "tilt": "2",
+          "productName": "3"
+        }
+      ]
+    },
+    {
+      "projectName": "cool project3",
+      "isActive": true,
+      "products": [
+        {
+          "location": {
+            "lat": "22.52354266184729",
+            "lon": "113.402872545835251"
+          },
+          "area": "2",
+          "orientation": "East",
+          "tilt": "2",
+          "productName": "3"
+        },
+        {
+          "location": {
+            "lat": "43.52354266184729",
+            "lon": "66.402872545835251"
+          },
+          "area": "2",
+          "orientation": "East",
+          "tilt": "2",
+          "productName": "3"
+        }
+      ]
+    },
+    {
+      "projectName": "cool old  project1",
+      "isActive": false,
+      "products": [
+        {
+          "location": {
+            "lat": "22.52354266184729",
+            "lon": "113.402872545835251"
+          },
+          "area": "2",
+          "orientation": "East",
+          "tilt": "2",
+          "productName": "3"
+        },
+        {
+          "location": {
+            "lat": "43.52354266184729",
+            "lon": "66.402872545835251"
+          },
+          "area": "2",
+          "orientation": "East",
+          "tilt": "2",
+          "productName": "3"
+        }
+      ]
+    }
+  ],
+  "productList2": {},
+  "account": {
+    "userName": "123",
+    "email": "321",
+    "password": "3333",
+    "isUnlimitedUser": false,
+    "image": ""
+  }
+}
