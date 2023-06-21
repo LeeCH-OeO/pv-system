@@ -13,9 +13,11 @@ app.get("/", (req, res) => {
 });
 const userRouter = require("./routers/user");
 const companyRouter = require("./routers/Company");
-
+const ProjectRouter = require("./routers/Project");
 app.use("/api/user", userRouter);
 app.use("/api/company", companyRouter);
+app.use("/api/project", ProjectRouter);
+
 app.listen(port, "127.0.0.1", () => {
   console.log(`Example app listening on port ${port}`);
 });

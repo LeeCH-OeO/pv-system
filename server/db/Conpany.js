@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 const Company = require("./schema/CompanySchema");
-mongoose.connect(process.env.MONGO_COMPANY_URL);
+mongoose.connect(process.env.MONGO_URL);
 
 async function dbAddCompany(companyInfo) {
   const newCompany = await Company.create(companyInfo);

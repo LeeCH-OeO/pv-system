@@ -1,0 +1,62 @@
+const express = require("express");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const router = express.Router();
+
+const {
+  dbAddProject,
+  dbCheckProjectName,
+  dbFinishProject,
+} = require("../db/project");
+
+router.post("/create", authenticateUser, checkProjectName, async (req, res) => {
+  console.log(req.user.userID);
+  const result = await dbAddProject(req.body, req.user.userID);
+  if (result) {
+    res.sendStatus(201);
+  }
+});
+
+router.delete("/finish", authenticateUser, async (req, res) => {
+  const data = { projectName: req.body.projectName, createBy: req.user.userID };
+
+  const result = await dbFinishProject(data);
+  if (result) {
+    res.sendStatus(204);
+  } else res.sendStatus(500);
+});
+
+function authenticateUser(req, res, next) {
+  // Extract the JWT from the request header, e.g., in the "Authorization" header
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "Authentication failed: No token provided." });
+  }
+
+  // Verify the token using the secret key
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      return res
+        .status(401)
+        .json({ message: "Authentication failed: Invalid token." });
+    }
+    // Store the decoded user information in the request object for later use
+    req.user = decoded;
+    next();
+  });
+}
+
+async function checkProjectName(req, res, next) {
+  const result = await dbCheckProjectName({
+    projectName: req.body.projectName,
+  });
+  if (result) {
+    return res.status(409).json({ message: "Project already exists" });
+  }
+  next();
+}
+module.exports = router;

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 const User = require("./schema/UserSchema");
-mongoose.connect(process.env.MONGO_USER_URL);
+mongoose.connect(process.env.MONGO_URL);
 
 async function dbAddUser(userInfo) {
   const newUser = await User.create(userInfo);
