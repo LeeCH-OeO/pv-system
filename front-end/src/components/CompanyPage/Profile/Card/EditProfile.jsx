@@ -4,19 +4,35 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { EditCardContainer, EditFormContainer } from "./style";
 import { TextField } from "@mui/material";
+import axios from "axios";
 const EditProfile = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const originalCompanyName = location.state?.companyName || "";
-  const originalCompanyEmail = location.state?.companyEmail || "";
+  const originalEmail = location.state?.email || "";
   const [companyInfo, setCompanyInfo] = useState({
     companyName: originalCompanyName,
-    companyEmail: originalCompanyEmail,
+    email: originalEmail,
   });
-  const handleSubmit = () => {
-    localStorage.setItem("companyName", companyInfo.companyName);
-    localStorage.setItem("companyEmail", companyInfo.companyEmail);
-    navigate("/company/profile");
+  const handleSubmit = async () => {
+    try {
+      const res = await axios({
+        method: "put",
+        url: "http://127.0.0.1:1212/api/company/",
+        data: { data: companyInfo },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("companyToken")}`,
+        },
+      });
+      if (res) {
+        navigate("/");
+        localStorage.removeItem("companyToken");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setCompanyInfo({ companyInfo: originalCompanyName, email: originalEmail });
   };
   return (
     <div>
@@ -36,7 +52,7 @@ const EditProfile = () => {
             fullWidth
             label="Email"
             variant="filled"
-            value={companyInfo.companyEmail}
+            value={companyInfo.email}
             onChange={(e) => {
               setCompanyInfo({ ...companyInfo, companyEmail: e.target.value });
             }}

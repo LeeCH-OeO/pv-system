@@ -2,9 +2,10 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { SignUpForm, FormContainer } from "./style";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import axios from "axios";
 const CompanySignUp = () => {
   const navigate = useNavigate();
   const [companyInfo, setCompanyInfo] = useState({
@@ -12,17 +13,29 @@ const CompanySignUp = () => {
     email: "",
     password: "",
   });
-  const handleOnClick = () => {
-    console.log(companyInfo);
-    localStorage.setItem("companyName", companyInfo.companyName);
-    localStorage.setItem("companyEmail", companyInfo.email);
-    navigate("/company/main");
+  const handleOnClick = async () => {
+    try {
+      const res = await axios({
+        method: "post",
+        url: "http://127.0.0.1:1212/api/company/signup",
+        data: companyInfo,
+        headers: { "Content-Type": "application/json" },
+      });
+      console.log(res);
+    } catch (error) {
+      console.log("error message", error);
+    }
     setCompanyInfo({
       companyName: "",
       email: "",
       password: "",
     });
   };
+  useEffect(() => {
+    if (localStorage.getItem("companyToken")) {
+      navigate("/company/profile");
+    }
+  }, []);
   return (
     <FormContainer>
       <SignUpForm>

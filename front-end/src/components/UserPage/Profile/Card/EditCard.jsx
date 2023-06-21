@@ -17,17 +17,23 @@ const EditCard = () => {
 
   const handleOnSubmit = async () => {
     try {
-      const res = await axios.patch("http://localhost:3000/account", userInfo);
+      const res = await axios({
+        method: "put",
+        url: "http://127.0.0.1:1212/api/user/",
+        data: { data: userInfo },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+      });
       if (res) {
-        navigate("/user/profile/");
+        navigate("/");
+        localStorage.removeItem("userToken");
       }
     } catch (error) {
       console.log(error);
     }
     setUserInfo({ userName: originalName, email: originalEmail });
-    // localStorage.setItem("userName", userInfo.userName);
-    // localStorage.setItem("email", userInfo.email);
-    // navigate("/user/profile/");
   };
   return (
     <>

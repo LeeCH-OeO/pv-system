@@ -9,24 +9,23 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     userName: "",
-    isUnlimitedUser: false,
+    isUnlimited: false,
     email: "",
     image: "",
   });
   const fetchUserInfo = async () => {
-    // const userName = localStorage.getItem("userName");
-    // const email = localStorage.getItem("email");
-    // const isUnlimitedUser = localStorage.getItem("isUnlimitedUser");
-    // if (!userName || !email || !isUnlimitedUser) {
-    //   console.log("not sing in");
-    //   navigate("/user/signup");
-    // }
     try {
-      const res = await axios.get("http://localhost:3000/account");
+      const res = await axios({
+        method: "get",
+        url: "http://127.0.0.1:1212/api/user/profile",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+      });
       setUserInfo({
         ...userInfo,
         userName: res.data.userName,
-        isUnlimitedUser: res.data.isUnlimitedUser,
+        isUnlimited: res.data.isUnlimited,
         email: res.data.email,
         image: res.data.image,
       });
@@ -44,11 +43,22 @@ const ProfilePage = () => {
     setIsOpen(false);
   };
 
-  const handleDelete = () => {
-    localStorage.removeItem("userName");
-    localStorage.removeItem("email");
-    localStorage.removeItem("isUnlimitedUser");
-    navigate("/");
+  const handleDelete = async () => {
+    try {
+      const res = await axios({
+        method: "delete",
+        url: "http://127.0.0.1:1212/api/user/delete",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+      });
+      if (res) {
+        navigate("/");
+        localStorage.removeItem("userToken");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     fetchUserInfo();
@@ -61,7 +71,7 @@ const ProfilePage = () => {
         <>
           <ProfileCard
             name={userInfo.userName}
-            isUnlimited={userInfo.isUnlimitedUser}
+            isUnlimited={userInfo.isUnlimited}
             email={userInfo.email}
             avatar={
               userInfo.image

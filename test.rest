@@ -15,7 +15,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5ld
 }
 
 ###soft delete user
-GET  http://127.0.0.1:1212/api/user/delete HTTP/1.1
+DELETE   http://127.0.0.1:1212/api/user/delete HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5ldyIsInVzZXJJRCI6IjY0OTMxY2Q5MTY4NWFiZDAyNmY2OGQ0MCIsImlhdCI6MTY4NzM2ODM2MX0._tlJ3VQ1j7GCdteeiD4XYceMS5T5cLadMivQUwr_Z8A
 
 
@@ -34,11 +34,27 @@ POST http://127.0.0.1:1212/api/company/signup HTTP/1.1
 Content-Type: application/json
 
 {
-"companyName":"new1","password":"0000", "email":"new1@123", "image": "123"
+"companyName":"new123","password":"0000", "email":"new1@123321", "image": "123"
 }
 
 ### company login
 POST http://127.0.0.1:1212/api/company/login HTTP/1.1
 Content-Type: application/json
 
-{"userName":"new1","password":"0000"}
+{"companyName":"edeka","password":"0000"}
+
+### get conpany profile
+GET  http://127.0.0.1:1212/api/company/profile HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55TmFtZSI6ImVkZWthIiwiY29tcGFueUlEIjoiNjQ5MzY4ZDU2MWVjMjYwMTQ1ZGJkZmRkIiwiaWF0IjoxNjg3MzgzMjgxfQ.A3kgd2MUZswqqjsWbkQ01W0QIcBJAkeLW0rqpteEIiM
+
+
+###update company
+PUT  http://127.0.0.1:1212/api/company/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55TmFtZSI6InVwZGF0ZWROYW1lIiwiY29tcGFueUlEIjoiNjQ5MzNjYTFiODljMjM3NzJhMGYyMjgwIiwiaWF0IjoxNjg3Mzc0MTY4fQ.nUEppyUxtpcGBWAbMq4mhhnWoAdORCSussPoxdRgD1Y
+
+{"data":{"companyName":"updatedName", "email":"new1@123", "image": "123"}}
+
+###delete company
+DELETE http://127.0.0.1:1212/api/company/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55TmFtZSI6InVwZGF0ZWROYW1lIiwiY29tcGFueUlEIjoiNjQ5MzNjYTFiODljMjM3NzJhMGYyMjgwIiwiaWF0IjoxNjg3Mzc0MTY4fQ.nUEppyUxtpcGBWAbMq4mhhnWoAdORCSussPoxdRgD1Y

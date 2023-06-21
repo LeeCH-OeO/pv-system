@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { SignUpForm, FormContainer } from "./style";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import axios from "axios";
@@ -15,8 +15,9 @@ const UserSignUp = () => {
     userName: "",
     email: "",
     password: "",
-    isUnlimitedUser: false,
+    isUnlimited: false,
     image: "",
+    isActive: true,
   });
 
   const handleEncodeImage = (event) => {
@@ -31,14 +32,15 @@ const UserSignUp = () => {
     reader.readAsDataURL(file);
   };
   const handleOnClick = async () => {
-    localStorage.setItem("userName", userInfo.userName);
-    localStorage.setItem("isUnlimitedUser", userInfo.isUnlimitedUser);
-    localStorage.setItem("email", userInfo.email);
-
     try {
-      const res = await axios.post("http://localhost:3000/account", userInfo);
+      const res = await axios({
+        method: "post",
+        url: "http://127.0.0.1:1212/api/user/signup",
+        data: userInfo,
+        headers: { "Content-Type": "application/json" },
+      });
       console.log(res);
-      navigate("/user/main");
+      navigate("/user/product");
     } catch (error) {
       console.log("error message", error);
     }
@@ -47,10 +49,15 @@ const UserSignUp = () => {
       userName: "",
       email: "",
       password: "",
-      isUnlimitedUser: false,
+      isUnlimited: false,
       image: "",
     });
   };
+  useEffect(() => {
+    if (localStorage.getItem("userToken")) {
+      navigate("/user/profile");
+    }
+  }, []);
   return (
     <FormContainer>
       <SignUpForm>
@@ -92,7 +99,7 @@ const UserSignUp = () => {
               onChange={(e) =>
                 setUserInfo({
                   ...userInfo,
-                  isUnlimitedUser: e.target.checked,
+                  isUnlimited: e.target.checked,
                 })
               }
             />

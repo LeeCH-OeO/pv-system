@@ -32,11 +32,10 @@ router.put("/", authenticateUser, async (req, res) => {
   const queryID = req.user.userID;
 
   await dbUpdateUser({ ...req.body, id: queryID });
-  //   next();
   res.send("updated");
 });
 
-router.get("/delete", authenticateUser, async (req, res) => {
+router.delete("/delete", authenticateUser, async (req, res) => {
   const userID = req.user.userID;
   await dbDeleteUser(userID);
   res.send("Deleted");
@@ -53,6 +52,9 @@ router.post("/login", async (req, res) => {
       { userName: result.userName, userID: result._id },
       process.env.ACCESS_TOKEN_SECRET
     );
+    if (!result.isActive) {
+      return res.status(404).json({ message: "Accound already deleted" });
+    }
     res.json({ message: "success", accessToken: accessToken });
   } else res.status(401).json({ message: "incorrect password " });
 });
@@ -79,16 +81,6 @@ async function checkIfUserExist(req, res, next) {
 
   next();
 }
-
-// async function updateUser(req, res, next) {
-//   await dbUpdateUser(req.body);
-//   next();
-// }
-
-// async function deleteUser(req, res, next) {
-//   await dbDeleteUser(req.body.id);
-//   next();
-// }
 
 function authenticateUser(req, res, next) {
   // Extract the JWT from the request header, e.g., in the "Authorization" header

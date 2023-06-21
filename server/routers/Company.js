@@ -6,6 +6,8 @@ const {
   dbAddCompany,
   dbCheckCompanyExist,
   dbFindCompany,
+  dbUpdateCompany,
+  dbDeleteCompany,
 } = require("../db/Conpany");
 //routers
 router.post("/signup", checkIfCompanyExist, saveCompany, (req, res) => {
@@ -32,6 +34,29 @@ router.post("/login", async (req, res) => {
   } else res.status(401).json({ message: "incorrect password " });
 });
 
+router.get("/profile", authenticateCompany, async (req, res) => {
+  const queryName = req.company.companyName;
+  const result = await dbFindCompany({ companyName: queryName });
+  if (!result) {
+    return res.status(404).json({ message: "Accound not found" });
+  }
+  res.json(result);
+});
+
+router.put("/", authenticateCompany, async (req, res) => {
+  const queryID = req.company.companyID;
+
+  await dbUpdateCompany({ ...req.body, id: queryID });
+  res.send("updated");
+});
+
+router.delete("/delete", authenticateCompany, async (req, res) => {
+  const companyID = req.company.companyID;
+  await dbDeleteCompany(companyID);
+  res.send("Deleted");
+});
+
+//
 async function checkIfCompanyExist(req, res, next) {
   console.log(req.body);
   const result = await dbCheckCompanyExist([
@@ -58,4 +83,29 @@ async function saveCompany(req, res, next) {
     res.status(500).send();
   }
 }
+
+function authenticateCompany(req, res, next) {
+  // Extract the JWT from the request header, e.g., in the "Authorization" header
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "Authentication failed: No token provided." });
+  }
+
+  // Verify the token using the secret key
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      return res
+        .status(401)
+        .json({ message: "Authentication failed: Invalid token." });
+    }
+    // Store the decoded user information in the request object for later use
+    req.company = decoded;
+    next();
+  });
+}
+
 module.exports = router;

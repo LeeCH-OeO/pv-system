@@ -30,7 +30,7 @@ const UserNavBar = () => {
         <NavLinks isExpand={isExpand}>
           <NavLink
             onClick={() => {
-              navigate("user/main");
+              navigate("/user/signup");
             }}
           >
             user portal
@@ -38,7 +38,7 @@ const UserNavBar = () => {
           </NavLink>
           <NavLink
             onClick={() => {
-              navigate("/company/main");
+              navigate("/company/signup");
             }}
           >
             company portal<span class="material-icons">business</span>
