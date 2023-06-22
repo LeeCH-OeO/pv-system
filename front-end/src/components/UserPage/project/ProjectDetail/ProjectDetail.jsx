@@ -4,13 +4,14 @@ import { useState } from "react";
 import ProjectMap from "../ProjectMap/ProjectMap";
 const ProjectDetail = () => {
   const location = useLocation();
-  const [projectInfo, setProjectInfo] = useState(location.state.projectInfo);
-  console.log(projectInfo);
+  console.log(location.state.projectInfo);
+  console.log(location.state.projectID);
   return (
     <div>
       <ProjectMap
-        products={projectInfo.products}
-        projectName={projectInfo.projectName}
+        products={location.state.projectInfo}
+        projectID={location.state.projectID}
+        projectName={location.state.projectName}
       />
     </div>
   );

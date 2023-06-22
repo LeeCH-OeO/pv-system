@@ -43,7 +43,7 @@ router.get("/profile", authenticateCompany, async (req, res) => {
   res.json(result);
 });
 
-router.put("/", authenticateCompany, async (req, res) => {
+router.patch("/", authenticateCompany, async (req, res) => {
   const queryID = req.company.companyID;
 
   await dbUpdateCompany({ ...req.body, id: queryID });

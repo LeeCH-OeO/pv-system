@@ -7,13 +7,23 @@ const {
   dbAddProject,
   dbCheckProjectName,
   dbFinishProject,
+  dbGetProject,
 } = require("../db/project");
 
 router.post("/create", authenticateUser, checkProjectName, async (req, res) => {
   console.log(req.user.userID);
   const result = await dbAddProject(req.body, req.user.userID);
   if (result) {
-    res.sendStatus(201);
+    res.status(201).json({ projectID: result });
+  }
+});
+
+router.get("/", authenticateUser, async (req, res) => {
+  const queryResult = await dbGetProject(req.user.userID);
+  if (queryResult.length !== 0) {
+    return res.status(200).json(queryResult);
+  } else {
+    return res.sendStatus(404);
   }
 });
 

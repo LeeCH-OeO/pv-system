@@ -28,7 +28,7 @@ router.post("/signup", checkIfUserExist, saveUser, (req, res) => {
   });
 });
 
-router.put("/", authenticateUser, async (req, res) => {
+router.patch("/", authenticateUser, async (req, res) => {
   const queryID = req.user.userID;
 
   await dbUpdateUser({ ...req.body, id: queryID });

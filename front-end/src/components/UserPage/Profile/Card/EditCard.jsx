@@ -16,9 +16,10 @@ const EditCard = () => {
   });
 
   const handleOnSubmit = async () => {
+    console.log(userInfo);
     try {
       const res = await axios({
-        method: "put",
+        method: "patch",
         url: "http://127.0.0.1:1212/api/user/",
         data: { data: userInfo },
         headers: {

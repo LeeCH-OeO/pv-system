@@ -23,6 +23,7 @@ import {
   ModalButtonContainer,
   TextButton,
 } from "./style";
+import axios from "axios";
 import FetchGeo from "../CityNameToLocation";
 import { useNavigate } from "react-router-dom";
 const ProjectMap = () => {
@@ -145,13 +146,23 @@ const ProjectMap = () => {
     setShowAddForm(false);
     setSearchtext("");
   };
-  const handleClick = () => {
-    const storedJsonStr = localStorage.getItem("newProject");
-    const storedObject = JSON.parse(storedJsonStr);
-    storedObject.products = productList;
-
-    console.log("send new project:", storedObject);
-    localStorage.removeItem("newProject");
+  const handleClick = async () => {
+    productList.map((item) => {
+      axios({
+        method: "post",
+        url: "http://127.0.0.1:1212/api/userproduct/create",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+        data: {
+          lat: Number(item.location.lat),
+          lon: Number(item.location.lon),
+          projectID: localStorage.getItem("newProjectID"),
+          companyProductID: item.productName,
+        },
+      });
+    });
     navigate("/user/projects/");
   };
   return (

@@ -23,22 +23,24 @@ import {
   IconButton,
   TextButton,
 } from "./style";
+import axios from "axios";
 import FetchGeo from "../CreateProject/CityNameToLocation";
 import { useNavigate } from "react-router-dom";
 import UserNavBar from "../../NavBar/UserNavBar";
-const ProjectMap = ({ products, projectName }) => {
+const ProjectMap = ({ products, projectID, projectName }) => {
   const [productList, setProductList] = useState(products);
   const [addProductItem, setAddProductItem] = useState({ lat: "", lon: "" });
 
-  const [addProductItemName, setAddProductItemName] = useState("");
+  const [companyProductID, setCompanyProductID] = useState("");
   const [editProductItem, setEditProductItem] = useState({
     lat: "",
     lon: "",
-    productName: "",
+    companyProductID: "",
   });
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [searchText, setSearchtext] = useState("");
+  const [deleteList, setDeleteList] = useState([]);
   const tempPorductTypeList = [1, 2, 3, 4, 5];
   const navigate = useNavigate();
   const handleAddFormSearch = async (input) => {
@@ -79,6 +81,11 @@ const ProjectMap = ({ products, projectName }) => {
   };
   const handleOnDelete = (index) => {
     const updatedList = [...productList];
+    console.log(productList[index]);
+    if (productList[index]._id) {
+      console.log("old");
+      setDeleteList([...deleteList, productList[index]]);
+    }
     updatedList.splice(index, 1);
     setProductList(updatedList);
     closePopup();
@@ -100,46 +107,43 @@ const ProjectMap = ({ products, projectName }) => {
     setProductList([
       ...productList,
       {
-        location: {
-          lat: addProductItem.lat.toString(),
-          lon: addProductItem.lon.toString(),
-        },
+        lat: addProductItem.lat,
+        lon: addProductItem.lon,
 
-        productName: addProductItemName,
+        companyProductID: companyProductID,
       },
     ]);
 
     setAddProductItem({ lat: "", lon: "" });
 
-    setAddProductItemName("");
+    setCompanyProductID("");
     setSearchtext("");
     setShowAddForm(false);
   };
-  const handleEdit = ({ data }) => {
+  const handleEdit = (data) => {
     setShowEditForm(true);
     setShowAddForm(false);
-    console.log(data);
+    console.log("editData", data);
     setEditProductItem({
+      ...data,
       lat: data.lat,
       lon: data.lon,
 
-      productName: data.productName,
-      index: data.index,
+      companyProductID: data.companyProductID,
     });
 
-    console.log(editProductItem);
     closePopup();
   };
   const addEditProductItem = () => {
     console.log(editProductItem);
     const updatedList = [...productList];
     updatedList[editProductItem.index] = {
-      ...updatedList[editProductItem],
-      location: {
-        lat: editProductItem.lat.toString(),
-        lon: editProductItem.lon.toString(),
-      },
-      productName: editProductItem.productName,
+      ...editProductItem,
+
+      lat: editProductItem.lat,
+      lon: editProductItem.lon,
+
+      companyProductID: editProductItem.companyProductID,
     };
     setProductList(updatedList);
     setShowEditForm(false);
@@ -147,9 +151,69 @@ const ProjectMap = ({ products, projectName }) => {
     setSearchtext("");
   };
   const handleClick = () => {
-    const updatedProject = { projectName, products: productList };
+    console.log("updated project", productList);
+    const newList = productList.filter((item) => !item._id);
+    const oldList = productList.filter((item) => item._id);
+    console.log("new", newList);
+    console.log("old", oldList);
+    console.log(projectID);
+    if (newList.length !== 0) {
+      console.log("have new");
+      newList.map((item) => {
+        axios({
+          method: "post",
+          url: "http://127.0.0.1:1212/api/userproduct/create",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+          data: {
+            lat: Number(item.lat),
+            lon: Number(item.lon),
+            projectID: projectID,
+            companyProductID: item.companyProductID,
+          },
+        });
+      });
+    }
+    if (oldList.length !== 0) {
+      console.log("have old");
+      oldList.map((item) => {
+        axios({
+          method: "patch",
+          url: "http://127.0.0.1:1212/api/userproduct/update",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+          data: {
+            data: {
+              lat: item.lat,
+              lon: item.lon,
+              companyProductID: item.companyProductID,
+              createBy: item.createBy,
+            },
+            id: item._id,
+          },
+        });
+      });
+    }
+
+    if (deleteList.length !== 0) {
+      console.log("have delete");
+      deleteList.map((item) => {
+        axios({
+          method: "delete",
+          url: "http://127.0.0.1:1212/api/userproduct/delete",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+          data: { id: item._id },
+        });
+      });
+    }
     navigate("/user/projects/");
-    console.log("updated project", updatedProject);
   };
   return (
     <>
@@ -171,16 +235,13 @@ const ProjectMap = ({ products, projectName }) => {
           <ClickMarker />
           {productList.map((product, index) => {
             return (
-              <Marker
-                position={[product.location.lat, product.location.lon]}
-                key={index}
-              >
+              <Marker position={[product.lat, product.lon]} key={index}>
                 <Popup>
                   <PopupContainer>
                     <h4>
-                      Product name: {product.productName} <br /> Latitude:{" "}
-                      {product.location.lat}
-                      <br /> Longitude: {product.location.lon}
+                      Product name: {product.companyProductID} <br /> Latitude:{" "}
+                      {product.lat}
+                      <br /> Longitude: {product.lon}
                     </h4>
                   </PopupContainer>
                   <PopupButtonContainer>
@@ -195,13 +256,8 @@ const ProjectMap = ({ products, projectName }) => {
                     <IconButton
                       onClick={() => {
                         handleEdit({
-                          data: {
-                            lat: product.location.lat,
-                            lon: product.location.lon,
-                            index: index,
-
-                            productName: product.productName,
-                          },
+                          ...product,
+                          index: index,
                         });
                       }}
                     >
@@ -276,9 +332,9 @@ const ProjectMap = ({ products, projectName }) => {
               <SelectForm>
                 <StyledLabel>product name</StyledLabel>
                 <StyledSelect
-                  value={addProductItemName}
+                  value={companyProductID}
                   onChange={(e) => {
-                    setAddProductItemName(e.target.value);
+                    setCompanyProductID(e.target.value);
                   }}
                 >
                   <option value={""}>--Select--</option>
@@ -293,7 +349,7 @@ const ProjectMap = ({ products, projectName }) => {
                     setShowAddForm(false);
                     setAddProductItem({ lat: "", lon: "" });
 
-                    setAddProductItemName("");
+                    setCompanyProductID("");
                     setSearchtext("");
 
                     setShowAddForm(false);
@@ -305,7 +361,7 @@ const ProjectMap = ({ products, projectName }) => {
                   disabled={
                     !addProductItem.lat ||
                     !addProductItem.lon ||
-                    !addProductItemName
+                    !companyProductID
                   }
                   onClick={() => addProduct()}
                 >
@@ -371,11 +427,11 @@ const ProjectMap = ({ products, projectName }) => {
               <SelectForm>
                 <StyledLabel>product name</StyledLabel>
                 <StyledSelect
-                  value={editProductItem.productName}
+                  value={editProductItem.companyProductID}
                   onChange={(e) => {
                     setEditProductItem({
                       ...editProductItem,
-                      productName: e.target.value,
+                      companyProductID: e.target.value,
                     });
                   }}
                 >
@@ -398,7 +454,7 @@ const ProjectMap = ({ products, projectName }) => {
                   disabled={
                     !editProductItem.lat ||
                     !editProductItem.lon ||
-                    !editProductItem.productName
+                    !editProductItem.companyProductID
                   }
                   onClick={() => addEditProductItem()}
                 >

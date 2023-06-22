@@ -31,6 +31,15 @@ async function dbCheckUserExist(Data) {
   }
 }
 
+async function dbCheckUserExistForProductLIst(Data) {
+  const result = await User.findOne(Data);
+  if (result) {
+    return result;
+  } else {
+    return false;
+  }
+}
+
 async function dbFindUser(Data) {
   const result = await User.findOne(Data);
   if (result) {
@@ -45,4 +54,5 @@ module.exports = {
   dbDeleteUser,
   dbCheckUserExist,
   dbFindUser,
+  dbCheckUserExistForProductLIst,
 };

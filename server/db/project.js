@@ -27,4 +27,16 @@ async function dbFinishProject(data) {
     return false;
   }
 }
-module.exports = { dbAddProject, dbCheckProjectName, dbFinishProject };
+
+async function dbGetProject(ID) {
+  const result = await Project.find({ createBy: ID });
+  if (result) {
+    return result;
+  }
+}
+module.exports = {
+  dbAddProject,
+  dbCheckProjectName,
+  dbFinishProject,
+  dbGetProject,
+};

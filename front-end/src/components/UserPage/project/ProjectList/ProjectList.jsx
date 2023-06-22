@@ -23,13 +23,20 @@ const ProjectList = () => {
   const [activeProjectList, setActivateProjectList] = useState([]);
   const [oldProjectList, setOldProjectList] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
-
+  const [isEmpty, setIsEmpty] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/productList");
+        const response = await axios({
+          method: "get",
+          url: "http://127.0.0.1:1212/api/project/",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        });
         if (response) {
           setIsFetched(true);
+          console.log(response.data);
         }
         setActivateProjectList(
           response.data.filter((project) => project.isActive === true)
@@ -37,7 +44,10 @@ const ProjectList = () => {
         setOldProjectList(
           response.data.filter((project) => project.isActive === false)
         );
-      } catch (error) {}
+      } catch (error) {
+        console.log("err:", error);
+        setIsEmpty(true);
+      }
     };
     fetchData();
   }, []);
@@ -52,19 +62,33 @@ const ProjectList = () => {
     updatedActiveProductList.splice(index, 1);
     setActivateProjectList(updatedActiveProductList);
   };
+  const getProductList = async (projectID) => {
+    try {
+      const response = await axios({
+        method: "post",
+        url: "http://127.0.0.1:1212/api/userproduct/",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+        data: { projectID: projectID },
+      });
+      return response.data;
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
   return (
     <div>
       <UserNavBar />
 
-      {!isFetched && (
+      {/* {!isFetched && (
         <LoaderContainer>
           <Loader />
         </LoaderContainer>
-      )}
+      )} */}
 
-      {isFetched &&
-      activeProjectList.length === 0 &&
-      oldProjectList.length === 0 ? (
+      {isEmpty ? (
         <TitleContainer>
           <h2>create your new project</h2>
           <FabButton
@@ -106,13 +130,14 @@ const ProjectList = () => {
                   <PorjectItemContainer>
                     <div key={index}>
                       <h3>{item.projectName}</h3>
-                      <p> number of products: {item.products.length}</p>
+                      {/* <p> number of products: {item.products.length}</p> */}
 
                       <IconButton
                         onClick={() => {
-                          navigate("/user/project-detail", {
-                            state: { projectInfo: item },
-                          });
+                          // navigate("/user/project-detail", {
+                          //   state: { projectInfo: item },
+                          // });
+                          getProductList(item._id);
                         }}
                       >
                         <span class="material-icons">info</span>
@@ -130,7 +155,6 @@ const ProjectList = () => {
                   <PorjectItemContainer>
                     <ProjectItem key={index}>
                       <h3>{item.projectName}</h3>
-                      <p> number of products: {item.products.length}</p>
                     </ProjectItem>
                     <ProjectButtonContainer>
                       <IconButton
@@ -141,9 +165,14 @@ const ProjectList = () => {
                         <span class="material-icons">check_circle_outline</span>
                       </IconButton>
                       <IconButton
-                        onClick={() => {
+                        onClick={async () => {
+                          const productList = await getProductList(item._id);
                           navigate("/user/project-detail", {
-                            state: { projectInfo: item },
+                            state: {
+                              projectInfo: productList,
+                              projectID: item._id,
+                              projectName: item.projectName,
+                            },
                           });
                         }}
                       >
