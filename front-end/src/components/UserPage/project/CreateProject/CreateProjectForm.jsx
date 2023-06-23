@@ -40,15 +40,6 @@ const CreateProjectForm = () => {
       setProjectName("");
       alert("Project name already exist");
     }
-    // const respond = await axios({
-    //   url: "http://127.0.0.1:1212/api/project/create",
-    //   method: "post",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-    //   },
-    //   data: { projectName: projectName, isActive: true },
-    // });
   };
 
   return (

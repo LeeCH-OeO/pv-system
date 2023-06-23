@@ -122,21 +122,33 @@ const ProjectMap = ({ products, projectID, projectName }) => {
     });
   };
   const addProduct = () => {
-    setProductList([
-      ...productList,
-      {
-        lat: addProductItem.lat,
-        lon: addProductItem.lon,
+    if (
+      localStorage.getItem("isUnlimited") === "false" &&
+      productList.length === 3
+    ) {
+      setAddProductItem({ lat: "", lon: "" });
 
-        companyProductID: companyProductID,
-      },
-    ]);
+      setCompanyProductID("");
+      setSearchtext("");
+      setShowAddForm(false);
+      alert("Free user can have only 3 product");
+    } else {
+      setProductList([
+        ...productList,
+        {
+          lat: addProductItem.lat,
+          lon: addProductItem.lon,
 
-    setAddProductItem({ lat: "", lon: "" });
+          companyProductID: companyProductID,
+        },
+      ]);
 
-    setCompanyProductID("");
-    setSearchtext("");
-    setShowAddForm(false);
+      setAddProductItem({ lat: "", lon: "" });
+
+      setCompanyProductID("");
+      setSearchtext("");
+      setShowAddForm(false);
+    }
   };
   const handleEdit = (data) => {
     setShowEditForm(true);

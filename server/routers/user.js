@@ -55,7 +55,10 @@ router.post("/login", async (req, res) => {
     if (!result.isActive) {
       return res.status(404).json({ message: "Accound already deleted" });
     }
-    res.json({ message: "success", accessToken: accessToken });
+    res.json({
+      message: "success",
+      accessToken: accessToken,
+    });
   } else res.status(401).json({ message: "incorrect password " });
 });
 

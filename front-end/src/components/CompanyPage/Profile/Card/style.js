@@ -31,8 +31,7 @@ const EditFormContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  border-style: solid;
-  border-color: green;
+
   width: 30%;
   @media (max-width: 800px) {
     width: 80%;
@@ -42,10 +41,31 @@ const EditFormContainer = styled.div`
   padding-right: 1rem;
   margin-bottom: 1rem;
 `;
+
+const Button = styled.button`
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  text-transform: uppercase;
+  border-radius: 10px; /* Adjust the value to change the roundness */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #2980b9;
+  }
+`;
+
 export {
   ProfileCardContainer,
   AvatarImage,
   ButtonContainer,
   EditCardContainer,
   EditFormContainer,
+  Button,
 };

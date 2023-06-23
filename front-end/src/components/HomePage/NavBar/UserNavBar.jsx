@@ -30,6 +30,9 @@ const UserNavBar = () => {
         <NavLinks isExpand={isExpand}>
           <NavLink
             onClick={() => {
+              if (localStorage.getItem("userToken")) {
+                navigate("/user/profile");
+              }
               navigate("/user/signup");
             }}
           >
@@ -38,6 +41,10 @@ const UserNavBar = () => {
           </NavLink>
           <NavLink
             onClick={() => {
+              console.log(localStorage.getItem("companyToken"));
+              if (localStorage.getItem("companyToken")) {
+                navigate("/company/profile");
+              }
               navigate("/company/signup");
             }}
           >

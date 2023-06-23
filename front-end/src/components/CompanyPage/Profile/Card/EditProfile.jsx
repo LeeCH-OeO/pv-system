@@ -2,7 +2,7 @@ import React from "react";
 import CompanyNavBar from "../../NavBar/CompanyNavBar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { EditCardContainer, EditFormContainer } from "./style";
+import { EditCardContainer, EditFormContainer, Button } from "./style";
 import { TextField } from "@mui/material";
 import axios from "axios";
 const EditProfile = () => {
@@ -57,8 +57,8 @@ const EditProfile = () => {
               setCompanyInfo({ ...companyInfo, companyEmail: e.target.value });
             }}
           />
-          <button onClick={() => handleSubmit()}>submit</button>
         </EditFormContainer>
+        <Button onClick={() => handleSubmit()}>submit</Button>
       </EditCardContainer>
     </div>
   );

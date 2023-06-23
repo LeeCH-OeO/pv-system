@@ -1,6 +1,6 @@
 import React from "react";
 import ProfileCard from "./Card/Card";
-import { ButtonContainer } from "./Card/style";
+import { ButtonContainer, Button } from "./Card/style";
 import CompanyNavBar from "../NavBar/CompanyNavBar";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -66,10 +66,10 @@ const CompanyProfilePage = () => {
       <ProfileCard
         name={companyInfo.companyName}
         email={companyInfo.email}
-        avatar="https://3.bp.blogspot.com/-KgUzGDeV8r8/VaMOD3z_X-I/AAAAAAAAvh8/YK5LucKKUmo/s800/boy_01.png"
+        avatar="https://2.bp.blogspot.com/-9GI-xR771PQ/V9vCF4H88XI/AAAAAAAA97Y/i6vP18O0rToLsdj04YOj6qjVQFtwn4lQACLcB/s800/company_character1_baby.png"
       />
       <ButtonContainer>
-        <button
+        <Button
           onClick={() => {
             navigate("/company/edit-profile", {
               state: {
@@ -80,17 +80,17 @@ const CompanyProfilePage = () => {
           }}
         >
           edit
-        </button>
-        <button onClick={() => handleOpenDialog()}>delete</button>
+        </Button>
+        <Button onClick={() => handleOpenDialog()}>delete</Button>
         {isOpen && (
           <DialogOverlay>
             <DialogContainer open onClose={handleCloseDialog}>
               <h2>Confirmation</h2>
               <p>Do you really want to delete your account?</p>
               <ButtonContainer>
-                <button onClick={handleCloseDialog}>Cancel</button>
+                <Button onClick={handleCloseDialog}>Cancel</Button>
 
-                <button onClick={() => handleDelete()}>Delete</button>
+                <Button onClick={() => handleDelete()}>Delete</Button>
               </ButtonContainer>{" "}
             </DialogContainer>
           </DialogOverlay>

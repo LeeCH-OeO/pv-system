@@ -115,22 +115,33 @@ const ProjectMap = () => {
     });
   };
   const addProduct = () => {
-    setProductList([
-      ...productList,
-      {
-        location: {
-          lat: addProductItem.lat.toString(),
-          lon: addProductItem.lon.toString(),
+    if (
+      localStorage.getItem("isUnlimited") === "false" &&
+      productList.length === 3
+    ) {
+      setAddProductItem({ lat: "", lon: "" });
+      setAddProductItemName("");
+      setSearchtext("");
+      setShowAddForm(false);
+      alert("Free user can have only 3 product");
+    } else {
+      setProductList([
+        ...productList,
+        {
+          location: {
+            lat: addProductItem.lat.toString(),
+            lon: addProductItem.lon.toString(),
+          },
+
+          productName: addProductItemName,
         },
+      ]);
 
-        productName: addProductItemName,
-      },
-    ]);
-
-    setAddProductItem({ lat: "", lon: "" });
-    setAddProductItemName("");
-    setSearchtext("");
-    setShowAddForm(false);
+      setAddProductItem({ lat: "", lon: "" });
+      setAddProductItemName("");
+      setSearchtext("");
+      setShowAddForm(false);
+    }
   };
   const handleEdit = ({ data }) => {
     setShowEditForm(true);

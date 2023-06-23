@@ -54,13 +54,7 @@ const ProjectList = () => {
 
   const handleGetReport = async (project, index) => {
     console.log(project);
-    // const updatedActiveProductList = [...activeProjectList];
-    // updatedActiveProductList[index].isActive = false;
-    // const updatedOldProjectList = [...oldProjectList];
-    // updatedOldProjectList.push(updatedActiveProductList[index]);
-    // setOldProjectList(updatedOldProjectList);
-    // updatedActiveProductList.splice(index, 1);
-    // setActivateProjectList(updatedActiveProductList);
+
     try {
       const res = await axios({
         method: "delete",
@@ -123,7 +117,14 @@ const ProjectList = () => {
           <>
             <FabButton
               onClick={() => {
-                navigate("/user/new-project");
+                if (
+                  localStorage.getItem("isUnlimited") === "false" &&
+                  activeProjectList.length === 1
+                ) {
+                  alert("Free user can only have one project ");
+                } else {
+                  navigate("/user/new-project");
+                }
               }}
             >
               <span class="material-icons">add</span>

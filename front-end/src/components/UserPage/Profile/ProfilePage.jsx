@@ -29,6 +29,7 @@ const ProfilePage = () => {
         email: res.data.email,
         image: res.data.image,
       });
+      localStorage.setItem("isUnlimited", res.data.isUnlimited);
     } catch (error) {
       console.log(error);
     }
