@@ -28,7 +28,7 @@ const EditCard = () => {
         },
       });
       if (res) {
-        navigate("/");
+        navigate("/user/signin");
         localStorage.removeItem("userToken");
       }
     } catch (error) {

@@ -26,7 +26,7 @@ const EditProfile = () => {
         },
       });
       if (res) {
-        navigate("/");
+        navigate("/company/signin");
         localStorage.removeItem("companyToken");
       }
     } catch (error) {

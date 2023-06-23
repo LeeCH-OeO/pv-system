@@ -27,6 +27,7 @@ const UserSignIn = () => {
       navigate("/user/profile");
     } catch (error) {
       console.log("error message", error);
+      alert("accout not found");
     }
 
     setUserInfo({

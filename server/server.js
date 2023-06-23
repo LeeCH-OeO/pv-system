@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json({ limit: "10mb" }));
-app.use(bodyParser.urlencoded({ limit: "10", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

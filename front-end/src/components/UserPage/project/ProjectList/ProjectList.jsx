@@ -52,15 +52,37 @@ const ProjectList = () => {
     fetchData();
   }, []);
 
-  const handleGetReport = (project, index) => {
+  const handleGetReport = async (project, index) => {
     console.log(project);
-    const updatedActiveProductList = [...activeProjectList];
-    updatedActiveProductList[index].isActive = false;
-    const updatedOldProjectList = [...oldProjectList];
-    updatedOldProjectList.push(updatedActiveProductList[index]);
-    setOldProjectList(updatedOldProjectList);
-    updatedActiveProductList.splice(index, 1);
-    setActivateProjectList(updatedActiveProductList);
+    // const updatedActiveProductList = [...activeProjectList];
+    // updatedActiveProductList[index].isActive = false;
+    // const updatedOldProjectList = [...oldProjectList];
+    // updatedOldProjectList.push(updatedActiveProductList[index]);
+    // setOldProjectList(updatedOldProjectList);
+    // updatedActiveProductList.splice(index, 1);
+    // setActivateProjectList(updatedActiveProductList);
+    try {
+      const res = await axios({
+        method: "delete",
+        url: "http://127.0.0.1:1212/api/project/finish",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+        data: { projectName: project.projectName },
+      });
+      if (res) {
+        const updatedActiveProductList = [...activeProjectList];
+        updatedActiveProductList[index].isActive = false;
+        const updatedOldProjectList = [...oldProjectList];
+        updatedOldProjectList.push(updatedActiveProductList[index]);
+        setOldProjectList(updatedOldProjectList);
+        updatedActiveProductList.splice(index, 1);
+        setActivateProjectList(updatedActiveProductList);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   const getProductList = async (projectID) => {
     try {
@@ -81,12 +103,6 @@ const ProjectList = () => {
   return (
     <div>
       <UserNavBar />
-
-      {/* {!isFetched && (
-        <LoaderContainer>
-          <Loader />
-        </LoaderContainer>
-      )} */}
 
       {isEmpty ? (
         <TitleContainer>
@@ -130,13 +146,9 @@ const ProjectList = () => {
                   <PorjectItemContainer>
                     <div key={index}>
                       <h3>{item.projectName}</h3>
-                      {/* <p> number of products: {item.products.length}</p> */}
 
                       <IconButton
                         onClick={() => {
-                          // navigate("/user/project-detail", {
-                          //   state: { projectInfo: item },
-                          // });
                           getProductList(item._id);
                         }}
                       >

@@ -27,6 +27,7 @@ const CompanySignIn = () => {
       navigate("/company/profile");
     } catch (error) {
       console.log("error message", error);
+      alert("account not found");
     }
 
     setCompanyInfo({
@@ -39,7 +40,7 @@ const CompanySignIn = () => {
       <SignUpForm>
         <h2>Comapny Sign in</h2>
         <TextField
-          label="user name"
+          label="company name"
           margin="dense"
           autoComplete="off"
           fullWidth

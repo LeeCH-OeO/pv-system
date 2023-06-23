@@ -22,6 +22,7 @@ const CompanySignUp = () => {
         headers: { "Content-Type": "application/json" },
       });
       console.log(res);
+      navigate("/company/signin");
     } catch (error) {
       console.log("error message", error);
     }

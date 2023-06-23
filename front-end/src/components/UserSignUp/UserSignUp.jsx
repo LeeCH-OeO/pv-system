@@ -6,31 +6,20 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { SignUpForm, FormContainer } from "./style";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar } from "@mui/material";
 import axios from "axios";
 import { Link } from "react-router-dom";
 const UserSignUp = () => {
   const navigate = useNavigate();
+
   const [userInfo, setUserInfo] = useState({
     userName: "",
     email: "",
     password: "",
-    isUnlimited: false,
     image: "",
+    isUnlimited: false,
     isActive: true,
   });
 
-  const handleEncodeImage = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = function (event) {
-      const base64 = event.target.result.split(",")[1];
-      setUserInfo({ ...userInfo, image: base64 });
-    };
-
-    reader.readAsDataURL(file);
-  };
   const handleOnClick = async () => {
     try {
       const res = await axios({
@@ -40,7 +29,7 @@ const UserSignUp = () => {
         headers: { "Content-Type": "application/json" },
       });
       console.log(res);
-      navigate("/user/product");
+      navigate("/user/signin");
     } catch (error) {
       console.log("error message", error);
     }
@@ -52,6 +41,7 @@ const UserSignUp = () => {
       isUnlimited: false,
       image: "",
     });
+    console.log(userInfo);
   };
   useEffect(() => {
     if (localStorage.getItem("userToken")) {
@@ -92,7 +82,6 @@ const UserSignUp = () => {
           }
         />
         upload your profile photo
-        <input type="file" accept="image/*" onChange={handleEncodeImage} />
         <FormControlLabel
           control={
             <Checkbox
@@ -117,12 +106,12 @@ const UserSignUp = () => {
         >
           submit
         </Button>
-        {userInfo.image && (
+        {/* {userInfo.image && (
           <Avatar
             src={`data:image/*;base64,${userInfo.image}`}
             sx={{ width: 56, height: 56 }}
           />
-        )}
+        )} */}
       </SignUpForm>
       <div>
         <p>
