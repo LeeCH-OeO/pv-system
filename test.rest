@@ -3,7 +3,7 @@ POST http://127.0.0.1:1212/api/user/signup HTTP/1.1
 Content-Type: application/json
 
 {
-"userName":"new1","password":"0000", "email":"new1@123", "isUnlimited": true,"image": "123","isActive": true
+"userName":"new1123321","password":"0000", "email":"new1@123123123", "isUnlimited": true,"image": "123","isActive": true
 }
 ### update user info
 PUT  http://127.0.0.1:1212/api/user/ HTTP/1.1
@@ -41,7 +41,7 @@ Content-Type: application/json
 POST http://127.0.0.1:1212/api/company/login HTTP/1.1
 Content-Type: application/json
 
-{"companyName":"rewenew","password":"0000"}
+{"companyName":"updatedName","password":"0000"}
 
 ### get conpany profile
 GET  http://127.0.0.1:1212/api/company/profile HTTP/1.1
@@ -74,7 +74,7 @@ Content-Type: application/json
 {"projectName":"new Project4"}
 ### get project
 GET http://127.0.0.1:1212/api/project/ HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InVwZGF0ZSB5ZWUiLCJ1c2VySUQiOiI2NDkzMWNkOTE2ODVhYmQwMjZmNjhkNDAiLCJpYXQiOjE2ODczODY5NzJ9.lkNqcH1zZJNRBlrDzDSfp30R71hQ6ar9SzFdhBmVazM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5ldzEiLCJ1c2VySUQiOiI2NDkzMjJjYzA3ZWE3NjcyZjhhZGJhYTEiLCJpYXQiOjE2ODczODQ0ODZ9.z6nE20gyas4na2wcxeJ7OZiZE1WMUWtp3v9UuKtQUV4
 
 
 ### create user Product
@@ -124,16 +124,34 @@ Content-Type: application/json
 {"area": 1,
   "orientation": "N",
   "tilt": 2,
-  "productName": "OeO"}
+  "productName": "OeO111Piyan"}
 
-### update user Product
+### update company Product
 
 PATCH  http://127.0.0.1:1212/api/companyproduct/update HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55TmFtZSI6InJld2VuZXciLCJjb21wYW55SUQiOiI2NDkzNzBmNWZjYzNjZDhmMzVkNzA0NmYiLCJpYXQiOjE2ODc0MzYyNDR9.4uo3SnKFHabmKDPClEWfS9oRs_xk7rEgzWrG5lWgN-Y
 
-{"data":{"area": 1,
+{"data":{"area": 3,
   "orientation": "N",
   "tilt": 2,
-  "productName": "111","createBy":"649370f5fcc3cd8f35d7046f"
-}, "id" :"64943d54360e144cf0bb8851"}
+  "productName": "update product","createBy":"649370f5fcc3cd8f35d7046f"
+}, "id" :"64958c190fe1481c23701e06"}
+
+### Delete company product
+DELETE http://127.0.0.1:1212/api/companyproduct/delete HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55TmFtZSI6InJld2VuZXciLCJjb21wYW55SUQiOiI2NDkzNzBmNWZjYzNjZDhmMzVkNzA0NmYiLCJpYXQiOjE2ODc0MzYyNDR9.4uo3SnKFHabmKDPClEWfS9oRs_xk7rEgzWrG5lWgN-Y
+
+{"id" :"64944b5949cdc800ea5613a3"}
+
+
+### User get company Product list
+
+GET http://127.0.0.1:1212/api/companyproduct/user-list HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5ldzEiLCJ1c2VySUQiOiI2NDkzMjJjYzA3ZWE3NjcyZjhhZGJhYTEiLCJpYXQiOjE2ODc0NDE3ODZ9.FkjhSWSlAFMKqYS8xW2mirMgNAQOsWO1yo6b-QRPb-Y
+
+
+### Company get product list
+GET http://127.0.0.1:1212/api/companyproduct/company-list HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55TmFtZSI6InJld2VuZXciLCJjb21wYW55SUQiOiI2NDkzNzBmNWZjYzNjZDhmMzVkNzA0NmYiLCJpYXQiOjE2ODc0MzYyNDR9.4uo3SnKFHabmKDPClEWfS9oRs_xk7rEgzWrG5lWgN-Y

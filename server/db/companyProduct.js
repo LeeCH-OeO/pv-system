@@ -60,7 +60,6 @@ async function dbCompanyProductListForUser() {
 
 async function dbCompanyProductListForCompany(data) {
   const result = await companyProduct.find(data);
-  console.log(result);
   if (result) {
     return result;
   } else {

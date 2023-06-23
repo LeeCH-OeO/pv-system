@@ -41,6 +41,7 @@ const ProjectMap = ({ products, projectID, projectName }) => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [searchText, setSearchtext] = useState("");
   const [deleteList, setDeleteList] = useState([]);
+  const [companyProductList, setCompanyProductList] = useState([]);
   const tempPorductTypeList = [1, 2, 3, 4, 5];
   const navigate = useNavigate();
   const handleAddFormSearch = async (input) => {
@@ -91,8 +92,25 @@ const ProjectMap = ({ products, projectID, projectName }) => {
     closePopup();
   };
   useEffect(() => {
-    console.log("effect", productList);
-  }, [productList]);
+    const fetchData = async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          url: "http://127.0.0.1:1212/api/companyproduct/user-list",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        });
+        if (response) {
+          setCompanyProductList(response.data);
+        }
+      } catch (error) {
+        console.log("err:", error);
+        setIsEmpty(true);
+      }
+    };
+    fetchData();
+  }, []);
   const ClickMarker = () => {
     const map = useMapEvent("contextmenu", (e) => {
       setAddProductItem({
@@ -247,6 +265,7 @@ const ProjectMap = ({ products, projectID, projectName }) => {
                   <PopupButtonContainer>
                     <IconButton
                       title="Delete"
+                      disabled={productList.length <= 1}
                       onClick={() => {
                         handleOnDelete(index);
                       }}
@@ -338,8 +357,8 @@ const ProjectMap = ({ products, projectID, projectName }) => {
                   }}
                 >
                   <option value={""}>--Select--</option>
-                  {tempPorductTypeList.map((item, index) => {
-                    return <option id={index}>{item}</option>;
+                  {companyProductList.map((item, index) => {
+                    return <option id={index}>{item.productName}</option>;
                   })}
                 </StyledSelect>
               </SelectForm>
@@ -436,8 +455,8 @@ const ProjectMap = ({ products, projectID, projectName }) => {
                   }}
                 >
                   <option value={""}>--Select--</option>
-                  {tempPorductTypeList.map((item, index) => {
-                    return <option id={index}>{item}</option>;
+                  {companyProductList.map((item, index) => {
+                    return <option id={index}>{item.productName}</option>;
                   })}
                 </StyledSelect>
               </SelectForm>

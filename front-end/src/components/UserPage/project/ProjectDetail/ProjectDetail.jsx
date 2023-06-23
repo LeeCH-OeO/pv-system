@@ -4,8 +4,7 @@ import { useState } from "react";
 import ProjectMap from "../ProjectMap/ProjectMap";
 const ProjectDetail = () => {
   const location = useLocation();
-  console.log(location.state.projectInfo);
-  console.log(location.state.projectID);
+
   return (
     <div>
       <ProjectMap

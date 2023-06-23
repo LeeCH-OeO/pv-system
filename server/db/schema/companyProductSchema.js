@@ -5,6 +5,5 @@ const companyProductSchema = new mongoose.Schema({
   tilt: Number,
   productName: String,
   createBy: String,
-  createAt: String,
 });
 module.exports = mongoose.model("companyproduct", companyProductSchema);

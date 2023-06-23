@@ -1,6 +1,6 @@
 import React from "react";
 import CompanyNavBar from "../NavBar/CompanyNavBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ProductListContainer,
   ProductListPageContainer,
@@ -14,13 +14,27 @@ import {
   FabButton,
   TitleContainer,
 } from "./style";
+import axios from "axios";
 import { TextField } from "@mui/material";
 const ProductList = () => {
-  const [tempList, setTempList] = useState([
-    { productName: "product1", area: 110, tilt: 20, orientation: 40 },
-    { productName: "product12", area: 120, tilt: 20, orientation: 40 },
-    { productName: "product13", area: 130, tilt: 20, orientation: 40 },
-  ]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios({
+          method: "get",
+          url: "http://127.0.0.1:1212/api/companyproduct/company-list",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("companyToken")}`,
+          },
+        });
+        console.log(res.data);
+        setProductList(res.data);
+      } catch (error) {}
+    };
+    fetchData();
+  }, []);
+
+  const [productList, setProductList] = useState([]);
   const [productInfo, setProductInfo] = useState({
     productName: "",
     area: "",
@@ -28,10 +42,25 @@ const ProductList = () => {
     orientation: "",
     index: "",
   });
-  const handleOnDelete = (index) => {
-    const updatedList = [...tempList];
-    updatedList.splice(index, 1);
-    setTempList(updatedList);
+  const handleOnDelete = async (index) => {
+    try {
+      const res = await axios({
+        method: "delete",
+        url: "http://127.0.0.1:1212/api/companyproduct/delete",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("companyToken")}`,
+        },
+        data: { id: productList[index]._id },
+      });
+      if (res) {
+        const updatedList = [...productList];
+        updatedList.splice(index, 1);
+        setProductList(updatedList);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -39,32 +68,78 @@ const ProductList = () => {
   const handleUpdate = (product, index) => {
     setProductInfo({ ...product, index: index });
     setShowEditModal(true);
+    console.log("handleupdate: ", product);
   };
-  const saveUpdate = () => {
-    const updatedList = [...tempList];
-    updatedList[productInfo.index] = productInfo;
-    setTempList(updatedList);
-    console.log(updatedList[productInfo.index]);
-    setShowEditModal(false);
-    setProductInfo({
-      productName: "",
-      area: "",
-      tilt: "",
-      orientation: "",
-      index: "",
-    });
+  const saveUpdate = async () => {
+    console.log("save update", productInfo);
+    try {
+      const res = await axios({
+        method: "patch",
+        url: "http://127.0.0.1:1212/api/companyproduct/update",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("companyToken")}`,
+        },
+        data: { data: { productInfo }, id: productInfo._id },
+      });
+      if (res) {
+        const updatedList = [...productList];
+        updatedList[productInfo.index] = productInfo;
+        setProductList(updatedList);
+        console.log(updatedList[productInfo.index]);
+        setShowEditModal(false);
+        setProductInfo({
+          productName: "",
+          area: "",
+          tilt: "",
+          orientation: "",
+          index: "",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      setProductInfo({
+        productName: "",
+        area: "",
+        tilt: "",
+        orientation: "",
+        index: "",
+      });
+    }
   };
-  const saveNewProduct = () => {
-    setTempList([...tempList, productInfo]);
-    setShowCreateModal(false);
-    setProductInfo({
-      productName: "",
-      area: "",
-      tilt: "",
-      orientation: "",
-      index: "",
-    });
+  const saveNewProduct = async () => {
+    try {
+      await axios({
+        method: "post",
+        url: "http://127.0.0.1:1212/api/companyproduct/create",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("companyToken")}`,
+        },
+        data: productInfo,
+      });
+      setProductList([...productList, productInfo]);
+      setShowCreateModal(false);
+      setProductInfo({
+        productName: "",
+        area: "",
+        tilt: "",
+        orientation: "",
+        index: "",
+      });
+    } catch (error) {
+      alert("Product name already exist");
+      console.log(error);
+      setProductInfo({
+        productName: "",
+        area: "",
+        tilt: "",
+        orientation: "",
+        index: "",
+      });
+    }
   };
+
   return (
     <>
       <CompanyNavBar />
@@ -80,40 +155,44 @@ const ProductList = () => {
           <h2>Product list</h2>
         </TitleContainer>
 
-        <ProductListContainer>
-          {tempList.map((item, index) => {
-            return (
-              <ProductItemContainer>
-                <ProductItem key={index}>
-                  <h3>
-                    {item.productName} <br />
-                    Orientation: {item.orientation}
-                    <br />
-                    Area: {item.area}
-                    <br />
-                    Tilt:{item.tilt}
-                  </h3>
-                </ProductItem>
-                <ProductItemButtonContainer>
-                  <IconButton
-                    onClick={() => {
-                      handleOnDelete(index);
-                    }}
-                  >
-                    <span class="material-icons">delete</span>
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleUpdate(item, index);
-                    }}
-                  >
-                    <span class="material-icons">edit</span>
-                  </IconButton>
-                </ProductItemButtonContainer>
-              </ProductItemContainer>
-            );
-          })}
-        </ProductListContainer>
+        {productList.length === 0 ? (
+          <h3>Create your new product</h3>
+        ) : (
+          <ProductListContainer>
+            {productList.map((item, index) => {
+              return (
+                <ProductItemContainer key={index}>
+                  <ProductItem>
+                    <h3>
+                      {item.productName} <br />
+                      Orientation: {item.orientation}
+                      <br />
+                      Area: {item.area}
+                      <br />
+                      Tilt:{item.tilt}
+                    </h3>
+                  </ProductItem>
+                  <ProductItemButtonContainer>
+                    <IconButton
+                      onClick={() => {
+                        handleOnDelete(index);
+                      }}
+                    >
+                      <span class="material-icons">delete</span>
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleUpdate(item, index);
+                      }}
+                    >
+                      <span class="material-icons">edit</span>
+                    </IconButton>
+                  </ProductItemButtonContainer>
+                </ProductItemContainer>
+              );
+            })}
+          </ProductListContainer>
+        )}
       </ProductListPageContainer>
       {showEditModal && (
         <DialogOverlay>
@@ -198,17 +277,25 @@ const ProductList = () => {
             <TextField
               label="area (m²)"
               margin="dense"
+              type="number"
               value={productInfo.area}
               onChange={(e) => {
-                setProductInfo({ ...productInfo, area: e.target.value });
+                setProductInfo({
+                  ...productInfo,
+                  area: Number(e.target.value),
+                });
               }}
             />
             <TextField
               label="tilt"
               margin="dense"
+              type="number"
               value={productInfo.tilt}
               onChange={(e) => {
-                setProductInfo({ ...productInfo, tilt: e.target.value });
+                setProductInfo({
+                  ...productInfo,
+                  tilt: Number(e.target.value),
+                });
               }}
             />
             <TextField

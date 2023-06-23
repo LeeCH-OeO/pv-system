@@ -29,7 +29,7 @@ import { useNavigate } from "react-router-dom";
 const ProjectMap = () => {
   const [productList, setProductList] = useState([]);
   const [addProductItem, setAddProductItem] = useState({ lat: "", lon: "" });
-
+  const [companyProductList, setCompanyProductList] = useState([]);
   const [addProductItemName, setAddProductItemName] = useState("");
   const [editProductItem, setEditProductItem] = useState({
     lat: "",
@@ -84,8 +84,26 @@ const ProjectMap = () => {
     closePopup();
   };
   useEffect(() => {
-    console.log("effect", productList);
-  }, [productList]);
+    const fetchData = async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          url: "http://127.0.0.1:1212/api/companyproduct/user-list",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        });
+        if (response) {
+          setCompanyProductList(response.data);
+          console.log(response.data);
+        }
+      } catch (error) {
+        console.log("err:", error);
+        setIsEmpty(true);
+      }
+    };
+    fetchData();
+  }, []);
   const ClickMarker = () => {
     const map = useMapEvent("contextmenu", (e) => {
       setAddProductItem({
@@ -288,8 +306,8 @@ const ProjectMap = () => {
                 }}
               >
                 <option value={""}>--Select--</option>
-                {tempPorductTypeList.map((item, index) => {
-                  return <option id={index}>{item}</option>;
+                {companyProductList.map((item, index) => {
+                  return <option id={index}>{item.productName}</option>;
                 })}
               </StyledSelect>
             </SelectForm>
@@ -386,8 +404,8 @@ const ProjectMap = () => {
                 }}
               >
                 <option value={""}>--Select--</option>
-                {tempPorductTypeList.map((item, index) => {
-                  return <option id={index}>{item}</option>;
+                {companyProductList.map((item, index) => {
+                  return <option id={index}>{item.productName}</option>;
                 })}
               </StyledSelect>
             </SelectForm>

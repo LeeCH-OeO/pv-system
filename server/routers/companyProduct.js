@@ -32,13 +32,14 @@ router.post(
 );
 
 router.patch("/update", authenticateCompany, async (req, res) => {
-  if (req.company.companyID !== req.body.data.createBy) {
+  console.log(req.body.data);
+  if (req.company.companyID !== req.body.data.productInfo.createBy) {
     return res.sendStatus(401);
   }
 
   const result = await dbUpdateCompanyProduct({
     ID: req.body.id,
-    data: req.body.data,
+    data: req.body.data.productInfo,
   });
   if (result) {
     return res.sendStatus(201);

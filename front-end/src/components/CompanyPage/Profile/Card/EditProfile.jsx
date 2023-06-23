@@ -17,7 +17,7 @@ const EditProfile = () => {
   const handleSubmit = async () => {
     try {
       const res = await axios({
-        method: "put",
+        method: "patch",
         url: "http://127.0.0.1:1212/api/company/",
         data: { data: companyInfo },
         headers: {
