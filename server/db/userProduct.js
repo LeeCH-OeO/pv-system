@@ -10,7 +10,7 @@ async function dbAddUserProduct(data) {
   });
   if (result) {
     console.log(new Date().toISOString());
-    return true;
+    return result._id;
   } else return false;
 }
 async function dbUpdateuserProduct(data) {

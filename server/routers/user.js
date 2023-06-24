@@ -78,6 +78,7 @@ async function checkIfUserExist(req, res, next) {
     { userName: req.body.userName },
     { email: req.body.email },
   ]);
+  console.log(result);
   if (result) {
     return res.status(409).json({ message: "User already exists" });
   }

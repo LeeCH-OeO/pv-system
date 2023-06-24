@@ -34,8 +34,10 @@ async function dbCheckUserExist(Data) {
 async function dbCheckUserExistForProductLIst(Data) {
   const result = await User.findOne(Data);
   if (result) {
+    console.log(result);
     return result;
   } else {
+    console.log(result);
     return false;
   }
 }

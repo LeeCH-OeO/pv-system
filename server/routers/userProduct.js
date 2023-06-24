@@ -10,14 +10,16 @@ const {
   dbIfUserHaveProduct,
   dbGetProduct,
 } = require("../db/userProduct");
-
+const { dbAddProductLocation } = require("../db/userProductLocation");
 router.post("/create", authenticateUser, async (req, res) => {
-  console.log(req.user.userID);
   const result = await dbAddUserProduct({
     ...req.body,
     createBy: req.user.userID,
   });
+  // await dbAddProductLocation(req.body);
   if (result) {
+    console.log(result);
+    await dbAddProductLocation({ ...req.body, productID: result });
     res.sendStatus(201);
   } else {
     res.sendStatus(500);
@@ -33,6 +35,8 @@ router.patch("/update", authenticateUser, async (req, res) => {
     id: req.body.id,
   });
   if (result) {
+    await dbAddProductLocation({ ...req.body.data, productID: req.body.id });
+
     res.sendStatus(201);
   } else {
     res.sendStatus(500);

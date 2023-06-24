@@ -82,8 +82,8 @@ POST http://127.0.0.1:1212/api/userproduct/create HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InVwZGF0ZSB5ZWUiLCJ1c2VySUQiOiI2NDkzMWNkOTE2ODVhYmQwMjZmNjhkNDAiLCJpYXQiOjE2ODczODY5NzJ9.lkNqcH1zZJNRBlrDzDSfp30R71hQ6ar9SzFdhBmVazM
 
-{"lat": 23.50,
-  "lon": 12.12,
+{"lat": 223,
+  "lon": 122.12,
   "companyProductID": "new",
   "projectID": "weweqwrwqw"
 }
@@ -155,3 +155,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5ld
 ### Company get product list
 GET http://127.0.0.1:1212/api/companyproduct/company-list HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55TmFtZSI6InJld2VuZXciLCJjb21wYW55SUQiOiI2NDkzNzBmNWZjYzNjZDhmMzVkNzA0NmYiLCJpYXQiOjE2ODc0MzYyNDR9.4uo3SnKFHabmKDPClEWfS9oRs_xk7rEgzWrG5lWgN-Y
+
+
+###
+GET  http://dataservice.accuweather.com/currentconditions/v1/171238/historical/24?apikey=m2cab6WpSE4zCfiATEsug3ioqTbjtUnR HTTP/1.1
+
