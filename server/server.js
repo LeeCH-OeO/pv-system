@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const port = 1212;
 const bodyParser = require("body-parser");
-const { tempCron } = require("./cornjob/temp");
+// const { tempCron } = require("./cornjob/temp");
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json({ limit: "10mb" }));
@@ -26,4 +26,4 @@ app.use("/api/companyproduct", companyProductRouter);
 app.listen(port, "127.0.0.1", () => {
   console.log(`Example app listening on port ${port}`);
 });
-tempCron.start();
+// tempCron.start();

@@ -41,6 +41,8 @@ const ProductList = () => {
     tilt: "",
     orientation: "",
     index: "",
+    powerPeak: "",
+    systemLoss: "",
   });
   const handleOnDelete = async (index) => {
     try {
@@ -83,18 +85,18 @@ const ProductList = () => {
         data: { data: { productInfo }, id: productInfo._id },
       });
       if (res) {
-        const updatedList = [...productList];
-        updatedList[productInfo.index] = productInfo;
-        setProductList(updatedList);
-        console.log(updatedList[productInfo.index]);
-        setShowEditModal(false);
-        setProductInfo({
-          productName: "",
-          area: "",
-          tilt: "",
-          orientation: "",
-          index: "",
-        });
+        // const updatedList = [...productList];
+        // updatedList[productInfo.index] = productInfo;
+        // setProductList(updatedList);
+        // console.log(updatedList[productInfo.index]);
+        // setShowEditModal(false);
+        // setProductInfo({
+        //   productName: "",
+        //   area: "",
+        //   tilt: "",
+        //   orientation: "",
+        //   index: "",
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);
@@ -118,15 +120,16 @@ const ProductList = () => {
         },
         data: productInfo,
       });
-      setProductList([...productList, productInfo]);
-      setShowCreateModal(false);
-      setProductInfo({
-        productName: "",
-        area: "",
-        tilt: "",
-        orientation: "",
-        index: "",
-      });
+      // setProductList([...productList, productInfo]);
+      // setShowCreateModal(false);
+      // setProductInfo({
+      //   productName: "",
+      //   area: "",
+      //   tilt: "",
+      //   orientation: "",
+      //   index: "",
+      // });
+      window.location.reload();
     } catch (error) {
       alert("Product name already exist");
       console.log(error);
@@ -136,6 +139,8 @@ const ProductList = () => {
         tilt: "",
         orientation: "",
         index: "",
+        powerPeak: "",
+        systemLoss: "",
       });
     }
   };
@@ -170,6 +175,10 @@ const ProductList = () => {
                       Area: {item.area}
                       <br />
                       Tilt:{item.tilt}
+                      <br />
+                      powerPeak:{item.powerPeak}
+                      <br />
+                      system loss: {item.systemLoss}
                     </h3>
                   </ProductItem>
                   <ProductItemButtonContainer>
@@ -212,7 +221,10 @@ const ProductList = () => {
               margin="dense"
               value={productInfo.area}
               onChange={(e) => {
-                setProductInfo({ ...productInfo, area: e.target.value });
+                setProductInfo({
+                  ...productInfo,
+                  area: Number(e.target.value),
+                });
               }}
             />
             <TextField
@@ -220,7 +232,10 @@ const ProductList = () => {
               margin="dense"
               value={productInfo.tilt}
               onChange={(e) => {
-                setProductInfo({ ...productInfo, tilt: e.target.value });
+                setProductInfo({
+                  ...productInfo,
+                  tilt: Number(e.target.value),
+                });
               }}
             />
             <TextField
@@ -228,7 +243,34 @@ const ProductList = () => {
               label="orientation"
               value={productInfo.orientation}
               onChange={(e) => {
-                setProductInfo({ ...productInfo, orientation: e.target.value });
+                setProductInfo({
+                  ...productInfo,
+                  orientation: Number(e.target.value),
+                });
+              }}
+            />
+            <TextField
+              label="powerPeak"
+              margin="dense"
+              type="number"
+              value={productInfo.powerPeak}
+              onChange={(e) => {
+                setProductInfo({
+                  ...productInfo,
+                  powerPeak: Number(e.target.value),
+                });
+              }}
+            />
+            <TextField
+              label="system lose"
+              margin="dense"
+              type="number"
+              value={productInfo.systemLoss}
+              onChange={(e) => {
+                setProductInfo({
+                  ...productInfo,
+                  systemLoss: Number(e.target.value),
+                });
               }}
             />
             <ModalButtonContainer>
@@ -250,7 +292,8 @@ const ProductList = () => {
                   !productInfo.productName ||
                   !productInfo.area ||
                   !productInfo.tilt ||
-                  !productInfo.orientation
+                  !productInfo.orientation ||
+                  !productInfo.powerPeak
                 }
                 onClick={() => saveUpdate()}
               >
@@ -303,7 +346,34 @@ const ProductList = () => {
               label="orientation"
               value={productInfo.orientation}
               onChange={(e) => {
-                setProductInfo({ ...productInfo, orientation: e.target.value });
+                setProductInfo({
+                  ...productInfo,
+                  orientation: Number(e.target.value),
+                });
+              }}
+            />
+            <TextField
+              label="powerPeak"
+              margin="dense"
+              type="number"
+              value={productInfo.powerPeak}
+              onChange={(e) => {
+                setProductInfo({
+                  ...productInfo,
+                  powerPeak: Number(e.target.value),
+                });
+              }}
+            />
+            <TextField
+              label="system lose"
+              margin="dense"
+              type="number"
+              value={productInfo.systemLoss}
+              onChange={(e) => {
+                setProductInfo({
+                  ...productInfo,
+                  systemLoss: Number(e.target.value),
+                });
               }}
             />
             <ModalButtonContainer>
@@ -315,6 +385,7 @@ const ProductList = () => {
                     area: "",
                     tilt: "",
                     orientation: "",
+                    powerPeak: "",
                   });
                 }}
               >
@@ -325,7 +396,8 @@ const ProductList = () => {
                   !productInfo.productName ||
                   !productInfo.area ||
                   !productInfo.tilt ||
-                  !productInfo.orientation
+                  !productInfo.orientation ||
+                  !productInfo.powerPeak
                 }
                 onClick={() => saveNewProduct()}
               >

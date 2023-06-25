@@ -455,7 +455,7 @@ const ProjectMap = ({ products, projectID, projectName }) => {
                 </IconButton>
               </InputForm>
 
-              <SelectForm>
+              {/* <SelectForm>
                 <StyledLabel>product name</StyledLabel>
                 <StyledSelect
                   value={editProductItem.companyProductID}
@@ -471,7 +471,7 @@ const ProjectMap = ({ products, projectID, projectName }) => {
                     return <option id={index}>{item.productName}</option>;
                   })}
                 </StyledSelect>
-              </SelectForm>
+              </SelectForm> */}
               <ModalButtonContainer>
                 <IconButton
                   onClick={() => {

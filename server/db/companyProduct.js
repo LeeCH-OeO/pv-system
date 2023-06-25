@@ -66,6 +66,12 @@ async function dbCompanyProductListForCompany(data) {
     return false;
   }
 }
+async function dbSearchProduct(data) {
+  const result = await companyProduct.findOne(data);
+  if (result) {
+    return result;
+  }
+}
 module.exports = {
   dbAddCompanyProduct,
   dbUpdateCompanyProduct,
@@ -74,4 +80,5 @@ module.exports = {
   dbCheckCompanyProductExist,
   dbCompanyProductListForUser,
   dbCompanyProductListForCompany,
+  dbSearchProduct,
 };

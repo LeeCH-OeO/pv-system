@@ -10,16 +10,20 @@ const {
   dbIfUserHaveProduct,
   dbGetProduct,
 } = require("../db/userProduct");
-const { dbAddProductLocation } = require("../db/userProductLocation");
+// const { dbAddProductLocation } = require("../db/userProductLocation");
+const {
+  dbAddWeatherData,
+  dbUpdateWeatherData,
+  dbDeleteWeatherData,
+} = require("../db/weatherData");
 router.post("/create", authenticateUser, async (req, res) => {
   const result = await dbAddUserProduct({
     ...req.body,
     createBy: req.user.userID,
   });
-  // await dbAddProductLocation(req.body);
   if (result) {
-    console.log(result);
-    await dbAddProductLocation({ ...req.body, productID: result });
+    // await dbAddProductLocation({ ...req.body, productID: result });
+    await dbAddWeatherData({ ...req.body, productID: result });
     res.sendStatus(201);
   } else {
     res.sendStatus(500);
@@ -35,8 +39,7 @@ router.patch("/update", authenticateUser, async (req, res) => {
     id: req.body.id,
   });
   if (result) {
-    await dbAddProductLocation({ ...req.body.data, productID: req.body.id });
-
+    await dbUpdateWeatherData({ ...req.body.data, productID: req.body.id });
     res.sendStatus(201);
   } else {
     res.sendStatus(500);
@@ -62,6 +65,7 @@ router.delete(
   ifUserHaveProduct,
   async (req, res) => {
     const result = await dbDeleteUserProduct(req.body.id);
+    await dbDeleteWeatherData({ productID: req.body.id });
     if (result) {
       res.sendStatus(204);
     } else res.sendStatus(500);
