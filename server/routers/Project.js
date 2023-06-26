@@ -28,7 +28,11 @@ router.get("/", authenticateUser, async (req, res) => {
 });
 
 router.delete("/finish", authenticateUser, async (req, res) => {
-  const data = { projectName: req.body.projectName, createBy: req.user.userID };
+  const data = {
+    _id: req.body.projectID,
+    createBy: req.user.userID,
+    projectName: req.body.projectName,
+  };
 
   const result = await dbFinishProject(data);
   if (result) {

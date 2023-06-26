@@ -10,7 +10,10 @@ async function dbAddWeatherData(data) {
     productName: data.companyProductID,
   });
   let currentDate = new Date();
-  const currentDateStr = new Date().toISOString().split("T")[0];
+  const yesterday = new Date(currentDate);
+  yesterday.setDate(currentDate.getDate() - 1);
+  let yesterdayString = yesterday.toISOString().split("T")[0];
+
   let oneYearAgo = new Date();
   oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
 
@@ -24,7 +27,7 @@ async function dbAddWeatherData(data) {
     latitude: data.lat,
     longitude: data.lon,
     startDate: formattedDate,
-    endDate: currentDateStr,
+    endDate: yesterdayString,
     systemLoss: companyProduct.systemLoss,
     powerPeak: companyProduct.powerPeak,
     orientation: companyProduct.orientation,
@@ -42,13 +45,14 @@ async function dbAddWeatherData(data) {
 }
 
 async function dbUpdateWeatherData(data) {
-  console.log("update weather data: ", data);
   const companyProduct = await dbSearchProduct({
     productName: data.companyProductID,
   });
 
   let currentDate = new Date();
-  const currentDateStr = new Date().toISOString().split("T")[0];
+  const yesterday = new Date(currentDate);
+  yesterday.setDate(currentDate.getDate() - 1);
+  let yesterdayString = yesterday.toISOString().split("T")[0];
   let oneYearAgo = new Date();
   oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
 
@@ -62,7 +66,7 @@ async function dbUpdateWeatherData(data) {
     latitude: data.lat,
     longitude: data.lon,
     startDate: formattedDate,
-    endDate: currentDateStr,
+    endDate: yesterdayString,
     systemLoss: companyProduct.systemLoss,
     powerPeak: companyProduct.powerPeak,
     orientation: companyProduct.orientation,
@@ -73,7 +77,6 @@ async function dbUpdateWeatherData(data) {
   const deleteresult = await weatherData.deleteMany({
     productID: data.productID,
   });
-  console.log(deleteresult);
   result.pvWattsRate.map(async (item) => {
     await weatherData.create({
       ...item,
@@ -86,7 +89,48 @@ async function dbUpdateWeatherData(data) {
 async function dbDeleteWeatherData(data) {
   await weatherData.deleteMany(data);
 }
+
+async function dbAddYesterdayWeatherData(data) {
+  const companyProduct = await dbSearchProduct({
+    productName: data.companyProductID,
+  });
+  let currentDate = new Date();
+  const yesterday = new Date(currentDate);
+  yesterday.setDate(currentDate.getDate() - 1);
+  let yesterdayString = yesterday.toISOString().split("T")[0];
+
+  const result = await pvWatt({
+    latitude: data.lat,
+    longitude: data.lon,
+    startDate: yesterdayString,
+    endDate: yesterdayString,
+    systemLoss: companyProduct.systemLoss,
+    powerPeak: companyProduct.powerPeak,
+    orientation: companyProduct.orientation,
+    tilt: companyProduct.tilt,
+    area: companyProduct.area,
+  });
+  result.pvWattsRate.map((item) => {
+    weatherData.create({
+      ...item,
+      lat: data.lat,
+      lon: data.lon,
+      productID: data.productID,
+    });
+  });
+}
+
+async function weatherDataList(data) {
+  const result = await weatherData.findOne(data);
+  return result;
+}
 function addLeadingZero(number) {
   return number < 10 ? "0" + number : number;
 }
-module.exports = { dbAddWeatherData, dbUpdateWeatherData, dbDeleteWeatherData };
+module.exports = {
+  dbAddWeatherData,
+  dbUpdateWeatherData,
+  dbDeleteWeatherData,
+  dbAddYesterdayWeatherData,
+  weatherDataList,
+};

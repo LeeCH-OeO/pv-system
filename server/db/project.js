@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 const Project = require("./schema/ProjectSchema");
+const { createReport } = require("../createReport/createReport");
 mongoose.connect(process.env.MONGO_URL);
 
 async function dbAddProject(ProjectInfo, userID) {
-  const newProject = await Project.create({ ...ProjectInfo, createBy: userID });
-  console.log(newProject._id);
+  const newProject = await Project.create({
+    ...ProjectInfo,
+    createBy: userID,
+    createAt: new Date().toISOString(),
+  });
   return newProject._id;
 }
 async function dbCheckProjectName(Data) {
@@ -18,10 +22,11 @@ async function dbCheckProjectName(Data) {
 }
 async function dbFinishProject(data) {
   const result = await Project.findOneAndUpdate(
-    { projectName: data.projectName, createBy: data.createBy },
+    { _id: data._id, createBy: data.createBy },
     { isActive: false }
   );
   if (result) {
+    await createReport(data);
     return true;
   } else {
     return false;
@@ -34,9 +39,23 @@ async function dbGetProject(ID) {
     return result;
   }
 }
+async function dbProjectList(data) {
+  const result = await Project.find(data);
+  if (result) {
+    return result;
+  }
+}
+async function dbGetProjectName(data) {
+  const result = await Project.findOne(data);
+  if (result) {
+    return result;
+  }
+}
 module.exports = {
   dbAddProject,
   dbCheckProjectName,
   dbFinishProject,
   dbGetProject,
+  dbProjectList,
+  dbGetProjectName,
 };

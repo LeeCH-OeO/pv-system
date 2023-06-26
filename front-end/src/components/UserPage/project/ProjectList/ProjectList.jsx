@@ -63,7 +63,7 @@ const ProjectList = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("userToken")}`,
         },
-        data: { projectName: project.projectName },
+        data: { projectID: project._id, projectName: project.projectName },
       });
       if (res) {
         const updatedActiveProductList = [...activeProjectList];

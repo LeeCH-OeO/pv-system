@@ -47,10 +47,17 @@ async function dbGetProduct(data) {
     return result;
   }
 }
+async function dbProductList() {
+  const result = await userProduct.find();
+  if (result) {
+    return result;
+  }
+}
 module.exports = {
   dbAddUserProduct,
   dbUpdateuserProduct,
   dbDeleteUserProduct,
   dbIfUserHaveProduct,
   dbGetProduct,
+  dbProductList,
 };
