@@ -8,6 +8,8 @@ const productOutPut = new mongoose.Schema({
 const projectReportSchema = new mongoose.Schema({
   projectName: String,
   productOutPut: [productOutPut],
+  startDate: String,
+  endDate: String,
 });
 
 module.exports = mongoose.model("projectReport", projectReportSchema);

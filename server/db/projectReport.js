@@ -8,6 +8,15 @@ async function dbSaveProjectReport(data) {
   await projectReport.create({
     projectName: data.projectName,
     productOutPut: data.outputList,
+    startDate: data.startDate,
+    endDate: data.endDate,
   });
 }
-module.exports = { dbSaveProjectReport };
+async function dbGetPorjectReport(data) {
+  const result = await projectReport.findOne({ projectName: data.projectName });
+  console.log("get report ", result);
+  if (result) {
+    return result;
+  }
+}
+module.exports = { dbSaveProjectReport, dbGetPorjectReport };

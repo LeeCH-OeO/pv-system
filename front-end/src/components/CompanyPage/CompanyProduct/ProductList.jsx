@@ -85,17 +85,6 @@ const ProductList = () => {
         data: { data: { productInfo }, id: productInfo._id },
       });
       if (res) {
-        // const updatedList = [...productList];
-        // updatedList[productInfo.index] = productInfo;
-        // setProductList(updatedList);
-        // console.log(updatedList[productInfo.index]);
-        // setShowEditModal(false);
-        // setProductInfo({
-        //   productName: "",
-        //   area: "",
-        //   tilt: "",
-        //   orientation: "",
-        //   index: "",
         window.location.reload();
       }
     } catch (error) {
@@ -120,15 +109,7 @@ const ProductList = () => {
         },
         data: productInfo,
       });
-      // setProductList([...productList, productInfo]);
-      // setShowCreateModal(false);
-      // setProductInfo({
-      //   productName: "",
-      //   area: "",
-      //   tilt: "",
-      //   orientation: "",
-      //   index: "",
-      // });
+
       window.location.reload();
     } catch (error) {
       alert("Product name already exist");

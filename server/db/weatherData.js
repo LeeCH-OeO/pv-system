@@ -115,7 +115,40 @@ async function dbAddYesterdayWeatherData(data) {
       ...item,
       lat: data.lat,
       lon: data.lon,
-      productID: data.productID,
+      productID: data._id,
+    });
+  });
+}
+
+async function dbDeleteWeatherData(data) {
+  await weatherData.deleteMany(data);
+}
+
+async function dbAddTodayWeatherData(data) {
+  const companyProduct = await dbSearchProduct({
+    productName: data.companyProductID,
+  });
+  let currentDate = new Date();
+
+  let todayString = currentDate.toISOString().split("T")[0];
+
+  const result = await pvWatt({
+    latitude: data.lat,
+    longitude: data.lon,
+    startDate: todayString,
+    endDate: todayString,
+    systemLoss: companyProduct.systemLoss,
+    powerPeak: companyProduct.powerPeak,
+    orientation: companyProduct.orientation,
+    tilt: companyProduct.tilt,
+    area: companyProduct.area,
+  });
+  result.pvWattsRate.map((item) => {
+    weatherData.create({
+      ...item,
+      lat: data.lat,
+      lon: data.lon,
+      productID: data._id,
     });
   });
 }
@@ -133,4 +166,5 @@ module.exports = {
   dbDeleteWeatherData,
   dbAddYesterdayWeatherData,
   weatherDataList,
+  dbAddTodayWeatherData,
 };

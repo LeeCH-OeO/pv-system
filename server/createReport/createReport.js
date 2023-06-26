@@ -1,16 +1,10 @@
 const { dbGetProduct } = require("../db/userProduct");
 const { weatherDataList } = require("../db/weatherData");
 const { dbSaveProjectReport } = require("../db/projectReport");
+const { reportEmail } = require("../email/sendMail");
 async function createReport(data) {
   const productList = await dbGetProduct({ projectID: data._id });
-  const dateList = [
-    "2023-06-20",
-    "2023-06-21",
-    "2023-06-22",
-    "2023-06-23",
-    "2023-06-24",
-    "2023-06-25",
-  ];
+  const dateList = getDatesInRange(data.start, data.end);
   let outputList = await Promise.all(
     productList.map(async (item) => {
       let wattSum = 0;
@@ -31,29 +25,33 @@ async function createReport(data) {
     })
   );
 
-  // const productList = await dbGetProduct({ projectID: data._id });
-
-  // let outputList = await Promise.all(
-  //   productList.map(async (item) => {
-  //     const weatherData = await weatherDataList({
-  //       productID: item._id,
-  //     });
-  //     const wattSum = weatherData.reduce(function (accumulator, currentObject) {
-  //       return accumulator + currentObject.rate;
-  //     }, 0);
-
-  //     return {
-  //       ompanyProductName: item.companyProductID,
-  //       lat: item.lat,
-  //       lon: item.lon,
-  //       output: wattSum,
-  //     };
-  //   })
-  // );
-
   await dbSaveProjectReport({
     projectName: data.projectName,
     outputList: outputList,
+    startDate: data.start,
+    endDate: data.end,
+  });
+  reportEmail({
+    projectName: data.projectName,
+    outputList: outputList,
+    startDate: data.start,
+    endDate: data.end,
   });
 }
+
+function getDatesInRange(startDateStr, endDateStr) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  const dates = [];
+  const currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    dates.push(currentDate.toISOString().split("T")[0]);
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dates;
+}
+
 module.exports = { createReport };

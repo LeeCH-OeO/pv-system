@@ -12,7 +12,10 @@ import {
   FabButton,
   IconButton,
   ProjectButtonContainer,
+  UpdateButton,
 } from "./style";
+import { DialogOverlay, DialogContainer } from "./Modal";
+import Barchart from "./Barchart";
 import { useNavigate } from "react-router-dom";
 import UserNavBar from "../../NavBar/UserNavBar";
 import { useState, useEffect } from "react";
@@ -24,6 +27,83 @@ const ProjectList = () => {
   const [oldProjectList, setOldProjectList] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [duration, setDuration] = useState({ start: "", end: "" });
+  const [finishProject, setFinishProject] = useState({});
+  const [finishProjectIndex, setFinishProjectIndex] = useState("");
+  const [reportData, setReportData] = useState(null);
+  const [showReportModal, setShowReportModal] = useState(false);
+
+  const getReport = async (data) => {
+    try {
+      const res = await axios({
+        method: "post",
+        url: "http://127.0.0.1:1212/api/project/report",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+        data: { projectName: data.projectName },
+      });
+      if (res) {
+        console.log(res.data.result);
+        setReportData(res.data.result);
+        setShowModal(true);
+      }
+    } catch (error) {}
+  };
+  const updateNow = async () => {
+    try {
+      const res = await axios({
+        method: "post",
+        url: "http://127.0.0.1:1212/api/project/update-now",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+      });
+      if (res) {
+        alert("Weather data has been synchronized");
+      }
+    } catch (err) {}
+  };
+  const handleOnSubmit = async (project, index) => {
+    console.log(duration);
+    try {
+      const res = await axios({
+        method: "delete",
+        url: "http://127.0.0.1:1212/api/project/finish",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+        data: {
+          projectID: finishProject._id,
+          projectName: finishProject.projectName,
+          start: duration.start,
+          end: duration.end,
+        },
+      });
+      if (res) {
+        const updatedActiveProductList = [...activeProjectList];
+        updatedActiveProductList[finishProjectIndex].isActive = false;
+        const updatedOldProjectList = [...oldProjectList];
+        updatedOldProjectList.push(
+          updatedActiveProductList[finishProjectIndex]
+        );
+        setOldProjectList(updatedOldProjectList);
+        updatedActiveProductList.splice(finishProjectIndex, 1);
+        setActivateProjectList(updatedActiveProductList);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const today = new Date();
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(today.getFullYear() - 1);
+
+  const maxDate = today.toISOString().split("T")[0];
+  const minDate = oneYearAgo.toISOString().split("T")[0];
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -52,32 +132,9 @@ const ProjectList = () => {
     fetchData();
   }, []);
 
-  const handleGetReport = async (project, index) => {
-    console.log(project);
-
-    try {
-      const res = await axios({
-        method: "delete",
-        url: "http://127.0.0.1:1212/api/project/finish",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-        },
-        data: { projectID: project._id, projectName: project.projectName },
-      });
-      if (res) {
-        const updatedActiveProductList = [...activeProjectList];
-        updatedActiveProductList[index].isActive = false;
-        const updatedOldProjectList = [...oldProjectList];
-        updatedOldProjectList.push(updatedActiveProductList[index]);
-        setOldProjectList(updatedOldProjectList);
-        updatedActiveProductList.splice(index, 1);
-        setActivateProjectList(updatedActiveProductList);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleGetReport =  () => {
+  //   setShowModal(!showModal);
+  // };
   const getProductList = async (projectID) => {
     try {
       const response = await axios({
@@ -102,6 +159,8 @@ const ProjectList = () => {
         <TitleContainer>
           <h2>create your new project</h2>
           <FabButton
+            color="#f44336"
+            right="20px"
             onClick={() => {
               navigate("/user/new-project");
             }}
@@ -116,6 +175,8 @@ const ProjectList = () => {
           </TitleContainer>
           <>
             <FabButton
+              color="#f44336"
+              right="20px"
               onClick={() => {
                 if (
                   localStorage.getItem("isUnlimited") === "false" &&
@@ -130,7 +191,8 @@ const ProjectList = () => {
               <span class="material-icons">add</span>
             </FabButton>
             <FabButton
-              secondary
+              color="#2196f3"
+              right="100px"
               onClick={() => setShowOldProject(!showOldProject)}
             >
               {showOldProject ? (
@@ -139,6 +201,15 @@ const ProjectList = () => {
                 <span class="material-icons">toggle_on</span>
               )}
             </FabButton>
+            {activeProjectList.length !== 0 && (
+              <FabButton
+                color="#50C878"
+                right="180px"
+                onClick={() => updateNow()}
+              >
+                <span class="material-icons">cloud_sync</span>
+              </FabButton>
+            )}
           </>
           {showOldProject && (
             <ProjectContainer>
@@ -150,7 +221,7 @@ const ProjectList = () => {
 
                       <IconButton
                         onClick={() => {
-                          getProductList(item._id);
+                          getReport(item);
                         }}
                       >
                         <span class="material-icons">info</span>
@@ -159,6 +230,24 @@ const ProjectList = () => {
                   </PorjectItemContainer>
                 );
               })}
+              {showModal && (
+                <DialogOverlay>
+                  <DialogContainer open onClose={() => setShowModal(false)}>
+                    <div>
+                      <h3>
+                        {reportData.projectName} From: {reportData.startDate},
+                        Until: {reportData.endDate}
+                      </h3>
+                      {/* {reportData.productOutPut.map((item) => {
+                        console.log(item.output);
+                        return <h4>{item.output}</h4>;
+                      })} */}
+                      <Barchart data={reportData.productOutPut} />
+                      <button onClick={() => setShowModal(false)}>close</button>
+                    </div>
+                  </DialogContainer>
+                </DialogOverlay>
+              )}
             </ProjectContainer>
           )}
           {!showOldProject && (
@@ -168,11 +257,48 @@ const ProjectList = () => {
                   <PorjectItemContainer>
                     <ProjectItem key={index}>
                       <h3>{item.projectName}</h3>
+                      {showModal && (
+                        <div>
+                          <label>From:</label>
+                          <input
+                            min={minDate}
+                            max={maxDate}
+                            type="date"
+                            value={duration.start}
+                            onChange={(e) =>
+                              setDuration({
+                                ...duration,
+                                start: e.target.value,
+                              })
+                            }
+                          />
+                          <label>until:</label>
+                          <input
+                            min={minDate}
+                            max={maxDate}
+                            type="date"
+                            value={duration.end}
+                            onChange={(e) =>
+                              setDuration({ ...duration, end: e.target.value })
+                            }
+                          />
+                          <button
+                            onClick={handleOnSubmit}
+                            disabled={
+                              duration.start && duration.end ? false : true
+                            }
+                          >
+                            submit
+                          </button>
+                        </div>
+                      )}
                     </ProjectItem>
                     <ProjectButtonContainer>
                       <IconButton
                         onClick={() => {
-                          handleGetReport(item, index);
+                          setShowModal(!showModal);
+                          setFinishProject(item);
+                          setFinishProjectIndex(index);
                         }}
                       >
                         <span class="material-icons">check_circle_outline</span>

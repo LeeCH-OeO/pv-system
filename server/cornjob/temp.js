@@ -3,25 +3,32 @@ const cron = require("node-cron");
 const { dbGetProduct } = require("../db/userProduct");
 const { dbAddYesterdayWeatherData } = require("../db/weatherData");
 const { dbProjectList, dbFinishProject } = require("../db/project");
-const tempCron = cron.schedule("*/10 * * * * *", async () => {
+const tempCron = cron.schedule("0 3 * * *", async () => {
   // Log the current time
   const currentTime = new Date().toLocaleTimeString();
   console.log("Current time:", currentTime);
-  // const productList = await dbGetProduct({});
-  // productList.map(async (item) => {
-  //   await dbAddYesterdayWeatherData(item);
-  // });
+  const productList = await dbGetProduct({});
+  productList.map(async (item) => {
+    await dbAddYesterdayWeatherData(item);
+  });
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayString = yesterday.toISOString().slice(0, 10);
+  // Date 30 days ago
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 31);
+  const thirtyDaysAgoString = thirtyDaysAgo.toISOString().slice(0, 10);
+
   const projectList = await dbProjectList();
   projectList.map(async (item) => {
-    // console.log(item.createAt.split("T")[0]);
-    // console.log(
-    //   "is 30 days age? ",
-    //   isDate30DaysAgo(item.createAt.split("T")[0])
-    // );
     if (isDate30DaysAgo(item.createAt.split("T")[0])) {
       await dbFinishProject({
-        projectName: item.projectName,
+        _id: item._id,
         createBy: item.createBy,
+        projectName: item.projectName,
+        start: thirtyDaysAgoString,
+        end: yesterdayString,
       });
     }
   });

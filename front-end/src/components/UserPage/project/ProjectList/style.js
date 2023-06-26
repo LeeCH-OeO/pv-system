@@ -19,6 +19,7 @@ const ProjectContainer = styled.div`
 `;
 const ProjectItem = styled.div`
   padding: 1rem;
+  position: relative;
 `;
 const PorjectItemContainer = styled.div`
   padding: 1rem;
@@ -101,11 +102,14 @@ const Loader = styled.div`
 const FabButton = styled.button`
   position: fixed;
   bottom: 20px;
-  right: ${(props) => (props.secondary ? "100px" : "20px")};
+  /* right: ${(props) => (props.secondary ? "100px" : "20px")}; */
+  right: ${(props) => props.right};
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background-color: ${(props) => (props.secondary ? "#2196f3" : "#f44336")};
+  /* background-color: ${(props) =>
+    props.secondary ? "#2196f3" : "#f44336"}; */
+  background-color: ${(props) => props.color};
   color: #fff;
   border: none;
   cursor: pointer;
@@ -144,6 +148,99 @@ const ProjectButtonContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
+
+const UpdateButton = styled.button`
+  position: absolute;
+  top: 1px;
+  right: 0.5px;
+  display: inline-block;
+  padding: 3px 6px;
+  margin-left: 1px;
+  margin-right: 1px;
+  text-align: center;
+  text-decoration: none;
+  background-color: ${(props) => (props.disabled ? "gray" : "lightblue")};
+  color: #fff;
+  border: none;
+  text-transform: uppercase;
+  border-radius: 5px; /* Adjust the value to change the roundness */
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${(props) => !props.disabled && "CornflowerBlue"};
+  }
+`;
+
+const ChartContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  padding-bottom: 2rem;
+`;
+
+const Bar = styled.div`
+  width: 20px;
+  height: ${(props) => props.height}px;
+  background-color: blue;
+  margin-right: 5px;
+  position: relative;
+  transition: height 0.3s ease;
+
+  &:hover {
+    height: ${(props) => props.height + 10}px;
+    background-color: red;
+  }
+`;
+
+const BarContent = styled.div`
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-color: transparent;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  ${Bar}:hover & {
+    opacity: 1;
+  }
+`;
+
+const BarText = styled.span`
+  /* display: inline-block; */
+  margin-right: 10px;
+`;
+
+const BarHover = styled.div`
+  display: none;
+  position: absolute;
+  bottom: -170px;
+  left: -120px;
+  width: 200px;
+  padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  ${Bar}:hover & {
+    display: block;
+    opacity: 1;
+    cursor: default;
+  }
+`;
+const ChartFooter = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const FooterText = styled.span`
+  margin: 0 10px;
+`;
 export {
   ProjectContainer,
   ProjectListContainer,
@@ -158,4 +255,12 @@ export {
   FabButton,
   IconButton,
   ProjectButtonContainer,
+  UpdateButton,
+  ChartContainer,
+  Bar,
+  BarContent,
+  BarText,
+  BarHover,
+  ChartFooter,
+  FooterText,
 };

@@ -160,3 +160,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55TmFtZSI6I
 ###
 GET  https://api.openweathermap.org/data/2.5/onecall?lat=50.828176307268556&lon=12.922558179117553&appid=ca20b15c0e2800058d1de6ba9abe60f6 HTTP/1.1
 
+### 
+Post http://127.0.0.1:1212/api/project/update-now HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImNoLWxlZTA2MjYiLCJ1c2VySUQiOiI2NDk5NzM4ODFhMzhjZGUxODM1M2JiZjciLCJpYXQiOjE2ODc3NzgxOTV9.vxPog0MoUB6Kz6RcjclxUwV05IPUZKPAw-9NU7G7E9M
+
+

@@ -21,6 +21,7 @@ async function dbCheckProjectName(Data) {
   }
 }
 async function dbFinishProject(data) {
+  // console.log(data);
   const result = await Project.findOneAndUpdate(
     { _id: data._id, createBy: data.createBy },
     { isActive: false }

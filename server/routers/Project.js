@@ -2,7 +2,8 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
-
+const { updateWeather } = require("../updateWeather/updateWeather");
+const { dbGetPorjectReport } = require("../db/projectReport");
 const {
   dbAddProject,
   dbCheckProjectName,
@@ -17,7 +18,17 @@ router.post("/create", authenticateUser, checkProjectName, async (req, res) => {
     res.status(201).json({ projectID: result });
   }
 });
+router.post("/update-now", authenticateUser, async (req, res) => {
+  await updateWeather(req.user);
+  res.sendStatus(200);
+});
 
+router.post("/report", authenticateUser, async (req, res) => {
+  const result = await dbGetPorjectReport(req.body);
+  if (result) {
+    res.status(200).json({ result });
+  }
+});
 router.get("/", authenticateUser, async (req, res) => {
   const queryResult = await dbGetProject(req.user.userID);
   if (queryResult.length !== 0) {
@@ -32,6 +43,8 @@ router.delete("/finish", authenticateUser, async (req, res) => {
     _id: req.body.projectID,
     createBy: req.user.userID,
     projectName: req.body.projectName,
+    start: req.body.start,
+    end: req.body.end,
   };
 
   const result = await dbFinishProject(data);
