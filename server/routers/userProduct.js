@@ -10,7 +10,6 @@ const {
   dbIfUserHaveProduct,
   dbGetProduct,
 } = require("../db/userProduct");
-// const { dbAddProductLocation } = require("../db/userProductLocation");
 const {
   dbAddWeatherData,
   dbUpdateWeatherData,

@@ -2,6 +2,7 @@ const { dbGetProduct } = require("../db/userProduct");
 const { weatherDataList } = require("../db/weatherData");
 const { dbSaveProjectReport } = require("../db/projectReport");
 const { reportEmail } = require("../email/sendMail");
+const { dbFindUser } = require("../db/User");
 async function createReport(data) {
   const productList = await dbGetProduct({ projectID: data._id });
   const dateList = getDatesInRange(data.start, data.end);
@@ -31,11 +32,14 @@ async function createReport(data) {
     startDate: data.start,
     endDate: data.end,
   });
+  const userEmail = await dbFindUser({ _id: data.createBy });
+  console.log("email", userEmail.email);
   reportEmail({
     projectName: data.projectName,
     outputList: outputList,
     startDate: data.start,
     endDate: data.end,
+    email: userEmail.email,
   });
 }
 

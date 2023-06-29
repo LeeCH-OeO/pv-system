@@ -3,7 +3,7 @@ const cron = require("node-cron");
 const { dbGetProduct } = require("../db/userProduct");
 const { dbAddYesterdayWeatherData } = require("../db/weatherData");
 const { dbProjectList, dbFinishProject } = require("../db/project");
-const tempCron = cron.schedule("0 3 * * *", async () => {
+const cronjob = cron.schedule("0 3 * * *", async () => {
   // Log the current time
   const currentTime = new Date().toLocaleTimeString();
   console.log("Current time:", currentTime);
@@ -47,4 +47,4 @@ function isDate30DaysAgo(dateString) {
   // Compare the given date with the date 30 days ago
   return date.getTime() < thirtyDaysAgo.getTime();
 }
-module.exports = { tempCron };
+module.exports = { cronjob };

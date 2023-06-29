@@ -84,6 +84,7 @@ const ProjectList = () => {
         },
       });
       if (res) {
+        window.location.reload();
         const updatedActiveProductList = [...activeProjectList];
         updatedActiveProductList[finishProjectIndex].isActive = false;
         const updatedOldProjectList = [...oldProjectList];

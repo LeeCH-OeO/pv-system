@@ -7,7 +7,7 @@ function reportEmail(data) {
       (item) =>
         `${item.companyProductName} at ${item.lat}, ${item.lon}, output is ${item.output}`
     )
-    .join(", ");
+    .join("/ ");
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -17,7 +17,7 @@ function reportEmail(data) {
   });
   const mailOptions = {
     from: "fairprice81000@gmail.com",
-    to: "chleeinde@gmail.com",
+    to: data.email,
     subject: `${data.projectName}'s power output report`,
     text: mailText,
   };

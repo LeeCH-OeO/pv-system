@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const port = 1212;
 const bodyParser = require("body-parser");
-// const { tempCron } = require("./cornjob/temp");
+// const { cronjob } = require("./cronjob/cronjob");
 app.use(express.json());
 app.use(cors());
 
@@ -24,4 +24,5 @@ app.use("/api/companyproduct", companyProductRouter);
 app.listen(port, "127.0.0.1", () => {
   console.log(`Example app listening on port ${port}`);
 });
-// tempCron.start();
+// cronjob.start();
+// uncomment to run cronjob
