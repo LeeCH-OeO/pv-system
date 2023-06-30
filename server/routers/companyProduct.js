@@ -55,7 +55,7 @@ router.delete(
   async (req, res) => {
     const result = await dbDeleteCompanyProduct(req.body.id);
     if (result) {
-      return res.sendStatus(204);
+      return res.sendStatus(200);
     } else {
       return res.sendStatus(500);
     }

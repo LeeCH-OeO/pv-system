@@ -11,12 +11,7 @@ const {
 } = require("../db/Conpany");
 //routers
 router.post("/signup", checkIfCompanyExist, saveCompany, (req, res) => {
-  console.log(req.body);
-  res.send({
-    companyName: req.body.companyName,
-    email: req.body.email,
-    id: req.body.id,
-  });
+  return res.sendStatus(201);
 });
 
 router.post("/login", async (req, res) => {
@@ -38,22 +33,34 @@ router.get("/profile", authenticateCompany, async (req, res) => {
   const queryName = req.company.companyName;
   const result = await dbFindCompany({ companyName: queryName });
   if (!result) {
-    return res.status(404).json({ message: "Accound not found" });
+    return res.status(404).json({ message: "Account not found" });
   }
-  res.json(result);
+  res
+    .status(200)
+    .json({ companyName: result.companyName, email: result.email });
 });
 
 router.patch("/", authenticateCompany, async (req, res) => {
-  const queryID = req.company.companyID;
+  try {
+    const queryID = req.company.companyID;
 
-  await dbUpdateCompany({ ...req.body, id: queryID });
-  res.send("updated");
+    await dbUpdateCompany({ ...req.body, id: queryID });
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 });
 
 router.delete("/delete", authenticateCompany, async (req, res) => {
-  const companyID = req.company.companyID;
-  await dbDeleteCompany(companyID);
-  res.send("Deleted");
+  try {
+    const companyID = req.company.companyID;
+    await dbDeleteCompany(companyID);
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 });
 
 //

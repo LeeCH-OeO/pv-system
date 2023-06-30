@@ -43,13 +43,6 @@ const UserNavBar = () => {
           >
             Projects <span class="material-icons">public</span>
           </NavLink>
-          <NavLink
-            onClick={() => {
-              navigate("/user/main/");
-            }}
-          >
-            home<span class="material-icons">house</span>
-          </NavLink>
         </NavLinks>
       </NavBar>
     </div>

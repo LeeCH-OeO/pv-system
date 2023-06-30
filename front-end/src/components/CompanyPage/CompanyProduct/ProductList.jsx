@@ -142,7 +142,9 @@ const ProductList = () => {
         </TitleContainer>
 
         {productList.length === 0 ? (
-          <h3>Create your new product</h3>
+          <TitleContainer>
+            <h3>Create your new product</h3>
+          </TitleContainer>
         ) : (
           <ProductListContainer>
             {productList.map((item, index) => {
@@ -151,15 +153,15 @@ const ProductList = () => {
                   <ProductItem>
                     <h3>
                       {item.productName} <br />
-                      Orientation: {item.orientation}
+                      Orientation: {item.orientation} deg
                       <br />
-                      Area: {item.area}
+                      Area: {item.area} m²
                       <br />
-                      Tilt:{item.tilt}
+                      Tilt:{item.tilt} deg
                       <br />
-                      powerPeak:{item.powerPeak}
+                      powerPeak:{item.powerPeak} watt
                       <br />
-                      system loss: {item.systemLoss}
+                      system loss: {item.systemLoss} %
                     </h3>
                   </ProductItem>
                   <ProductItemButtonContainer>
@@ -187,15 +189,7 @@ const ProductList = () => {
       {showEditModal && (
         <DialogOverlay>
           <DialogContainer open onClose={() => setShowEditModal(false)}>
-            <h2>Update Your product </h2>
-            <TextField
-              label="product name"
-              margin="dense"
-              value={productInfo.productName}
-              onChange={(e) => {
-                setProductInfo({ ...productInfo, productName: e.target.value });
-              }}
-            />
+            <h2>Update {productInfo.productName} </h2>
 
             <TextField
               label="area (m²)"
@@ -209,7 +203,7 @@ const ProductList = () => {
               }}
             />
             <TextField
-              label="tilt"
+              label="tilt (deg)"
               margin="dense"
               value={productInfo.tilt}
               onChange={(e) => {
@@ -221,7 +215,7 @@ const ProductList = () => {
             />
             <TextField
               margin="dense"
-              label="orientation"
+              label="orientation (deg)"
               value={productInfo.orientation}
               onChange={(e) => {
                 setProductInfo({
@@ -231,7 +225,7 @@ const ProductList = () => {
               }}
             />
             <TextField
-              label="powerPeak"
+              label="powerPeak (watt)"
               margin="dense"
               type="number"
               value={productInfo.powerPeak}
@@ -243,7 +237,7 @@ const ProductList = () => {
               }}
             />
             <TextField
-              label="system lose"
+              label="system lose (%)"
               margin="dense"
               type="number"
               value={productInfo.systemLoss}
@@ -288,7 +282,7 @@ const ProductList = () => {
       {showCreateModal && (
         <DialogOverlay>
           <DialogContainer open onClose={() => setShowCreateModal(false)}>
-            <h2>Create Your new product </h2>
+            <h2>Create your new product </h2>
             <TextField
               label="product name"
               margin="dense"
@@ -311,7 +305,7 @@ const ProductList = () => {
               }}
             />
             <TextField
-              label="tilt"
+              label="tilt (deg)"
               margin="dense"
               type="number"
               value={productInfo.tilt}
@@ -324,7 +318,7 @@ const ProductList = () => {
             />
             <TextField
               margin="dense"
-              label="orientation"
+              label="orientation (deg)"
               value={productInfo.orientation}
               onChange={(e) => {
                 setProductInfo({
@@ -334,7 +328,7 @@ const ProductList = () => {
               }}
             />
             <TextField
-              label="powerPeak"
+              label="powerPeak (watt)"
               margin="dense"
               type="number"
               value={productInfo.powerPeak}
@@ -346,7 +340,7 @@ const ProductList = () => {
               }}
             />
             <TextField
-              label="system lose"
+              label="system lose (%)"
               margin="dense"
               type="number"
               value={productInfo.systemLoss}

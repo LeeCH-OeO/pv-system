@@ -48,13 +48,6 @@ const CompanyNavBar = () => {
           >
             Products<span class="material-icons">solar_power</span>
           </NavLink>
-          <NavLink
-            onClick={() => {
-              navigate("/company/main/");
-            }}
-          >
-            home<span class="material-icons">house</span>
-          </NavLink>
         </NavLinks>
       </NavBar>
     </div>

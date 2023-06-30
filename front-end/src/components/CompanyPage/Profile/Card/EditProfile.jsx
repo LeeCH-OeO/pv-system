@@ -54,7 +54,7 @@ const EditProfile = () => {
             variant="filled"
             value={companyInfo.email}
             onChange={(e) => {
-              setCompanyInfo({ ...companyInfo, companyEmail: e.target.value });
+              setCompanyInfo({ ...companyInfo, email: e.target.value });
             }}
           />
         </EditFormContainer>

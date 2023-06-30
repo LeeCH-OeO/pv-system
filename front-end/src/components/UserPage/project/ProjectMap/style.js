@@ -160,6 +160,7 @@ const TextButton = styled.button`
       pointer-events: not-allowed;
     `}
 `;
+
 export {
   DetailContainer,
   RoundButton,

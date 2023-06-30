@@ -13,6 +13,7 @@ import {
   IconButton,
   ProjectButtonContainer,
   UpdateButton,
+  datePickerContainer,
 } from "./style";
 import { DialogOverlay, DialogContainer } from "./Modal";
 import Barchart from "./Barchart";
@@ -28,7 +29,6 @@ const ProjectList = () => {
   const [isFetched, setIsFetched] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [duration, setDuration] = useState({ start: "", end: "" });
   const [finishProject, setFinishProject] = useState({});
   const [finishProjectIndex, setFinishProjectIndex] = useState("");
   const [reportData, setReportData] = useState(null);
@@ -99,12 +99,15 @@ const ProjectList = () => {
       console.log(error);
     }
   };
-  const today = new Date();
+  const yesterday = new Date();
   const oneYearAgo = new Date();
-  oneYearAgo.setFullYear(today.getFullYear() - 1);
-
-  const maxDate = today.toISOString().split("T")[0];
+  oneYearAgo.setFullYear(yesterday.getFullYear() - 1);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const maxDate = yesterday.toISOString().split("T")[0];
   const minDate = oneYearAgo.toISOString().split("T")[0];
+  const [duration, setDuration] = useState({ start: minDate, end: maxDate });
+
+  // setDuration({ start: minDate, end: maxDate });
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -133,9 +136,6 @@ const ProjectList = () => {
     fetchData();
   }, []);
 
-  // const handleGetReport =  () => {
-  //   setShowModal(!showModal);
-  // };
   const getProductList = async (projectID) => {
     try {
       const response = await axios({
@@ -172,7 +172,7 @@ const ProjectList = () => {
       ) : (
         <ProjectListContainer>
           <TitleContainer>
-            {showOldProject ? <h2>Old Project</h2> : <h2>Currect project</h2>}
+            {showOldProject ? <h2>Old project</h2> : <h2>Currect project</h2>}
           </TitleContainer>
           <>
             <FabButton
@@ -239,12 +239,15 @@ const ProjectList = () => {
                         {reportData.projectName} From: {reportData.startDate},
                         Until: {reportData.endDate}
                       </h3>
-                      {/* {reportData.productOutPut.map((item) => {
-                        console.log(item.output);
-                        return <h4>{item.output}</h4>;
-                      })} */}
+
                       <Barchart data={reportData.productOutPut} />
-                      <button onClick={() => setShowModal(false)}>close</button>
+                      <button
+                        onClick={() => {
+                          setShowModal(false);
+                        }}
+                      >
+                        close
+                      </button>
                     </div>
                   </DialogContainer>
                 </DialogOverlay>
@@ -259,39 +262,70 @@ const ProjectList = () => {
                     <ProjectItem key={index}>
                       <h3>{item.projectName}</h3>
                       {showModal && (
-                        <div>
-                          <label>From:</label>
-                          <input
-                            min={minDate}
-                            max={maxDate}
-                            type="date"
-                            value={duration.start}
-                            onChange={(e) =>
-                              setDuration({
-                                ...duration,
-                                start: e.target.value,
-                              })
-                            }
-                          />
-                          <label>until:</label>
-                          <input
-                            min={minDate}
-                            max={maxDate}
-                            type="date"
-                            value={duration.end}
-                            onChange={(e) =>
-                              setDuration({ ...duration, end: e.target.value })
-                            }
-                          />
-                          <button
-                            onClick={handleOnSubmit}
-                            disabled={
-                              duration.start && duration.end ? false : true
-                            }
+                        <DialogOverlay>
+                          <DialogContainer
+                            open
+                            onClose={() => setShowModal(false)}
                           >
-                            submit
-                          </button>
-                        </div>
+                            <datePickerContainer>
+                              <h2>Select date range </h2>
+                              <div>
+                                <label>From: </label>
+                                <input
+                                  min={duration.start}
+                                  max={duration.end}
+                                  type="date"
+                                  value={duration.start}
+                                  onChange={(e) =>
+                                    setDuration({
+                                      ...duration,
+                                      start: e.target.value,
+                                    })
+                                  }
+                                />
+                              </div>
+                              <div>
+                                <label>Until: </label>
+                                <input
+                                  min={duration.start}
+                                  max={duration.end}
+                                  type="date"
+                                  value={duration.end}
+                                  onChange={(e) =>
+                                    setDuration({
+                                      ...duration,
+                                      end: e.target.value,
+                                    })
+                                  }
+                                />
+                              </div>
+                              <br />
+                              <ProjectButtonContainer>
+                                <IconButton
+                                  onClick={handleOnSubmit}
+                                  disabled={
+                                    duration.start && duration.end
+                                      ? false
+                                      : true
+                                  }
+                                >
+                                  <span class="material-icons">send</span>
+                                </IconButton>
+                                <IconButton
+                                  onClick={() => {
+                                    setShowModal(false);
+                                    setDuration({
+                                      start: minDate,
+                                      end: maxDate,
+                                    });
+                                  }}
+                                >
+                                  <span class="material-icons">cancel</span>
+                                </IconButton>
+                              </ProjectButtonContainer>
+                            </datePickerContainer>
+                          </DialogContainer>
+                        </DialogOverlay>
                       )}
                     </ProjectItem>
                     <ProjectButtonContainer>

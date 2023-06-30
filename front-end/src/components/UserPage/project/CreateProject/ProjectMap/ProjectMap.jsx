@@ -265,7 +265,7 @@ const ProjectMap = () => {
         <DialogOverlay>
           <DialogContainer open onClose={() => setShowAddForm(false)}>
             <ModalTitle>
-              <h2>Add New Product</h2>
+              <h2>Add new product</h2>
             </ModalTitle>
 
             <InputForm>
@@ -354,7 +354,7 @@ const ProjectMap = () => {
         <DialogOverlay>
           <DialogContainer open onClose={() => setShowEditForm(false)}>
             <ModalTitle>
-              <h2>edit product</h2>
+              <h2>Edit product</h2>
             </ModalTitle>
 
             <InputForm>

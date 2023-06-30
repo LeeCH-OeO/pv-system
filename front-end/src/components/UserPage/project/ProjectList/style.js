@@ -241,6 +241,11 @@ const ChartFooter = styled.div`
 const FooterText = styled.span`
   margin: 0 10px;
 `;
+
+const datePickerContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 export {
   ProjectContainer,
   ProjectListContainer,
@@ -263,4 +268,5 @@ export {
   BarHover,
   ChartFooter,
   FooterText,
+  datePickerContainer,
 };

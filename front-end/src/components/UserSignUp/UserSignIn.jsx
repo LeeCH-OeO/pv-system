@@ -40,7 +40,7 @@ const UserSignIn = () => {
       <SignUpForm>
         <h2>User Sign in</h2>
         <TextField
-          label="user name"
+          label="username"
           margin="dense"
           autoComplete="off"
           fullWidth

@@ -6,7 +6,7 @@ Content-Type: application/json
 "userName":"new1123321","password":"0000", "email":"new1@123123123", "isUnlimited": true,"image": "123","isActive": true
 }
 ### update user info
-PUT  http://127.0.0.1:1212/api/user/ HTTP/1.1
+PATCH  http://127.0.0.1:1212/api/user/ HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5ldyIsInVzZXJJRCI6IjY0OTMxY2Q5MTY4NWFiZDAyNmY2OGQ0MCIsImlhdCI6MTY4NzM2ODM2MX0._tlJ3VQ1j7GCdteeiD4XYceMS5T5cLadMivQUwr_Z8A
 

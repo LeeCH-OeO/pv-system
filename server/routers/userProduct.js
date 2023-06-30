@@ -21,7 +21,6 @@ router.post("/create", authenticateUser, async (req, res) => {
     createBy: req.user.userID,
   });
   if (result) {
-    // await dbAddProductLocation({ ...req.body, productID: result });
     await dbAddWeatherData({ ...req.body, productID: result });
     res.sendStatus(201);
   } else {
@@ -54,7 +53,7 @@ router.post("/", authenticateUser, async (req, res) => {
   if (queryResult.length !== 0) {
     return res.status(200).json(queryResult);
   } else {
-    return res.sendStatus(404);
+    return res.sendStatus(500);
   }
 });
 
@@ -66,7 +65,7 @@ router.delete(
     const result = await dbDeleteUserProduct(req.body.id);
     await dbDeleteWeatherData({ productID: req.body.id });
     if (result) {
-      res.sendStatus(204);
+      res.sendStatus(200);
     } else res.sendStatus(500);
   }
 );

@@ -16,25 +16,39 @@ router.post("/create", authenticateUser, checkProjectName, async (req, res) => {
   const result = await dbAddProject(req.body, req.user.userID);
   if (result) {
     res.status(201).json({ projectID: result });
+  } else {
+    res.sendStatus(500);
   }
 });
 router.post("/update-now", authenticateUser, async (req, res) => {
-  await updateWeather(req.user);
-  res.sendStatus(200);
+  try {
+    await updateWeather(req.user);
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 });
 
 router.post("/report", authenticateUser, async (req, res) => {
   const result = await dbGetPorjectReport(req.body);
   if (result) {
-    res.status(200).json({ result });
+    return res.status(200).json({ result });
+  } else {
+    return res.sendStatus(500);
   }
 });
 router.get("/", authenticateUser, async (req, res) => {
   const queryResult = await dbGetProject(req.user.userID);
-  if (queryResult.length !== 0) {
-    return res.status(200).json(queryResult);
-  } else {
-    return res.sendStatus(404);
+  try {
+    if (queryResult.length !== 0) {
+      return res.status(200).json(queryResult);
+    } else {
+      return res.sendStatus(200);
+    }
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
   }
 });
 
@@ -49,7 +63,7 @@ router.delete("/finish", authenticateUser, async (req, res) => {
 
   const result = await dbFinishProject(data);
   if (result) {
-    res.sendStatus(204);
+    res.sendStatus(200);
   } else res.sendStatus(500);
 });
 

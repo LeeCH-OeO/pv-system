@@ -21,7 +21,7 @@ const Barchart = ({ data }) => {
               <p>Latitude: {item.lat}</p>
               <p>Longitude: {item.lon}</p>
               <p>Product: {item.companyProductName}</p>
-              <hp>power output: {item.output}</hp>
+              <hp>power output: {item.output} kWh</hp>
             </BarHover>
           </BarContent>
         </Bar>

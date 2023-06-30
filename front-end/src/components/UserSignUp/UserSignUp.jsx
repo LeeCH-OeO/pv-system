@@ -15,7 +15,6 @@ const UserSignUp = () => {
     userName: "",
     email: "",
     password: "",
-    image: "",
     isUnlimited: false,
     isActive: true,
   });
@@ -39,7 +38,6 @@ const UserSignUp = () => {
       email: "",
       password: "",
       isUnlimited: false,
-      image: "",
     });
     console.log(userInfo);
   };
@@ -53,7 +51,7 @@ const UserSignUp = () => {
       <SignUpForm>
         <h2>User Sign up</h2>
         <TextField
-          label="user name"
+          label="username"
           margin="dense"
           autoComplete="off"
           fullWidth
@@ -81,7 +79,6 @@ const UserSignUp = () => {
             setUserInfo({ ...userInfo, password: e.target.value })
           }
         />
-        upload your profile photo
         <FormControlLabel
           control={
             <Checkbox

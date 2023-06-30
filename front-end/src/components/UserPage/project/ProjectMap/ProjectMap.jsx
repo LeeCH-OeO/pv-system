@@ -30,7 +30,7 @@ import UserNavBar from "../../NavBar/UserNavBar";
 const ProjectMap = ({ products, projectID, projectName }) => {
   const [productList, setProductList] = useState(products);
   const [addProductItem, setAddProductItem] = useState({ lat: "", lon: "" });
-
+  const [selectProductIndex, setSelelectProductIndex] = useState("");
   const [companyProductID, setCompanyProductID] = useState("");
   const [editProductItem, setEditProductItem] = useState({
     lat: "",
@@ -42,7 +42,6 @@ const ProjectMap = ({ products, projectID, projectName }) => {
   const [searchText, setSearchtext] = useState("");
   const [deleteList, setDeleteList] = useState([]);
   const [companyProductList, setCompanyProductList] = useState([]);
-  const tempPorductTypeList = [1, 2, 3, 4, 5];
   const navigate = useNavigate();
   const handleAddFormSearch = async (input) => {
     const result = await FetchGeo(input);
@@ -311,7 +310,7 @@ const ProjectMap = ({ products, projectID, projectName }) => {
           <DialogOverlay>
             <DialogContainer open onClose={() => setShowAddForm(false)}>
               <ModalTitle>
-                <h2>Add New Product</h2>
+                <h2>Add new product</h2>
               </ModalTitle>
 
               <InputForm>
@@ -454,24 +453,8 @@ const ProjectMap = ({ products, projectID, projectName }) => {
                   <span class="material-icons">travel_explore</span>
                 </IconButton>
               </InputForm>
+              <br />
 
-              {/* <SelectForm>
-                <StyledLabel>product name</StyledLabel>
-                <StyledSelect
-                  value={editProductItem.companyProductID}
-                  onChange={(e) => {
-                    setEditProductItem({
-                      ...editProductItem,
-                      companyProductID: e.target.value,
-                    });
-                  }}
-                >
-                  <option value={""}>--Select--</option>
-                  {companyProductList.map((item, index) => {
-                    return <option id={index}>{item.productName}</option>;
-                  })}
-                </StyledSelect>
-              </SelectForm> */}
               <ModalButtonContainer>
                 <IconButton
                   onClick={() => {

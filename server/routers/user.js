@@ -16,35 +16,46 @@ router.get("/profile", authenticateUser, async (req, res) => {
   if (!result) {
     return res.status(404).json({ message: "Accound not found" });
   }
-  res.json(result);
-});
-
-router.post("/signup", checkIfUserExist, saveUser, (req, res) => {
-  console.log(req.body);
-  res.send({
-    userName: req.body.userName,
-    email: req.body.email,
-    id: req.body.id,
+  return res.status(200).json({
+    userName: result.userName,
+    email: result.email,
+    isUnlimited: result.isUnlimited,
   });
 });
 
-router.patch("/", authenticateUser, async (req, res) => {
-  const queryID = req.user.userID;
+router.post("/signup", checkIfUserExist, saveUser, (req, res) => {
+  res.sendStatus(201);
+});
 
-  await dbUpdateUser({ ...req.body, id: queryID });
-  res.send("updated");
+router.patch("/", authenticateUser, async (req, res) => {
+  try {
+    const queryID = req.user.userID;
+
+    await dbUpdateUser({ ...req.body, id: queryID });
+
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
 });
 
 router.delete("/delete", authenticateUser, async (req, res) => {
-  const userID = req.user.userID;
-  await dbDeleteUser(userID);
-  res.send("Deleted");
+  try {
+    const userID = req.user.userID;
+    await dbDeleteUser(userID);
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 });
 
 router.post("/login", async (req, res) => {
+  console.log("login", req.body);
   const result = await dbFindUser({ userName: req.body.userName });
   if (!result) {
-    return res.status(404).json({ message: "Accound not found" });
+    return res.status(404).json({ message: "Account not found" });
   }
   const compare = await bcrypt.compare(req.body.password, result.password);
   if (compare) {
@@ -53,9 +64,9 @@ router.post("/login", async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET
     );
     if (!result.isActive) {
-      return res.status(404).json({ message: "Accound already deleted" });
+      return res.status(410).json({ message: "Account already deleted" });
     }
-    res.json({
+    res.status(200).json({
       message: "success",
       accessToken: accessToken,
     });
