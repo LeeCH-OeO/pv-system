@@ -5,9 +5,9 @@ function reportEmail(data) {
   const mailText = data.outputList
     .map(
       (item) =>
-        `${item.companyProductName} at ${item.lat}, ${item.lon}, output is ${item.output}`
+        `${item.companyProductName} at (${item.lat}, ${item.lon}), output is ${item.output} kWh`
     )
-    .join("/ ");
+    .join("\n");
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
