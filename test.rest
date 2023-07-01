@@ -28,6 +28,9 @@ Content-Type: application/json
 GET  http://127.0.0.1:1212/api/user/profile HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InVwZGF0ZSB5ZWUiLCJ1c2VySUQiOiI2NDkzMWNkOTE2ODVhYmQwMjZmNjhkNDAiLCJpYXQiOjE2ODczNjk2OTZ9.ikjFYqsXSixksQ3WWOd3tHFMV2FhJbOHXEOJVBSKmhU
 
+### get deleted user
+GET  http://127.0.0.1:1212/api/user/deleted-user HTTP/1.1
+
 
 ### company signup
 POST http://127.0.0.1:1212/api/company/signup HTTP/1.1
