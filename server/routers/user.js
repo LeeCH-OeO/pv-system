@@ -8,6 +8,7 @@ const {
   dbDeleteUser,
   dbCheckUserExist,
   dbFindUser,
+  dbFindDeletedUser,
 } = require("../db/User");
 
 router.get("/profile", authenticateUser, async (req, res) => {
@@ -72,7 +73,15 @@ router.post("/login", async (req, res) => {
     });
   } else res.status(401).json({ message: "incorrect password " });
 });
-
+router.get("/deleted-user", async (req, res) => {
+  try {
+    const result = await dbFindDeletedUser();
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
 async function saveUser(req, res, next) {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);

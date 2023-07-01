@@ -50,7 +50,10 @@ async function dbFindUser(Data) {
     return false;
   }
 }
-
+async function dbFindDeletedUser(data) {
+  const result = await User.find({ isActive: false });
+  return result;
+}
 module.exports = {
   dbAddUser,
   dbUpdateUser,
@@ -58,4 +61,5 @@ module.exports = {
   dbCheckUserExist,
   dbFindUser,
   dbCheckUserExistForProductLIst,
+  dbFindDeletedUser,
 };
